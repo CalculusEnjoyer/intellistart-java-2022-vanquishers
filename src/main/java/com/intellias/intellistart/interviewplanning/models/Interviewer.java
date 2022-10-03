@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Interviewer entity class.
+ */
 @Entity
 @Getter
 @Setter

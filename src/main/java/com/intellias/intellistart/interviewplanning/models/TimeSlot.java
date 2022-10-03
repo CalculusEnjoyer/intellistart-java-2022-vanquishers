@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -11,12 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Time slot entity class.
+ */
 @Entity
 @Table(name = "time_slot")
 @Getter

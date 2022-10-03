@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
- * A DTO for the {@link TimeSlot} entity
+ * A DTO for the {@link TimeSlot} entity.
  */
 @Data
-public class TimeSlotDTO implements Serializable {
+public class TimeSlotDto implements Serializable {
 
   @NotNull
   private final int weekNum;
