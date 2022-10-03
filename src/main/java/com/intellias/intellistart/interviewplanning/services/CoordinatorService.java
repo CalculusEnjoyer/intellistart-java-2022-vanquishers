@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import com.intellias.intellistart.interviewplanning.dto.TimeSlotDto;
 import com.intellias.intellistart.interviewplanning.models.TimeSlot;
 import com.intellias.intellistart.interviewplanning.repositories.TimeSlotRepository;
+import com.intellias.intellistart.interviewplanning.util.TimeSlotForm;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
@@ -38,6 +39,10 @@ public class CoordinatorService {
 
   public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
     return new TimeSlotDto(weekNum, dayOfWeek, from, to);
+  }
+
+  public TimeSlotDto createSlot(TimeSlotForm.Builder timeSlotFormBuilder) {
+    return TimeSlotDto.of(timeSlotFormBuilder.build());
   }
 
 }
