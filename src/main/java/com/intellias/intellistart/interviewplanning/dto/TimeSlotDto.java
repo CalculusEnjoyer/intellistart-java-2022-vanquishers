@@ -30,7 +30,7 @@ public class TimeSlotDto implements Serializable {
   }
 
   /**
-   * Quick creation method for TimeSlotDto from TimeSlotForm.Builder.
+   * Quick creation method for TimeSlotDto from TimeSlotForm.
 
    * @param timeSlotForm TimeSlotForm data
    * @return TimeSlotDto object
