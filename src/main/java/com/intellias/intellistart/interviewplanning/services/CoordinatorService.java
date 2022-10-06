@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Interviewer entity service.
+ * Coordinator entity service.
  */
 @Service
 @Transactional
-public class InterviewerService {
+public class CoordinatorService {
 
   private final TimeSlotRepository timeSlotRepository;
 
   @Autowired
-  public InterviewerService(TimeSlotRepository timeSlotRepository)  {
+  public CoordinatorService(TimeSlotRepository timeSlotRepository)  {
     this.timeSlotRepository = timeSlotRepository;
   }
 
@@ -38,7 +38,7 @@ public class InterviewerService {
   }
 
   public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
-    return TimeSlotDto.of(weekNum, dayOfWeek, from, to);
+    return new TimeSlotDto(weekNum, dayOfWeek, from, to);
   }
 
   public TimeSlotDto createSlot(TimeSlotForm.Builder timeSlotFormBuilder) {
