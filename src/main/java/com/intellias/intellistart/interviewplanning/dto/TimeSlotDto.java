@@ -9,11 +9,16 @@ import java.time.LocalTime;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * A DTO for the {@link TimeSlot} entity.
  */
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class TimeSlotDto implements Serializable {
 
   @NotNull
@@ -30,13 +35,13 @@ public class TimeSlotDto implements Serializable {
   }
 
   /**
-   * Quick creation method for TimeSlotDto from TimeSlotForm.
+   * Quick creation method for TimeSlotDto from TimeSlotForm.Builder.
 
    * @param timeSlotForm TimeSlotForm data
    * @return TimeSlotDto object
    */
   public static TimeSlotDto of(TimeSlotForm timeSlotForm) {
-    return new TimeSlotDto(
+    return TimeSlotDto.of(
         timeSlotForm.getWeekNum(),
         timeSlotForm.getDay(),
         timeSlotForm.getFrom(),

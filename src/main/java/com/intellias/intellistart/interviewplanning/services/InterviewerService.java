@@ -41,7 +41,7 @@ public class InterviewerService {
     return TimeSlotDto.of(weekNum, dayOfWeek, from, to);
   }
 
-  public TimeSlotDto createSlot(TimeSlotForm.Builder timeSlotFormBuilder) {
+  public TimeSlotDto createSlot(TimeSlotForm.TimeSlotFormBuilder timeSlotFormBuilder) {
     return TimeSlotDto.of(timeSlotFormBuilder.build());
   }
 

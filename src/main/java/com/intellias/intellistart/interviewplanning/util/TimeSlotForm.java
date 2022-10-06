@@ -3,26 +3,28 @@ package com.intellias.intellistart.interviewplanning.util;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Form for all data.
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class TimeSlotForm {
 
   /**
    * Builder for TimeSlotForm.
    */
-  public static class Builder {
+  public static class TimeSlotFormBuilder {
 
     private int weekNum;
     private DayOfWeek day;
     private LocalTime from;
     private LocalTime to;
 
-    public Builder from(LocalTime time) {
+    public TimeSlotFormBuilder from(LocalTime time) {
       this.from = time;
       return this;
     }
@@ -31,9 +33,9 @@ public class TimeSlotForm {
      * Builder method for starting time.
 
      * @param time starting time
-     * @return this builder object
+     * @return builder object
      */
-    public Builder from(String time) {
+    public TimeSlotFormBuilder from(String time) {
       String[] timeSplit = time.split(":");
       return this.from(
           LocalTime.of(
@@ -43,7 +45,7 @@ public class TimeSlotForm {
       );
     }
 
-    public Builder to(LocalTime time) {
+    public TimeSlotFormBuilder to(LocalTime time) {
       this.to = time;
       return this;
     }
@@ -52,9 +54,9 @@ public class TimeSlotForm {
      * Builder method for ending time.
 
      * @param time starting time
-     * @return this builder object
+     * @return builder object
      */
-    public Builder to(String time) {
+    public TimeSlotFormBuilder to(String time) {
       String[] timeSplit = time.split(":");
       return this.to(
           LocalTime.of(
@@ -64,16 +66,16 @@ public class TimeSlotForm {
       );
     }
 
-    public Builder day(DayOfWeek day) {
+    public TimeSlotFormBuilder day(DayOfWeek day) {
       this.day = day;
       return this;
     }
 
-    public Builder day(String day) {
+    public TimeSlotFormBuilder day(String day) {
       return this.day(DayOfWeek.valueOf(day.toUpperCase()));
     }
 
-    public Builder week(int weenNum) {
+    public TimeSlotFormBuilder week(int weenNum) {
       this.weekNum = weenNum;
       return this;
     }
@@ -89,8 +91,8 @@ public class TimeSlotForm {
   private LocalTime from;
   private LocalTime to;
 
-  public static Builder builder() {
-    return new Builder();
+  public static TimeSlotFormBuilder builder() {
+    return new TimeSlotFormBuilder();
   }
 
 }
