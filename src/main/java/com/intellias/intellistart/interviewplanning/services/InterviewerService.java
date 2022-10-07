@@ -1,8 +1,8 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.dto.TimeSlotDto;
-import com.intellias.intellistart.interviewplanning.models.TimeSlot;
-import com.intellias.intellistart.interviewplanning.repositories.TimeSlotRepository;
+import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.TimeSlotForm;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -18,23 +18,23 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class InterviewerService {
 
-  private final TimeSlotRepository timeSlotRepository;
+  private final InterviewerSlotRepository slotRepository;
 
   @Autowired
-  public InterviewerService(TimeSlotRepository timeSlotRepository)  {
-    this.timeSlotRepository = timeSlotRepository;
+  public InterviewerService(InterviewerSlotRepository slotRepository)  {
+    this.slotRepository = slotRepository;
   }
 
-  public List<TimeSlot> findAll() {
-    return timeSlotRepository.findAll();
+  public List<InterviewerSlot> findAll() {
+    return slotRepository.findAll();
   }
 
   public void deleteTimeSlot(Long id) {
-    timeSlotRepository.deleteById(id);
+    slotRepository.deleteById(id);
   }
 
-  public void registerTimeSlot(TimeSlot timeSlot) {
-    timeSlotRepository.save(timeSlot);
+  public void registerTimeSlot(InterviewerSlot timeSlot) {
+    slotRepository.save(timeSlot);
   }
 
   public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
