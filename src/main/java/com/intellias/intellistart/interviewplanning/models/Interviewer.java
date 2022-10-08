@@ -27,10 +27,13 @@ public class Interviewer {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
+  /*
 
   @NotEmpty
   @ManyToOne
   @JoinColumn(name = "time_slot_id")
-  private TimeSlot timeSlot;
+  private InterviewerSlot interviewerSlot;
+
+   */
 
 }

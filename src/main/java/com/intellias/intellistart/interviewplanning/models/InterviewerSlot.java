@@ -32,7 +32,7 @@ public class InterviewerSlot {
   @Column(name = "from", nullable = false)
   private LocalTime from;
 
-  @Column(name = "from", nullable = false)
+  @Column(name = "to", nullable = false)
   private LocalTime to;
 
   /**
