@@ -1,4 +1,4 @@
-package com.intellias.intellistart.interviewplanning.models;
+package com.intellias.intellistart.interviewplanning.models.enums;
 
 /**
  * Roles.

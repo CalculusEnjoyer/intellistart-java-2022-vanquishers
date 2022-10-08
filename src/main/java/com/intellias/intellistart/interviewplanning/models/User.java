@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

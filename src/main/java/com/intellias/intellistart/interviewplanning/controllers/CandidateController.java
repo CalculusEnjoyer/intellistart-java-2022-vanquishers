@@ -1,11 +1,5 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
-import com.intellias.intellistart.interviewplanning.models.Role;
-import com.intellias.intellistart.interviewplanning.models.User;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
