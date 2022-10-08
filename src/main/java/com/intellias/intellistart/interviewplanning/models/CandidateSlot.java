@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +18,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class CandidateSlot {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -28,7 +26,7 @@ public class CandidateSlot {
   @Column(name = "dateFrom", nullable = false)
   private LocalDateTime dateFrom;
 
-  @Column(name = "dateTo", nullable = true)
+  @Column(name = "dateTo", nullable = false)
   private LocalDateTime dateTo;
 
   public CandidateSlot(LocalDateTime dateFrom, LocalDateTime dateTo) {

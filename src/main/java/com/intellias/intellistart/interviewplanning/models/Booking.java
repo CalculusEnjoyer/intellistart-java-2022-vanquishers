@@ -6,34 +6,41 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Candidate entity class.
+ * Booking entity class.
  */
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Candidate {
+public class Booking {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "candidate_slot_id")
+  @OneToOne
+  @JoinColumn(name = "interviewer_slot_id", nullable = false)
+  private InterviewerSlot interviewerSlot;
+
+  @OneToOne
+  @JoinColumn(name = "candidate_slot_id", nullable = false)
   private CandidateSlot candidateSlot;
 
-  @ManyToOne
-  @JoinColumn(name = "booking_id")
-  private Booking booking;
+  @Column(name = "info")
+  private String info;
 
-  public Candidate(CandidateSlot candidateSlot, Booking booking) {
+  /**
+   * Booking constructor.
+   */
+  public Booking(InterviewerSlot interviewerSlot, CandidateSlot candidateSlot, String info) {
+    this.interviewerSlot = interviewerSlot;
     this.candidateSlot = candidateSlot;
-    this.booking = booking;
+    this.info = info;
   }
 }
