@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.services;
 
-import com.intellias.intellistart.interviewplanning.dto.TimeSlotDto;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.TimeSlotForm;
@@ -37,6 +36,7 @@ public class InterviewerService {
     slotRepository.save(timeSlot);
   }
 
+  /*
   public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
     return TimeSlotDto.of(weekNum, dayOfWeek, from, to);
   }
@@ -44,5 +44,7 @@ public class InterviewerService {
   public TimeSlotDto createSlot(TimeSlotForm.TimeSlotFormBuilder timeSlotFormBuilder) {
     return TimeSlotDto.of(timeSlotFormBuilder.build());
   }
+
+   */
 
 }
