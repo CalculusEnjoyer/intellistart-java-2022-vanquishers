@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.intellias.intellistart.interviewplanning.dto.InterviewerDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,12 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Interviewer entity class.
@@ -22,13 +20,14 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 public class Interviewer {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
 
   @Column(name = "bookingLimit", nullable = false)
-  private int bookingLimit;
+  private Integer bookingLimit;
 
   @ManyToOne
   @JoinColumn(name = "interviewer_slot_id")
@@ -46,4 +45,19 @@ public class Interviewer {
     this.interviewerSlot = interviewerSlot;
     this.booking = booking;
   }
+
+  /**
+   * Quick Entity creation.
+
+   * @param dto DTO object
+   * @return entity
+   */
+  public static Interviewer of(InterviewerDto dto) {
+    return new Interviewer(
+        dto.getBookingLimit(),
+        dto.getInterviewerSlot(),
+        dto.getBooking()
+    );
+  }
+
 }

@@ -1,11 +1,13 @@
 package com.intellias.intellistart.interviewplanning.services;
 
+import com.intellias.intellistart.interviewplanning.dto.CandidateSlotDto;
+import com.intellias.intellistart.interviewplanning.dto.InterviewerSlotDto;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
+import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
-import com.intellias.intellistart.interviewplanning.util.TimeSlotForm;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,27 +26,34 @@ public class CandidateService {
     this.slotRepository = slotRepository;
   }
 
-  public List<CandidateSlot> findAll() {
-    return slotRepository.findAll();
+  public List<CandidateSlotDto> findAll() {
+    return slotRepository.findAll().stream()
+        .map(CandidateSlotDto::of).collect(Collectors.toList());
   }
 
-  public void deleteTimeSlot(Long id) {
+  public void deleteSlot(Long id) {
     slotRepository.deleteById(id);
   }
 
-  public void registerTimeSlot(CandidateSlot slot) {
-    slotRepository.save(slot);
+  public void deleteAll() {
+    slotRepository.deleteAll();
   }
 
-  /*
-  public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
-    return new TimeSlotDto(weekNum, dayOfWeek, from, to);
+  public void registerSlot(CandidateSlotDto slot) {
+    slotRepository.save(CandidateSlot.of(slot));
   }
 
-  public TimeSlotDto createSlot(TimeSlotForm.TimeSlotFormBuilder timeSlotFormBuilder) {
-    return TimeSlotDto.of(timeSlotFormBuilder.build());
-  }
 
+  /**
+   * Registering of many slots.
+
+   * @param slots time slots list to register
    */
+  public void registerAll(List<CandidateSlotDto> slots) {
+    slotRepository.saveAll(
+        slots.stream()
+            .map(CandidateSlot::of).collect(Collectors.toList())
+    );
+  }
 
 }

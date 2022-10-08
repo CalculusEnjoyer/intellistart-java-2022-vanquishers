@@ -1,6 +1,8 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.intellias.intellistart.interviewplanning.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,22 +21,23 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class InterviewerSlot {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
 
   @Column(name = "weekNum", nullable = false)
-  private int weekNum;
+  private Integer weekNum;
 
   @Column(name = "dayOfWeek", nullable = false)
-  private int dayOfWeek;
+  private DayOfWeek dayOfWeek;
 
-  @Column(name = "from", nullable = false)
-  private LocalTime from;
+  @Column(name = "timeFrom", nullable = false)
+  private LocalTime timeFrom;
 
-  @Column(name = "to", nullable = false)
-  private LocalTime to;
+  @Column(name = "timeTo", nullable = false)
+  private LocalTime timeTo;
 
   @Column(name = "status", nullable = false)
   private Status status;
@@ -42,11 +45,29 @@ public class InterviewerSlot {
   /**
    * InterviewerSlot constructor.
    */
-  public InterviewerSlot(int weekNum, int dayOfWeek, LocalTime from, LocalTime to, Status status) {
+  public InterviewerSlot(int weekNum, DayOfWeek dayOfWeek,
+      LocalTime from, LocalTime to, Status status) {
     this.weekNum = weekNum;
     this.dayOfWeek = dayOfWeek;
-    this.from = from;
-    this.to = to;
+    this.timeFrom = from;
+    this.timeTo = to;
     this.status = status;
   }
+
+  /**
+   * Quick Entity creation.
+
+   * @param dto DTO object
+   * @return entity
+   */
+  public static InterviewerSlot of(InterviewerSlotDto dto) {
+    return new InterviewerSlot(
+        dto.getWeekNum(),
+        dto.getDayOfWeek(),
+        dto.getFrom(),
+        dto.getTo(),
+        dto.getStatus()
+    );
+  }
+
 }

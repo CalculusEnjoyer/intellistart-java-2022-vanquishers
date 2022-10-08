@@ -1,11 +1,10 @@
 package com.intellias.intellistart.interviewplanning.services;
 
+import com.intellias.intellistart.interviewplanning.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
-import com.intellias.intellistart.interviewplanning.util.TimeSlotForm;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,27 +23,33 @@ public class InterviewerService {
     this.slotRepository = slotRepository;
   }
 
-  public List<InterviewerSlot> findAll() {
-    return slotRepository.findAll();
+  public List<InterviewerSlotDto> findAll() {
+    return slotRepository.findAll().stream()
+        .map(InterviewerSlotDto::of).collect(Collectors.toList());
   }
 
-  public void deleteTimeSlot(Long id) {
+  public void deleteSlot(Long id) {
     slotRepository.deleteById(id);
   }
 
-  public void registerTimeSlot(InterviewerSlot timeSlot) {
-    slotRepository.save(timeSlot);
+  public void deleteAll() {
+    slotRepository.deleteAll();
   }
 
-  /*
-  public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
-    return TimeSlotDto.of(weekNum, dayOfWeek, from, to);
+  public void register(InterviewerSlotDto slot) {
+    slotRepository.save(InterviewerSlot.of(slot));
   }
 
-  public TimeSlotDto createSlot(TimeSlotForm.TimeSlotFormBuilder timeSlotFormBuilder) {
-    return TimeSlotDto.of(timeSlotFormBuilder.build());
-  }
+  /**
+   * Registering of many slots.
 
+   * @param slots time slots list to register
    */
+  public void registerAll(List<InterviewerSlotDto> slots) {
+    slotRepository.saveAll(
+        slots.stream()
+            .map(InterviewerSlot::of).collect(Collectors.toList())
+    );
+  }
 
 }
