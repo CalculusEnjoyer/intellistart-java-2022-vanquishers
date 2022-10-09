@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.intellias.intellistart.interviewplanning.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -52,22 +51,6 @@ public class InterviewerSlot {
     this.timeFrom = from;
     this.timeTo = to;
     this.status = status;
-  }
-
-  /**
-   * Quick Entity creation.
-
-   * @param dto DTO object
-   * @return entity
-   */
-  public static InterviewerSlot of(InterviewerSlotDto dto) {
-    return new InterviewerSlot(
-        dto.getWeekNum(),
-        dto.getDayOfWeek(),
-        dto.getFrom(),
-        dto.getTo(),
-        dto.getStatus()
-    );
   }
 
 }

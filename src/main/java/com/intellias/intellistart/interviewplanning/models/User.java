@@ -1,12 +1,12 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.intellias.intellistart.interviewplanning.dto.UserDto;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "users")
 public class User {
 
   @Id
@@ -37,19 +38,6 @@ public class User {
   public User(String email, Role role) {
     this.email = email;
     this.role = role;
-  }
-
-  /**
-   * Quick Entity creation.
-
-   * @param dto DTO object
-   * @return entity
-   */
-  public static User of(UserDto dto) {
-    return new User(
-        dto.getEmail(),
-        dto.getRole()
-    );
   }
 
 }

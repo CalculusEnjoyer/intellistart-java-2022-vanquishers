@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.intellias.intellistart.interviewplanning.dto.CandidateSlotDto;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,19 +33,6 @@ public class CandidateSlot {
   public CandidateSlot(LocalDateTime dateFrom, LocalDateTime dateTo) {
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;
-  }
-
-  /**
-   * Quick Entity creation.
-
-   * @param dto DTO object
-   * @return entity
-   */
-  public static CandidateSlot of(CandidateSlotDto dto) {
-    return new CandidateSlot(
-        dto.getDateFrom(),
-        dto.getDateTo()
-    );
   }
 
 }

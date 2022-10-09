@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.intellias.intellistart.interviewplanning.dto.InterviewerDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,20 +43,6 @@ public class Interviewer {
     this.bookingLimit = bookingLimit;
     this.interviewerSlot = interviewerSlot;
     this.booking = booking;
-  }
-
-  /**
-   * Quick Entity creation.
-
-   * @param dto DTO object
-   * @return entity
-   */
-  public static Interviewer of(InterviewerDto dto) {
-    return new Interviewer(
-        dto.getBookingLimit(),
-        dto.getInterviewerSlot(),
-        dto.getBooking()
-    );
   }
 
 }
