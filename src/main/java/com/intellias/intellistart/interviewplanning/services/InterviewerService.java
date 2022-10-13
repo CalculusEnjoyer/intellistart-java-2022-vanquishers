@@ -30,23 +30,20 @@ public class InterviewerService {
     return slotRepository.findAll();
   }
 
-  public void deleteTimeSlot(Long id) {
+  public void deleteSlot(Long id) {
     slotRepository.deleteById(id);
   }
 
-  public void registerTimeSlot(InterviewerSlot timeSlot) {
-    slotRepository.save(timeSlot);
+  public void deleteAll() {
+    slotRepository.deleteAll();
   }
 
-  /*
-  public TimeSlotDto createSlot(int weekNum, DayOfWeek dayOfWeek, LocalTime from, LocalTime to) {
-    return TimeSlotDto.of(weekNum, dayOfWeek, from, to);
+  public void register(InterviewerSlot slot) {
+    slotRepository.save(slot);
   }
 
-  public TimeSlotDto createSlot(TimeSlotForm.TimeSlotFormBuilder timeSlotFormBuilder) {
-    return TimeSlotDto.of(timeSlotFormBuilder.build());
+  public void registerAll(List<InterviewerSlot> slots) {
+    slotRepository.saveAll(slots);
   }
-
-   */
 
 }
