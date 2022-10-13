@@ -1,12 +1,14 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,21 +27,28 @@ public class Interviewer {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "bookingLimit", nullable = false)
-  private Integer bookingLimit;
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-  @ManyToOne
+  @OneToMany
   @JoinColumn(name = "interviewer_slot_id")
-  private InterviewerSlot interviewerSlot;
+  private List<InterviewerSlot> interviewerSlot;
 
-  @ManyToOne
+
+  @Column(name = "booking_limit", nullable = false)
+  private int bookingLimit;
+
+  @OneToMany
   @JoinColumn(name = "booking_id")
-  private Booking booking;
+  private List<Booking> booking;
 
   /**
    * Interviewer constructor.
    */
-  public Interviewer(int bookingLimit, InterviewerSlot interviewerSlot, Booking booking) {
+  public Interviewer(User user, int bookingLimit, List<InterviewerSlot> interviewerSlot,
+      List<Booking> booking) {
+    this.user = user;
     this.bookingLimit = bookingLimit;
     this.interviewerSlot = interviewerSlot;
     this.booking = booking;

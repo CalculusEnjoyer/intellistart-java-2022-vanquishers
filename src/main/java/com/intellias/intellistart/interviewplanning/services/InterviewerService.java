@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,12 @@ public class InterviewerService {
   private final InterviewerSlotRepository slotRepository;
 
   @Autowired
-  public InterviewerService(InterviewerSlotRepository slotRepository)  {
+  public InterviewerService(InterviewerSlotRepository slotRepository) {
     this.slotRepository = slotRepository;
+  }
+
+  public Optional<InterviewerSlot> findById(Long id) {
+    return slotRepository.findById(id);
   }
 
   public List<InterviewerSlot> findAll() {

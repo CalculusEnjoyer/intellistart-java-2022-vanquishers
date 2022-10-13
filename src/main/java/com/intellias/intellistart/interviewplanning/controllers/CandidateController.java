@@ -35,10 +35,9 @@ public class CandidateController {
   }
 
   /**
-   * Test generating of Candidate time slots.
-   * /candidates/addSlots
-
-   * @return string status
+   * Method for test request generating time slots.
+   *
+   * @return response status
    */
   @GetMapping("/addSlots")
   public String addSlots() {

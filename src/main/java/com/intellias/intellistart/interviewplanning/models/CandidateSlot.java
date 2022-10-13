@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(name = "candidate_slot")
 public class CandidateSlot {
 
   @Id
@@ -24,10 +26,10 @@ public class CandidateSlot {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "dateFrom", nullable = false)
+  @Column(name = "date_from", nullable = false)
   private LocalDateTime dateFrom;
 
-  @Column(name = "dateTo", nullable = false)
+  @Column(name = "date_to", nullable = false)
   private LocalDateTime dateTo;
 
   public CandidateSlot(LocalDateTime dateFrom, LocalDateTime dateTo) {

@@ -17,7 +17,7 @@ public class CandidateService {
   private final CandidateSlotRepository slotRepository;
 
   @Autowired
-  public CandidateService(CandidateSlotRepository slotRepository)  {
+  public CandidateService(CandidateSlotRepository slotRepository) {
     this.slotRepository = slotRepository;
   }
 
