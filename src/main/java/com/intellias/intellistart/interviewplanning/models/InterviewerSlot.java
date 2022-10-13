@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import java.time.LocalTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +18,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class InterviewerSlot {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
@@ -27,7 +27,7 @@ public class InterviewerSlot {
   @Column(name = "weekNum", nullable = false)
   private int weekNum;
 
-  @Column(name = "dayOfWeek", nullable = false)
+  @Column(name = "day_of_week", nullable = false)
   private int dayOfWeek;
 
   @Column(name = "from", nullable = false)
@@ -36,17 +36,13 @@ public class InterviewerSlot {
   @Column(name = "to", nullable = false)
   private LocalTime to;
 
-  @Column(name = "status", nullable = false)
-  private Status status;
-
   /**
    * InterviewerSlot constructor.
    */
-  public InterviewerSlot(int weekNum, int dayOfWeek, LocalTime from, LocalTime to, Status status) {
+  public InterviewerSlot(int weekNum, int dayOfWeek, LocalTime from, LocalTime to) {
     this.weekNum = weekNum;
     this.dayOfWeek = dayOfWeek;
     this.from = from;
     this.to = to;
-    this.status = status;
   }
 }

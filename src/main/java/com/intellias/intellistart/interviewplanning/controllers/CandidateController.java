@@ -17,7 +17,7 @@ public class CandidateController {
 
   /**
    * Method for test request generating time slots.
-
+   *
    * @return response status
    */
   @GetMapping("/addTimeSlots")

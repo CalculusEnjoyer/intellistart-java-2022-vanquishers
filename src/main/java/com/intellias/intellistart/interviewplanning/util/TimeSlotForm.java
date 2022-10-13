@@ -31,7 +31,7 @@ public class TimeSlotForm {
 
     /**
      * Builder method for starting time.
-
+     *
      * @param time starting time
      * @return builder object
      */
@@ -52,7 +52,7 @@ public class TimeSlotForm {
 
     /**
      * Builder method for ending time.
-
+     *
      * @param time starting time
      * @return builder object
      */
