@@ -6,10 +6,8 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlo
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
-import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -30,8 +28,8 @@ class InterviewPlanningApplicationTests {
   @Test
   void contextLoads() {
     int year = Calendar.getInstance().get(Calendar.YEAR);
-    InterviewerSlot interviewerSlotDto = new InterviewerSlot(0, DayOfWeek.MONDAY,
-        LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW);
+    InterviewerSlot interviewerSlotDto = new InterviewerSlot(0, 1,
+        LocalTime.of(9, 30), LocalTime.of(11, 0));
 
     CandidateSlot candidateSlotDto = new CandidateSlot(
         LocalDateTime.of(LocalDate.of(year, Month.OCTOBER, 12), LocalTime.of(9, 30)),
@@ -54,17 +52,17 @@ class InterviewPlanningApplicationTests {
   void interviewerSlotTests() {
     List<InterviewerSlot> slots = new ArrayList<>(
         Arrays.asList(
-            new InterviewerSlot(0, DayOfWeek.MONDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW),
+            new InterviewerSlot(0, 1,
+                LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
-            new InterviewerSlot(2, DayOfWeek.TUESDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW),
+            new InterviewerSlot(2, 2,
+                LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
-            new InterviewerSlot(1, DayOfWeek.WEDNESDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW),
+            new InterviewerSlot(1, 3,
+                LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
-            new InterviewerSlot(1, DayOfWeek.THURSDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW)
+            new InterviewerSlot(1, 4,
+                LocalTime.of(9, 30), LocalTime.of(11, 0))
         )
     );
 

@@ -2,9 +2,7 @@ package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
-import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,17 +40,17 @@ public class InterviewerController {
   public String addSlots() {
     List<InterviewerSlot> slots = new ArrayList<>(
         Arrays.asList(
-            new InterviewerSlot(0, DayOfWeek.MONDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW),
+            new InterviewerSlot(0, 1,
+                LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
-            new InterviewerSlot(2, DayOfWeek.TUESDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW),
+            new InterviewerSlot(2, 2,
+                LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
-            new InterviewerSlot(1, DayOfWeek.WEDNESDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW),
+            new InterviewerSlot(1, 3,
+                LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
-            new InterviewerSlot(1, DayOfWeek.THURSDAY,
-                LocalTime.of(9, 30), LocalTime.of(11, 0), Status.NEW)
+            new InterviewerSlot(1, 4,
+                LocalTime.of(9, 30), LocalTime.of(11, 0))
         )
     );
     interviewerService.registerAll(slots);

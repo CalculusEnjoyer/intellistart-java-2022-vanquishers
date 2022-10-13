@@ -25,21 +25,20 @@ public class InterviewerSlot {
   private Long id;
 
   @Column(name = "weekNum", nullable = false)
-  private Integer weekNum;
+  private int weekNum;
 
   @Column(name = "day_of_week", nullable = false)
   private int dayOfWeek;
 
-  @Column(name = "timeFrom", nullable = false)
-  private LocalTime timeFrom;
+  @Column(name = "t_from", nullable = false)
+  private LocalTime from;
 
-  @Column(name = "timeTo", nullable = false)
-  private LocalTime timeTo;
+  @Column(name = "t_to", nullable = false)
+  private LocalTime to;
 
   /**
    * InterviewerSlot constructor.
    */
-
   public InterviewerSlot(int weekNum, int dayOfWeek, LocalTime from, LocalTime to) {
     this.weekNum = weekNum;
     this.dayOfWeek = dayOfWeek;
