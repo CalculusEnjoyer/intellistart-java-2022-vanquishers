@@ -37,10 +37,10 @@ public class Booking {
   @JoinColumn(name = "candidate_slot_id", nullable = false)
   private CandidateSlot candidateSlot;
 
-  @Column(name = "time_from", nullable = false)
+  @Column(name = "t_from", nullable = false)
   private LocalDateTime from;
 
-  @Column(name = "time_to", nullable = false)
+  @Column(name = "t_to", nullable = false)
   private LocalDateTime to;
 
   @Column(name = "subject", nullable = false)
