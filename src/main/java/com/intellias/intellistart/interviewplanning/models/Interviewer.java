@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,8 +35,7 @@ public class Interviewer {
 
   @OneToMany
   @JoinColumn(name = "interviewer_slot_id")
-  private List<InterviewerSlot> interviewerSlot = new ArrayList<>();
-
+  private List<InterviewerSlot> interviewerSlot;
 
   @Column(name = "booking_limit", nullable = false)
   private int bookingLimit;
