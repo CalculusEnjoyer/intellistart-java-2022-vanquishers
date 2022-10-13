@@ -42,7 +42,7 @@ class InterviewPlanningApplicationTests {
     assertThat(interviewerSlotDto).isNotNull();
   }
 
-  /*
+
   @Autowired
   private InterviewerService interviewerService;
   @Autowired
@@ -110,6 +110,6 @@ class InterviewPlanningApplicationTests {
     assertThat(slotsGot.size()).isNotZero();
     assertThat(slotsGot.size() % slots.size()).isZero();
   }
-  */
+
 
 }
