@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(name = "interviewer_slots")
 public class InterviewerSlot {
 
   @Id
@@ -24,7 +26,7 @@ public class InterviewerSlot {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "weekNum", nullable = false)
+  @Column(name = "week_num", nullable = false)
   private int weekNum;
 
   @Column(name = "day_of_week", nullable = false)

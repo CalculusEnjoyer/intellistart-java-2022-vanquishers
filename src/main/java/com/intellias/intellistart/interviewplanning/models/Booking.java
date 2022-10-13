@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "bookings")
 public class Booking {
 
   @Id
@@ -35,10 +37,10 @@ public class Booking {
   @JoinColumn(name = "candidate_slot_id", nullable = false)
   private CandidateSlot candidateSlot;
 
-  @Column(name = "from", nullable = false)
+  @Column(name = "t_from", nullable = false)
   private LocalDateTime from;
 
-  @Column(name = "to", nullable = false)
+  @Column(name = "t_to", nullable = false)
   private LocalDateTime to;
 
   @Column(name = "subject", nullable = false)

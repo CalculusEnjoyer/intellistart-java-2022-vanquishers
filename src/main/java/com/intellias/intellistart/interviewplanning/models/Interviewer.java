@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "interviewers")
 public class Interviewer {
 
   @Id
@@ -34,7 +36,6 @@ public class Interviewer {
   @OneToMany
   @JoinColumn(name = "interviewer_slot_id")
   private List<InterviewerSlot> interviewerSlot;
-
 
   @Column(name = "booking_limit", nullable = false)
   private int bookingLimit;

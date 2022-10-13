@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-@Table(name = "candidate_slot")
+@Table(name = "candidate_slots")
 public class CandidateSlot {
 
   @Id
