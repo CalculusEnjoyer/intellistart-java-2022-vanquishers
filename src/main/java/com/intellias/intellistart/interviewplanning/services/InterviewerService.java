@@ -2,9 +2,6 @@ package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
-import com.intellias.intellistart.interviewplanning.util.TimeSlotForm;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,7 @@ public class InterviewerService {
   private final InterviewerSlotRepository slotRepository;
 
   @Autowired
-  public InterviewerService(InterviewerSlotRepository slotRepository)  {
+  public InterviewerService(InterviewerSlotRepository slotRepository) {
     this.slotRepository = slotRepository;
   }
 

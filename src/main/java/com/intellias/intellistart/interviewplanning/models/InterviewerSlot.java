@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,22 +19,24 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(name = "interviewer_slots")
 public class InterviewerSlot {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "weekNum", nullable = false)
+  @Column(name = "week_num", nullable = false)
   private int weekNum;
 
-  @Column(name = "dayOfWeek", nullable = false)
+  @Column(name = "day_of_week", nullable = false)
   private int dayOfWeek;
 
-  @Column(name = "from", nullable = false)
+  @Column(name = "time_from", nullable = false)
   private LocalTime from;
 
-  @Column(name = "to", nullable = false)
+  @Column(name = "time_to", nullable = false)
   private LocalTime to;
 
   @Column(name = "status", nullable = false)
