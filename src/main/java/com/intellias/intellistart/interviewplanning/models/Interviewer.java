@@ -53,4 +53,5 @@ public class Interviewer {
     this.interviewerSlot = interviewerSlot;
     this.booking = booking;
   }
+
 }

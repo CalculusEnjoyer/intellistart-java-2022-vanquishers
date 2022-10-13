@@ -36,4 +36,5 @@ public class CandidateSlot {
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;
   }
+
 }

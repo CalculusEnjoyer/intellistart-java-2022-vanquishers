@@ -48,4 +48,5 @@ public class Candidate {
     this.user = user;
     this.booking = booking;
   }
+
 }
