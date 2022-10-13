@@ -32,10 +32,10 @@ public class InterviewerSlot {
   @Column(name = "day_of_week", nullable = false)
   private int dayOfWeek;
 
-  @Column(name = "time_from", nullable = false)
+  @Column(name = "t_from", nullable = false)
   private LocalTime from;
 
-  @Column(name = "time_to", nullable = false)
+  @Column(name = "t_to", nullable = false)
   private LocalTime to;
 
   /**
@@ -47,4 +47,5 @@ public class InterviewerSlot {
     this.from = from;
     this.to = to;
   }
+
 }
