@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,12 +34,15 @@ public class CandidateService {
     slotRepository.deleteAll();
   }
 
-  public void registerSlot(CandidateSlot slot) {
-    slotRepository.save(slot);
+  public CandidateSlot registerSlot(CandidateSlot slot) {
+    return slotRepository.save(slot);
   }
 
-  public void registerAll(List<CandidateSlot> slots) {
-    slotRepository.saveAll(slots);
+  public List<CandidateSlot> registerAll(List<CandidateSlot> slots) {
+    return slotRepository.saveAll(slots);
   }
 
+  public Optional<CandidateSlot> findById(Long id) {
+    return slotRepository.findById(id);
+  }
 }
