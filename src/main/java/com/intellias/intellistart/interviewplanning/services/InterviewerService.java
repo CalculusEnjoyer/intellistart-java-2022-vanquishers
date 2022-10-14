@@ -38,12 +38,12 @@ public class InterviewerService {
     slotRepository.deleteAll();
   }
 
-  public void register(InterviewerSlot slot) {
-    slotRepository.save(slot);
+  public InterviewerSlot registerSlot(InterviewerSlot slot) {
+    return slotRepository.save(slot);
   }
 
-  public void registerAll(List<InterviewerSlot> slots) {
-    slotRepository.saveAll(slots);
+  public List<InterviewerSlot> registerAll(List<InterviewerSlot> slots) {
+    return slotRepository.saveAll(slots);
   }
 
 }
