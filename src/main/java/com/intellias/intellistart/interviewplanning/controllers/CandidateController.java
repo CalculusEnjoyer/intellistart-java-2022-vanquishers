@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,8 +42,8 @@ public class CandidateController {
    *
    * @return response status
    */
-  @GetMapping("/addSlots")
-  public String addSlots() {
+  @PostMapping("/addSlots")
+  public ResponseEntity<HttpStatus> addSlots() {
 
     int year = Calendar.getInstance().get(Calendar.YEAR);
     List<CandidateSlot> slots = new ArrayList<>(
@@ -64,7 +67,7 @@ public class CandidateController {
     );
     candidateService.registerAll(slots);
 
-    return "OK";
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   /**
