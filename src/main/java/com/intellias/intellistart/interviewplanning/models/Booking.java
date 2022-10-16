@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,14 +27,6 @@ public class Booking {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @OneToOne
-  @JoinColumn(name = "interviewer_slot_id", nullable = false)
-  private InterviewerSlot interviewerSlot;
-
-  @OneToOne
-  @JoinColumn(name = "candidate_slot_id", nullable = false)
-  private CandidateSlot candidateSlot;
-
   @Column(name = "t_from", nullable = false)
   private LocalDateTime from;
 
@@ -55,10 +45,8 @@ public class Booking {
   /**
    * Booking constructor.
    */
-  public Booking(InterviewerSlot interviewerSlot, CandidateSlot candidateSlot, LocalDateTime from,
+  public Booking(LocalDateTime from,
       LocalDateTime to, String subject, String description, Status status) {
-    this.interviewerSlot = interviewerSlot;
-    this.candidateSlot = candidateSlot;
     this.from = from;
     this.to = to;
     this.subject = subject;

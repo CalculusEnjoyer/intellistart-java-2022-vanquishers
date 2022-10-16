@@ -1,5 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,9 +21,5 @@ public class InterviewerDto {
 
   @NotEmpty
   private Integer bookingLimit;
-  @NotEmpty
-  private InterviewerSlotDto interviewerSlot;
-  @NotEmpty
-  private BookingDto booking;
 
 }

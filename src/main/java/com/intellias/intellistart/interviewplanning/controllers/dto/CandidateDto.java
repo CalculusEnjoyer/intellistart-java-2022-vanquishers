@@ -1,6 +1,8 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
-import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +16,6 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
-public class CandidateDto {
-
-  @NotEmpty
-  private CandidateSlotDto candidateSlot;
-  @NotEmpty
-  private BookingDto booking;
+public class CandidateDto implements Serializable {
 
 }

@@ -34,9 +34,8 @@ public class InterviewerController {
   }
 
   /**
-   * Test generating of interviewer time slots.
-   * /interviewers/addSlots
-
+   * Test generating of interviewer time slots. /interviewers/addSlots
+   *
    * @return string status
    */
   @PostMapping("/addSlots")
@@ -62,9 +61,8 @@ public class InterviewerController {
   }
 
   /**
-   * Test getting of interviewer time slots.
-   * /interviewers/getSlots
-
+   * Test getting of interviewer time slots. /interviewers/getSlots
+   *
    * @return list of interviewer slots in DB
    */
   @GetMapping("/getSlots")
@@ -75,9 +73,8 @@ public class InterviewerController {
   }
 
   /**
-   * Test deleting of interviewer time slots.
-   * /interviewers/delSlots
-
+   * Test deleting of interviewer time slots. /interviewers/delSlots
+   *
    * @return list of interviewer slots in DB
    */
   @GetMapping("/delSlots")
