@@ -19,5 +19,4 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CandidateDto implements Serializable {
 
-  private Set<CandidateSlotDto> candidateSlot = new HashSet<>();
 }

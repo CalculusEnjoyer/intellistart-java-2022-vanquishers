@@ -25,5 +25,5 @@ public class CandidateSlotDto implements Serializable {
   private LocalDateTime dateFrom;
   @NotEmpty
   private LocalDateTime dateTo;
-  private Set<BookingDto> booking = new HashSet<>();
+
 }

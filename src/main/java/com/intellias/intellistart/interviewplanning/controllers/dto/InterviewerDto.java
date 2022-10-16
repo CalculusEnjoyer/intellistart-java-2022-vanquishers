@@ -21,6 +21,5 @@ public class InterviewerDto {
 
   @NotEmpty
   private Integer bookingLimit;
-  private Set<InterviewerSlotDto> interviewerSlot = new HashSet<>();
 
 }
