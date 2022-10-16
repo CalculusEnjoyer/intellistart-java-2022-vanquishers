@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,19 +41,13 @@ public class Interviewer {
   @JoinColumn(name = "interviewer_id")
   private Set<InterviewerSlot> interviewerSlot = new HashSet<>();
 
-  @OneToMany
-  @JoinColumn(name = "interviewer_id")
-  private Set<Booking> booking = new HashSet<>();
-
   /**
    * Interviewer constructor.
    */
-  public Interviewer(User user, int bookingLimit, Set<InterviewerSlot> interviewerSlot,
-      Set<Booking> booking) {
+  public Interviewer(User user, int bookingLimit, Set<InterviewerSlot> interviewerSlot) {
     this.user = user;
     this.bookingLimit = bookingLimit;
     this.interviewerSlot = interviewerSlot;
-    this.booking = booking;
   }
 
 }

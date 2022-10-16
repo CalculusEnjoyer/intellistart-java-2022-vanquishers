@@ -1,14 +1,13 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
-import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import java.io.Serializable;
-import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -25,12 +24,11 @@ public class InterviewerSlotDto implements Serializable {
   @NotEmpty
   private Integer weekNum;
   @NotEmpty
-  private DayOfWeek dayOfWeek;
+  private Integer dayOfWeek;
   @NotEmpty
   private LocalTime timeFrom;
   @NotEmpty
   private LocalTime timeTo;
-  @NotEmpty
-  private Status status;
+  private Set<BookingDto> booking = new HashSet<>();
 
 }

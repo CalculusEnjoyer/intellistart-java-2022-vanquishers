@@ -110,9 +110,8 @@ public class CandidateController {
   }
 
   /**
-   * Test getting of Candidate time slots.
-   * /candidates/getSlots
-
+   * Test getting of Candidate time slots. /candidates/getSlots
+   *
    * @return list of Candidate slots in DB
    */
   @GetMapping("/getSlots")
@@ -123,9 +122,8 @@ public class CandidateController {
   }
 
   /**
-   * Test deleting of Candidate time slots.
-   * /candidates/delSlots
-
+   * Test deleting of Candidate time slots. /candidates/delSlots
+   *
    * @return list of Candidate slots in DB
    */
   @GetMapping("/delSlots")
