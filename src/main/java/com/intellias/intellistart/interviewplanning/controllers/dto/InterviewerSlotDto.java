@@ -1,9 +1,8 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +25,10 @@ public class InterviewerSlotDto implements Serializable {
   @NotEmpty
   private Integer dayOfWeek;
   @NotEmpty
+  @JsonFormat(pattern = "HH:mm")
   private LocalTime timeFrom;
   @NotEmpty
+  @JsonFormat(pattern = "HH:mm")
   private LocalTime timeTo;
 
 }

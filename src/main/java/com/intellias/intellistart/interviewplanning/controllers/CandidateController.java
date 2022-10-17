@@ -1,6 +1,8 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
+import com.intellias.intellistart.interviewplanning.exceptions.CandidateNotFoundException;
+import com.intellias.intellistart.interviewplanning.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import java.time.LocalDate;
@@ -49,8 +51,7 @@ public class CandidateController {
    */
   @PostMapping("/current/slots")
   public ResponseEntity<HttpStatus> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+    throw new InvalidSlotBoundariesException();
   }
 
   /**
@@ -105,7 +106,6 @@ public class CandidateController {
         )
     );
     candidateService.registerAll(slots);
-
     return ResponseEntity.ok(HttpStatus.OK);
   }
 

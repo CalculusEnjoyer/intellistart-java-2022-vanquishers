@@ -1,11 +1,8 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
