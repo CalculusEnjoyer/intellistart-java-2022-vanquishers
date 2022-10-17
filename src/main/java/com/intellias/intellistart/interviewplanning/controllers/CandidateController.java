@@ -1,8 +1,6 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
-import com.intellias.intellistart.interviewplanning.exceptions.CandidateNotFoundException;
-import com.intellias.intellistart.interviewplanning.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.intellias.intellistart.interviewplanning.exceptions;
+package com.intellias.intellistart.interviewplanning.util.exceptions;
 
 import org.springframework.http.HttpStatus;
 

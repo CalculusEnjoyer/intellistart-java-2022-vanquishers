@@ -1,4 +1,4 @@
-package com.intellias.intellistart.interviewplanning.exceptions;
+package com.intellias.intellistart.interviewplanning.util.exceptions;
 
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
