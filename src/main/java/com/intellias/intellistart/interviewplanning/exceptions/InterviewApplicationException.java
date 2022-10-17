@@ -18,7 +18,7 @@ public class InterviewApplicationException extends RuntimeException {
   protected final String errorMessage;
 
   /**
-   * Constructor for basic exception
+   * Constructor for basic exception.
    */
   public InterviewApplicationException(String errorCode, HttpStatus httpStatus, String message) {
     this.errorMessage = message;
