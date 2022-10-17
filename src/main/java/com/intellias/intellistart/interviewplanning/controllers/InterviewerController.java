@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Interviewer controller.
  */
 @RestController
-@RequestMapping("/interviewers")
+@RequestMapping(InterviewerController.MAPPING)
 public class InterviewerController {
-
+  public static final String MAPPING = "/interviewers";
   public final InterviewerService interviewerService;
   public final ModelMapper mapper;
 
@@ -106,7 +106,7 @@ public class InterviewerController {
 
    * @return response status
    */
-  @PostMapping("{interviewerId}/slots/{slotId}")
+  @PostMapping("/{interviewerId}/slots/{slotId}")
   public ResponseEntity<HttpStatus> createSlot(
       @PathVariable String interviewerId,
       @PathVariable String slotId) {
@@ -118,7 +118,7 @@ public class InterviewerController {
 
    * @return response status
    */
-  @GetMapping("{interviewerId}/slots/current_week")
+  @GetMapping("/{interviewerId}/slots/current_week")
   public ResponseEntity<HttpStatus> getCurrentWeekSlots(@PathVariable String interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
@@ -128,7 +128,7 @@ public class InterviewerController {
 
    * @return response status
    */
-  @GetMapping("{interviewerId}/slots/next_week")
+  @GetMapping("/{interviewerId}/slots/next_week")
   public ResponseEntity<HttpStatus> getNextWeekSlots(@PathVariable String interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
@@ -138,7 +138,7 @@ public class InterviewerController {
 
    * @return response status
    */
-  @PostMapping("{interviewerId}/bookings/next_week_count")
+  @PostMapping("/{interviewerId}/bookings/next_week_count")
   public ResponseEntity<HttpStatus> setForNextWeekMaxBookings(
       @RequestBody Integer maxBookings,
       @PathVariable String interviewerId) {
