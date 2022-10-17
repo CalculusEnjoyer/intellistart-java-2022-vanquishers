@@ -51,7 +51,7 @@ public class CandidateController {
    */
   @PostMapping("/current/slots")
   public ResponseEntity<HttpStatus> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-    throw new InvalidSlotBoundariesException();
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   /**
