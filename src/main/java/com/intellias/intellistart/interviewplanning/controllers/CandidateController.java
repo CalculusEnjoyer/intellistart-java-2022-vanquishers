@@ -49,7 +49,6 @@ public class CandidateController {
    */
   @PostMapping("/current/slots")
   public ResponseEntity<HttpStatus> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
@@ -105,7 +104,6 @@ public class CandidateController {
         )
     );
     candidateService.registerAll(slots);
-
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
