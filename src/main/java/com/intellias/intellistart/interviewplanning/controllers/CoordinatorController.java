@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
-import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
 import java.time.LocalDateTime;
@@ -33,19 +32,6 @@ public class CoordinatorController {
   @Autowired
   public CoordinatorController(ModelMapper mapper) {
     this.mapper = mapper;
-  }
-
-  /**
-   * Method for updating exact time slot by interviewer.
-   *
-   * @return response status
-   */
-  @PostMapping("/interviewers/{interviewerId}/slots/{slotId}")
-  public ResponseEntity<HttpStatus> updateInterviewerSlot(
-      @RequestBody InterviewerSlotDto interviewerSlotDto,
-      @PathVariable Long interviewerId, @PathVariable Long slotId) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   /**
