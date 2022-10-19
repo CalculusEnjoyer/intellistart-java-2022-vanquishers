@@ -1,6 +1,8 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 
+import com.intellias.intellistart.interviewplanning.util.WeekService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CommonController {
+
+  private final WeekService weekService;
+
+  @Autowired
+  public CommonController(WeekService weekService) {
+    this.weekService = weekService;
+  }
+
   /**
    * Endpoint for getting the information about the current user.
 
@@ -30,8 +40,8 @@ public class CommonController {
    * @return response status
    */
   @GetMapping("/weeks/current")
-  public ResponseEntity<HttpStatus> getCurrentWeek() {
-    return ResponseEntity.ok(HttpStatus.OK);
+  public int getCurrentWeek() {
+    return weekService.getCurrentWeekNumInFormat();
   }
 
   /**
@@ -40,8 +50,8 @@ public class CommonController {
    * @return response status
    */
   @GetMapping("/weeks/next")
-  public ResponseEntity<HttpStatus> getNextWeek() {
-    return ResponseEntity.ok(HttpStatus.OK);
+  public int getNextWeek() {
+    return weekService.getNextWeekNumInFormat();
   }
 
 }
