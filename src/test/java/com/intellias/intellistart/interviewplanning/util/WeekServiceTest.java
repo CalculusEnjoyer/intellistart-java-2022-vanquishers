@@ -18,7 +18,7 @@ class WeekServiceTest {
     int nextWeek = weekService.getCurrentWeekNumInYear() + 1;
     int currentYear = LocalDate.now().getYear();
 
-    assertThat(Integer.parseInt(String.valueOf(currentYear) + nextWeek))
-        .isEqualTo(weekService.getNextWeekNumInFormat());
+    assertThat(String.valueOf(currentYear) + nextWeek)
+        .isEqualTo(String.valueOf(weekService.getNextWeekNumInFormat()));
   }
 }
