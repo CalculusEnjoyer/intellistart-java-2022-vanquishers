@@ -88,15 +88,15 @@ public class InterviewerController {
   }
 
   /**
-   * Endpoint for creating a new interviewer time slot
+   * Endpoint for adding a new interviewer time slot
    * using interviewer id from request.
 
    * @return response status
    */
   @PostMapping("/{interviewerId}/slots")
-  public ResponseEntity<HttpStatus> createSlot(
+  public ResponseEntity<HttpStatus> addSlot(
       @RequestBody InterviewerSlotDto interviewerSlotDto,
-      @PathVariable String interviewerId) {
+      @PathVariable Long interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
@@ -107,9 +107,9 @@ public class InterviewerController {
    * @return response status
    */
   @PostMapping("/{interviewerId}/slots/{slotId}")
-  public ResponseEntity<HttpStatus> createSlot(
-      @PathVariable String interviewerId,
-      @PathVariable String slotId) {
+  public ResponseEntity<HttpStatus> updateSlot(
+      @RequestBody InterviewerSlotDto interviewerSlotDto,
+      @PathVariable Long interviewerId, @PathVariable Long slotId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
@@ -119,7 +119,7 @@ public class InterviewerController {
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/current_week")
-  public ResponseEntity<HttpStatus> getCurrentWeekSlots(@PathVariable String interviewerId) {
+  public ResponseEntity<HttpStatus> getCurrentWeekSlots(@PathVariable Long interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
@@ -129,7 +129,7 @@ public class InterviewerController {
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/next_week")
-  public ResponseEntity<HttpStatus> getNextWeekSlots(@PathVariable String interviewerId) {
+  public ResponseEntity<HttpStatus> getNextWeekSlots(@PathVariable Long interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
@@ -141,7 +141,7 @@ public class InterviewerController {
   @PostMapping("/{interviewerId}/bookings/next_week_count")
   public ResponseEntity<HttpStatus> setForNextWeekMaxBookings(
       @RequestBody Integer maxBookings,
-      @PathVariable String interviewerId) {
+      @PathVariable Long interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
