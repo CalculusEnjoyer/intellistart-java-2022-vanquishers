@@ -16,7 +16,7 @@ public class WeekService {
 
    * @return week number
    */
-  private int getCurrentWeekNumInYear() {
+  public int getCurrentWeekNumInYear() {
     GregorianCalendar calendar = new GregorianCalendar();
     calendar.setFirstDayOfWeek(Calendar.MONDAY);
     calendar.setMinimalDaysInFirstWeek(1);
