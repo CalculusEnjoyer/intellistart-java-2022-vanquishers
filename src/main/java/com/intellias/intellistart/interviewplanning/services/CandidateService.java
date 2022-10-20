@@ -26,7 +26,7 @@ public class CandidateService {
     return slotRepository.findAll();
   }
 
-  public void deleteSlot(Long id) {
+  public void delete(Long id) {
     slotRepository.deleteById(id);
   }
 
@@ -34,7 +34,7 @@ public class CandidateService {
     slotRepository.deleteAll();
   }
 
-  public CandidateSlot registerSlot(CandidateSlot slot) {
+  public CandidateSlot register(CandidateSlot slot) {
     return slotRepository.save(slot);
   }
 
@@ -45,4 +45,5 @@ public class CandidateService {
   public Optional<CandidateSlot> findById(Long id) {
     return slotRepository.findById(id);
   }
+
 }

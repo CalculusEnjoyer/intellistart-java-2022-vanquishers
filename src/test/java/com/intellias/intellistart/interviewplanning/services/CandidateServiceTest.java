@@ -23,6 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CandidateServiceTest {
+
   @Autowired
   private CandidateService candidateService;
 
@@ -85,7 +86,7 @@ class CandidateServiceTest {
     List<CandidateSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
-      candidateService.deleteSlot(slot.getId());
+      candidateService.delete(slot.getId());
       candidateService.findById(slot.getId()).ifPresent(deletedSlots::add);
     });
     int afterDeleteSize = candidateService.findAll().size();
@@ -94,4 +95,5 @@ class CandidateServiceTest {
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
     assertThat(deletedSlots).isEmpty();
   }
+
 }

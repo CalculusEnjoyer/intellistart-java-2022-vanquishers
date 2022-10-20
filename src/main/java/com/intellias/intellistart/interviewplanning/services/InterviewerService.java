@@ -30,7 +30,7 @@ public class InterviewerService {
     return slotRepository.findAll();
   }
 
-  public void deleteSlot(Long id) {
+  public void delete(Long id) {
     slotRepository.deleteById(id);
   }
 
@@ -38,7 +38,7 @@ public class InterviewerService {
     slotRepository.deleteAll();
   }
 
-  public InterviewerSlot registerSlot(InterviewerSlot slot) {
+  public InterviewerSlot register(InterviewerSlot slot) {
     return slotRepository.save(slot);
   }
 
