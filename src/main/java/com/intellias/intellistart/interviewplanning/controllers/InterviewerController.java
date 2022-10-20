@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(InterviewerController.MAPPING)
 public class InterviewerController {
+
   public static final String MAPPING = "/interviewers";
   public final InterviewerService interviewerService;
   public final ModelMapper mapper;

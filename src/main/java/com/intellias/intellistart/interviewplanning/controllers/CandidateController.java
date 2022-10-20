@@ -131,4 +131,5 @@ public class CandidateController {
         .map(e -> mapper.map(e, CandidateSlotDto.class))
         .collect(Collectors.toList());
   }
+
 }

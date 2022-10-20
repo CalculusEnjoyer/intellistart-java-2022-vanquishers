@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CommonController {
+
   /**
    * Endpoint for getting the information about the current user.
 
