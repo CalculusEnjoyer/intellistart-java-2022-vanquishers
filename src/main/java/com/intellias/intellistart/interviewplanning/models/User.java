@@ -26,6 +26,9 @@ public class User {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Column(name = "facebook_id", nullable = false)
+  private Long facebookId;
+
   @Column(name = "email", nullable = false)
   private String email;
 
@@ -35,9 +38,9 @@ public class User {
   /**
    * User class constructor.
    */
-  public User(String email, Role role) {
+  public User(Long facebookId, String email, Role role) {
+    this.facebookId = facebookId;
     this.email = email;
     this.role = role;
   }
-
 }
