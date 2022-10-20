@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Common controller.
- * Manages the common, 'any user' endpoints for getting the basic information
+ * Common controller. Manages the common, 'any user' endpoints for getting the basic information
  * like current or next week, or info about current user
  */
 
@@ -26,7 +25,7 @@ public class CommonController {
 
   /**
    * Endpoint for getting the information about the current user.
-
+   *
    * @return response status
    */
   @GetMapping("/me")
@@ -36,7 +35,7 @@ public class CommonController {
 
   /**
    * Endpoint for getting the information about the current week number.
-
+   *
    * @return response status
    */
   @GetMapping("/weeks/current")
@@ -46,7 +45,7 @@ public class CommonController {
 
   /**
    * Endpoint for getting the information about the next week number.
-
+   *
    * @return response status
    */
   @GetMapping("/weeks/next")
