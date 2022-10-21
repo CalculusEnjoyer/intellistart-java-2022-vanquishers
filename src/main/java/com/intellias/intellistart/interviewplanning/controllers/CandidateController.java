@@ -126,7 +126,11 @@ public class CandidateController {
    */
   @GetMapping("/delSlots")
   public List<CandidateSlotDto> delSlots() {
-    candidateService.deleteAllSlots();
+    candidateService.deleteSlotsById(
+        candidateService.getAllSlots().stream()
+            .map(CandidateSlot::getId)
+            .collect(Collectors.toList())
+    );
     return candidateService.getAllSlots().stream()
         .map(e -> mapper.map(e, CandidateSlotDto.class))
         .collect(Collectors.toList());

@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
+import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import java.time.LocalTime;
@@ -141,7 +142,11 @@ public class InterviewerController {
    */
   @GetMapping("/delSlots")
   public List<InterviewerSlotDto> delSlots() {
-    interviewerService.deleteAllSlots();
+    interviewerService.deleteSlotsById(
+        interviewerService.getAllSlots().stream()
+            .map(InterviewerSlot::getId)
+            .collect(Collectors.toList())
+    );
     return interviewerService.getAllSlots().stream()
         .map(e -> mapper.map(e, InterviewerSlotDto.class))
         .collect(Collectors.toList());
