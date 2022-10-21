@@ -103,7 +103,7 @@ public class CandidateController {
                 LocalDateTime.of(LocalDate.of(year, Month.OCTOBER, 15), LocalTime.of(11, 0)))
         )
     );
-    candidateService.registerAll(slots);
+    candidateService.registerSlots(slots);
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
@@ -114,7 +114,7 @@ public class CandidateController {
    */
   @GetMapping("/getSlots")
   public List<CandidateSlotDto> getSlots() {
-    return candidateService.findAll().stream()
+    return candidateService.getAllSlots().stream()
         .map(e -> mapper.map(e, CandidateSlotDto.class))
         .collect(Collectors.toList());
   }
@@ -126,8 +126,8 @@ public class CandidateController {
    */
   @GetMapping("/delSlots")
   public List<CandidateSlotDto> delSlots() {
-    candidateService.deleteAll();
-    return candidateService.findAll().stream()
+    candidateService.deleteAllSlots();
+    return candidateService.getAllSlots().stream()
         .map(e -> mapper.map(e, CandidateSlotDto.class))
         .collect(Collectors.toList());
   }

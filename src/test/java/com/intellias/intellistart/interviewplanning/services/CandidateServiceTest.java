@@ -54,11 +54,11 @@ class CandidateServiceTest {
   @Test
   @Order(1)
   void addCandidateSlotsTest() {
-    int initSize = candidateService.findAll().size();
+    int initSize = candidateService.getAllSlots().size();
 
-    addedSlots = candidateService.registerAll(slots);
+    addedSlots = candidateService.registerSlots(slots);
     int expectedDbTableSize = initSize + slots.size();
-    int actualDbTableSize = candidateService.findAll().size();
+    int actualDbTableSize = candidateService.getAllSlots().size();
 
     assertThat(addedSlots).hasSameSizeAs(slots);
     assertThat(actualDbTableSize).isEqualTo(expectedDbTableSize);
@@ -71,7 +71,7 @@ class CandidateServiceTest {
         .map(CandidateSlot::getId)
         .collect(Collectors.toList());
 
-    List<CandidateSlot> readSlots = candidateService.findAll().stream()
+    List<CandidateSlot> readSlots = candidateService.getAllSlots().stream()
         .filter(slot -> addedSlotIds.contains(slot.getId()))
         .map(slot -> mapper.map(slot, CandidateSlot.class))
         .collect(Collectors.toList());
@@ -82,14 +82,14 @@ class CandidateServiceTest {
   @Test
   @Order(3)
   void deleteInterviewerSlotsTest() {
-    int BeforeDeleteSize = candidateService.findAll().size();
+    int BeforeDeleteSize = candidateService.getAllSlots().size();
     List<CandidateSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
-      candidateService.delete(slot.getId());
-      candidateService.findById(slot.getId()).ifPresent(deletedSlots::add);
+      candidateService.deleteSlot(slot.getId());
+      candidateService.getSlotById(slot.getId()).ifPresent(deletedSlots::add);
     });
-    int afterDeleteSize = candidateService.findAll().size();
+    int afterDeleteSize = candidateService.getAllSlots().size();
     int expectedSize = BeforeDeleteSize - addedSlots.size();
 
     assertThat(afterDeleteSize).isEqualTo(expectedSize);

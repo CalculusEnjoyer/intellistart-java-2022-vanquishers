@@ -22,28 +22,28 @@ public class BookingService {
     this.repository = repository;
   }
 
-  public List<Booking> findAll() {
+  public Optional<Booking> getBookingById(Long id) {
+    return repository.findById(id);
+  }
+
+  public List<Booking> getAllBookings() {
     return repository.findAll();
   }
 
-  public void delete(Long id) {
+  public void deleteBookingById(Long id) {
     repository.deleteById(id);
   }
 
-  public void deleteAll() {
-    repository.deleteAll();
+  public void deleteBookingsById(List<Long> ids) {
+    repository.deleteAllById(ids);
   }
 
-  public Booking register(Booking booking) {
+  public Booking registerBooking(Booking booking) {
     return repository.save(booking);
   }
 
-  public List<Booking> registerAll(List<Booking> bookings) {
+  public List<Booking> registerBookings(List<Booking> bookings) {
     return repository.saveAll(bookings);
-  }
-
-  public Optional<Booking> findById(Long id) {
-    return repository.findById(id);
   }
 
 }

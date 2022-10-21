@@ -22,27 +22,27 @@ public class InterviewerService {
     this.slotRepository = slotRepository;
   }
 
-  public Optional<InterviewerSlot> findById(Long id) {
+  public Optional<InterviewerSlot> getSlotById(Long id) {
     return slotRepository.findById(id);
   }
 
-  public List<InterviewerSlot> findAll() {
+  public List<InterviewerSlot> getAllSlots() {
     return slotRepository.findAll();
   }
 
-  public void delete(Long id) {
+  public void deleteSlotById(Long id) {
     slotRepository.deleteById(id);
   }
 
-  public void deleteAll() {
-    slotRepository.deleteAll();
+  public void deleteSlotsById(List<Long> ids) {
+    slotRepository.deleteAllById(ids);
   }
 
-  public InterviewerSlot register(InterviewerSlot slot) {
+  public InterviewerSlot registerSlot(InterviewerSlot slot) {
     return slotRepository.save(slot);
   }
 
-  public List<InterviewerSlot> registerAll(List<InterviewerSlot> slots) {
+  public List<InterviewerSlot> registerSlots(List<InterviewerSlot> slots) {
     return slotRepository.saveAll(slots);
   }
 
