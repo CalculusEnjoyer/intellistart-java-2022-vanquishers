@@ -25,4 +25,5 @@ public class SecurityController {
     Map map = (Map) ((OAuth2Authentication) user).getUserAuthentication().getDetails();
     return "" + map;
   }
+
 }

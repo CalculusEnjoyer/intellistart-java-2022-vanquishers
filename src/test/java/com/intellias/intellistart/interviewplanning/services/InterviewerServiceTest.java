@@ -20,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class InterviewerServiceTest {
+
   @Autowired
   private InterviewerService interviewerService;
 
@@ -45,11 +46,11 @@ class InterviewerServiceTest {
   @Test
   @Order(1)
   void addInterviewerSlotsTest() {
-    int initSize = interviewerService.findAll().size();
+    int initSize = interviewerService.getAllSlots().size();
 
-    addedSlots = interviewerService.registerAll(slots);
+    addedSlots = interviewerService.registerSlots(slots);
     int expectedDbTableSize = initSize + slots.size();
-    int actualDbTableSize = interviewerService.findAll().size();
+    int actualDbTableSize = interviewerService.getAllSlots().size();
 
     assertThat(addedSlots).hasSameSizeAs(slots);
     assertThat(actualDbTableSize).isEqualTo(expectedDbTableSize);
@@ -62,7 +63,7 @@ class InterviewerServiceTest {
         .map(InterviewerSlot::getId)
         .collect(Collectors.toList());
 
-    List<InterviewerSlot> readSlots = interviewerService.findAll().stream()
+    List<InterviewerSlot> readSlots = interviewerService.getAllSlots().stream()
         .filter(slot -> addedSlotIds.contains(slot.getId()))
         .map(slot -> mapper.map(slot, InterviewerSlot.class))
         .collect(Collectors.toList());
@@ -73,17 +74,18 @@ class InterviewerServiceTest {
   @Test
   @Order(3)
   void deleteInterviewerSlotsTest() {
-    int BeforeDeleteSize = interviewerService.findAll().size();
+    int BeforeDeleteSize = interviewerService.getAllSlots().size();
     List<InterviewerSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
-      interviewerService.deleteSlot(slot.getId());
-      interviewerService.findById(slot.getId()).ifPresent(deletedSlots::add);
+      interviewerService.deleteSlotById(slot.getId());
+      interviewerService.getSlotById(slot.getId()).ifPresent(deletedSlots::add);
     });
-    int afterDeleteSize = interviewerService.findAll().size();
+    int afterDeleteSize = interviewerService.getAllSlots().size();
     int expectedSize = BeforeDeleteSize - addedSlots.size();
 
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
     assertThat(deletedSlots).isEmpty();
   }
+
 }
