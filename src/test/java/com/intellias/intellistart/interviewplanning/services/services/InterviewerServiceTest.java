@@ -1,8 +1,9 @@
-package com.intellias.intellistart.interviewplanning.services;
+package com.intellias.intellistart.interviewplanning.services.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;

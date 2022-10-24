@@ -2,6 +2,7 @@ package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.repositories.BookingRepository;
+import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -22,16 +23,36 @@ public class BookingService {
     this.repository = repository;
   }
 
+  /**
+   * Method for finding booking by id. If booking is not found, throws BookingNotFoundException.
+   *
+   * @param id  id of booking
+   *
+   * @return    deleted booking
+   */
   public Optional<Booking> getBookingById(Long id) {
-    return repository.findById(id);
+    if (repository.existsById(id)) {
+      return repository.findById(id);
+    } else {
+      throw new BookingNotFoundException();
+    }
   }
 
   public List<Booking> getAllBookings() {
     return repository.findAll();
   }
 
+  /**
+   * Method for deleting booking by id.
+   *
+   * @param id  id of booking
+   */
   public void deleteBookingById(Long id) {
-    repository.deleteById(id);
+    if (repository.existsById(id)) {
+      repository.deleteById(id);
+    } else {
+      throw new BookingNotFoundException();
+    }
   }
 
   public void deleteBookingsById(List<Long> ids) {
