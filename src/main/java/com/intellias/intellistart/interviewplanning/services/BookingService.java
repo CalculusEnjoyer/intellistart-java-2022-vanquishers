@@ -28,7 +28,7 @@ public class BookingService {
    *
    * @param id  id of booking
    *
-   * @return    deleted booking
+   * @return    needed booking
    */
   public Optional<Booking> getBookingById(Long id) {
     if (repository.existsById(id)) {
