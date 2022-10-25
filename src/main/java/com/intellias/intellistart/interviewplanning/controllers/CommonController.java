@@ -1,7 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 
-import com.intellias.intellistart.interviewplanning.util.WeekService;
+import com.intellias.intellistart.interviewplanning.services.WeekService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

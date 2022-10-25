@@ -2,7 +2,6 @@ package com.intellias.intellistart.interviewplanning.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.intellias.intellistart.interviewplanning.util.WeekService;
 import java.time.LocalDate;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;

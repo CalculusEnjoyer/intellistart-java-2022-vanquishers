@@ -1,4 +1,4 @@
-package com.intellias.intellistart.interviewplanning.util;
+package com.intellias.intellistart.interviewplanning.services;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
