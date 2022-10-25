@@ -85,7 +85,7 @@ public class CoordinatorController {
    */
   @DeleteMapping("/bookings/{bookingId}")
   public ResponseEntity<Booking> deleteBooking(@PathVariable Long bookingId) {
-    Booking deletedBooking = bookingService.getBookingById(bookingId).get();
+    Booking deletedBooking = bookingService.getBookingById(bookingId);
     bookingService.deleteBookingById(bookingId);
     return ResponseEntity.status(HttpStatus.OK)
         .body(deletedBooking);

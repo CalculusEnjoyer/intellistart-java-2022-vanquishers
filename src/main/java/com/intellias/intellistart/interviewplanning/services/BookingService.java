@@ -26,13 +26,13 @@ public class BookingService {
   /**
    * Method for finding booking by id. If booking is not found, throws BookingNotFoundException.
    *
-   * @param id  id of booking
-   *
-   * @return    needed booking
+   * @param id id of booking
+   * @return needed booking
    */
-  public Optional<Booking> getBookingById(Long id) {
-    if (repository.existsById(id)) {
-      return repository.findById(id);
+  public Booking getBookingById(Long id) {
+    Optional<Booking> tempBooking = repository.findById(id);
+    if (tempBooking.isPresent()) {
+      return tempBooking.get();
     } else {
       throw new BookingNotFoundException();
     }
@@ -45,7 +45,7 @@ public class BookingService {
   /**
    * Method for deleting booking by id.
    *
-   * @param id  id of booking
+   * @param id id of booking
    */
   public void deleteBookingById(Long id) {
     if (repository.existsById(id)) {
