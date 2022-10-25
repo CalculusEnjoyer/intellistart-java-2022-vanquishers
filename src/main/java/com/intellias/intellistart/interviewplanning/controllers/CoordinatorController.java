@@ -1,8 +1,10 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
+import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.services.BookingService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +31,12 @@ public class CoordinatorController {
 
   public final ModelMapper mapper;
 
+  public final BookingService bookingService;
+
   @Autowired
-  public CoordinatorController(ModelMapper mapper) {
+  public CoordinatorController(ModelMapper mapper, BookingService bookingService) {
     this.mapper = mapper;
+    this.bookingService = bookingService;
   }
 
   /**
@@ -79,9 +84,11 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/bookings/{bookingId}")
-  public ResponseEntity<HttpStatus> deleteBooking(@PathVariable Long bookingId) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<Booking> deleteBooking(@PathVariable Long bookingId) {
+    Booking deletedBooking = bookingService.getBookingById(bookingId);
+    bookingService.deleteBookingById(bookingId);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(deletedBooking);
   }
 
   /**

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public class InterviewApplicationException extends RuntimeException {
+
   @JsonIgnore
   protected final HttpStatus httpStatus;
   protected final String errorCode;
