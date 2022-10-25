@@ -22,7 +22,11 @@ public class CandidateService {
     this.slotRepository = slotRepository;
   }
 
-  public List<CandidateSlot> findAll() {
+  public Optional<CandidateSlot> getSlotById(Long id) {
+    return slotRepository.findById(id);
+  }
+
+  public List<CandidateSlot> getAllSlots() {
     return slotRepository.findAll();
   }
 
@@ -30,19 +34,16 @@ public class CandidateService {
     slotRepository.deleteById(id);
   }
 
-  public void deleteAll() {
-    slotRepository.deleteAll();
+  public void deleteSlotsById(List<Long> ids) {
+    slotRepository.deleteAllById(ids);
   }
 
   public CandidateSlot registerSlot(CandidateSlot slot) {
     return slotRepository.save(slot);
   }
 
-  public List<CandidateSlot> registerAll(List<CandidateSlot> slots) {
+  public List<CandidateSlot> registerSlots(List<CandidateSlot> slots) {
     return slotRepository.saveAll(slots);
   }
 
-  public Optional<CandidateSlot> findById(Long id) {
-    return slotRepository.findById(id);
-  }
 }

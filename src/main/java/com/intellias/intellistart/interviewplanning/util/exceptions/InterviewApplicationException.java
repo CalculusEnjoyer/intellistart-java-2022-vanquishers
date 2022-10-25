@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.util.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
