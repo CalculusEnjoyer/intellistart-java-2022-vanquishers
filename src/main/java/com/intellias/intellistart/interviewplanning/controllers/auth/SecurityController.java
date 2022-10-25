@@ -40,7 +40,7 @@ public class SecurityController {
     String email = details.substring(details.indexOf("=") + 1, details.indexOf(","));
     Long facebookId = Long.valueOf(
         (String) ((OAuth2Authentication) user).getUserAuthentication().getPrincipal());
-    
+
     // checks if user exists. Needs at least one created user.
     //    UserDto account = findUser(facebookId);
     //    if (account == null) {
