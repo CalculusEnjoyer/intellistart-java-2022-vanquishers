@@ -1,8 +1,8 @@
 package com.intellias.intellistart.interviewplanning.util;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.ZoneId;
+import java.time.temporal.IsoFields;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,58 +10,44 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class WeekService {
-
-  /**
-   * Method for getting calendar for current week.
-   *
-   * @return calendar
-   */
-  public GregorianCalendar getCalendar() {
-    GregorianCalendar calendar = new GregorianCalendar();
-    calendar.setFirstDayOfWeek(Calendar.MONDAY);
-    calendar.setMinimalDaysInFirstWeek(7);
-    return calendar;
-  }
-
-  /**
-   * Method for getting calendar for next week.
-   *
-   * @return calendar
-   */
-  public GregorianCalendar getNextWeekCalendar() {
-    GregorianCalendar calendar = getCalendar();
-    LocalDate dayOnNextWeek = LocalDate.now().plusDays(7);
-    calendar.set(dayOnNextWeek.getYear(), dayOnNextWeek.getMonthValue() - 1,
-        dayOnNextWeek.getDayOfMonth());
-    return calendar;
-  }
+  public static final ZoneId ZONE_ID = ZoneId.of("Europe/Kiev");
 
   /**
    * Method for getting the current week number with current year (202243).
    *
-   * @return formatted week number
+   * @return formatted current week number
    */
-  public int getCurrentWeekNumInFormat() {
-    GregorianCalendar calendar = getCalendar();
-    return formatWeek(calendar.get(Calendar.YEAR), calendar.get(Calendar.WEEK_OF_YEAR));
+  public int getCurrentWeekNum() {
+    return getWeekNumFrom(getCurrentDate());
   }
 
   /**
    * Method for getting the next week number with current year (202244).
    *
-   * @return formatted week number
+   * @return formatted next week number
    */
-  public int getNextWeekNumInFormat() {
-    GregorianCalendar calendar = getNextWeekCalendar();
-    return formatWeek(calendar.get(Calendar.YEAR), calendar.get(Calendar.WEEK_OF_YEAR));
+  public int getNextWeekNum() {
+    return getWeekNumFrom(getCurrentDate().plusDays(7));
   }
 
   /**
    * Method for getting week in format (02).
    *
-   * @return week
+   * @return formatted week number for a given date
    */
-  private int formatWeek(int year, int week) {
+  public int getWeekNumFrom(LocalDate date) {
+    int year = date.get(IsoFields.WEEK_BASED_YEAR);
+    int week = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     return Integer.parseInt(year + String.format("%02d", week));
   }
+
+  /**
+   * Method for getting current date in specified in ZONE_ID timezone.
+   *
+   * @return LocalDate instance with current date for ZONE_ID timezone
+   */
+  private LocalDate getCurrentDate() {
+    return LocalDate.now(ZONE_ID);
+  }
 }
+

@@ -41,7 +41,7 @@ public class CommonController {
    */
   @GetMapping("/weeks/current")
   public int getCurrentWeek() {
-    return weekService.getCurrentWeekNumInFormat();
+    return weekService.getCurrentWeekNum();
   }
 
   /**
@@ -51,7 +51,7 @@ public class CommonController {
    */
   @GetMapping("/weeks/next")
   public int getNextWeek() {
-    return weekService.getNextWeekNumInFormat();
+    return weekService.getNextWeekNum();
   }
 
 }
