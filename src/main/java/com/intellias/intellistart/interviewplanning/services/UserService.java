@@ -22,4 +22,9 @@ public class UserService {
   public void register(User user) {
     userRepository.save(user);
   }
+
+  public User findUserByFacebookId(Long facebookId) {
+    return userRepository.findUserByFacebookId(facebookId);
+  }
+
 }
