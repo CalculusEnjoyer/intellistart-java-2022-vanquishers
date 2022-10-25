@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
-import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import java.time.LocalTime;
@@ -39,9 +38,8 @@ public class InterviewerController {
   }
 
   /**
-   * Endpoint for adding a new interviewer time slot
-   * using interviewer id from request.
-
+   * Endpoint for adding a new interviewer time slot using interviewer id from request.
+   *
    * @return response status
    */
   @PostMapping("/{interviewerId}/slots")
@@ -52,9 +50,8 @@ public class InterviewerController {
   }
 
   /**
-   * Endpoint for updating Interviewer slot
-   * using id from request.
-
+   * Endpoint for updating Interviewer slot using id from request.
+   *
    * @return response status
    */
   @PostMapping("/{interviewerId}/slots/{slotId}")
@@ -66,7 +63,7 @@ public class InterviewerController {
 
   /**
    * Endpoint for getting current week Interviewer slots.
-
+   *
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/current_week")
@@ -76,7 +73,7 @@ public class InterviewerController {
 
   /**
    * Endpoint for getting next week Interviewer slots.
-
+   *
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/next_week")
@@ -86,7 +83,7 @@ public class InterviewerController {
 
   /**
    * Endpoint for setting the maximum number of bookings for next week.
-
+   *
    * @return response status
    */
   @PostMapping("/{interviewerId}/bookings/next_week_count")
