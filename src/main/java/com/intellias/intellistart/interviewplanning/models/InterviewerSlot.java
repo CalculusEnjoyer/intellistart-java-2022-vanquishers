@@ -51,6 +51,7 @@ public class InterviewerSlot {
   @JoinColumn(name = "interviewer_id")
   private Interviewer interviewer;
 
+
   @OneToMany(mappedBy = "interviewerSlot")
   private Set<Booking> booking = new HashSet<>();
 

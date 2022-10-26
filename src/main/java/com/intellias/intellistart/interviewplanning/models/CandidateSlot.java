@@ -45,6 +45,7 @@ public class CandidateSlot {
   @JoinColumn(name = "candidate_id")
   private Candidate candidate;
 
+
   @OneToMany(mappedBy = "candidateSlot")
   private Set<Booking> booking = new HashSet<>();
 
