@@ -29,4 +29,9 @@ public class BookingDto implements Serializable {
   private String description;
   @NotEmpty
   private Status status;
+  @NotEmpty
+  private Long candidateSlotId;
+  @NotEmpty
+  private Long interviewerSlotId;
+
 }

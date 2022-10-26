@@ -30,5 +30,6 @@ public class InterviewerSlotDto implements Serializable {
   @NotEmpty
   @JsonFormat(pattern = "HH:mm")
   private LocalTime timeTo;
-
+  @NotEmpty
+  private Long interviewerId;
 }
