@@ -1,6 +1,8 @@
 package com.intellias.intellistart.interviewplanning.services;
 
+import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.repositories.InterviewerRepository;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +19,17 @@ public class InterviewerService {
 
   private final InterviewerSlotRepository slotRepository;
 
+  private final InterviewerRepository interviewerRepository;
+
   @Autowired
-  public InterviewerService(InterviewerSlotRepository slotRepository) {
+  public InterviewerService(InterviewerSlotRepository slotRepository,
+      InterviewerRepository interviewerRepository) {
     this.slotRepository = slotRepository;
+    this.interviewerRepository = interviewerRepository;
+  }
+
+  public List<Interviewer> getAllInterviewers() {
+    return interviewerRepository.findAll();
   }
 
   public Optional<InterviewerSlot> getSlotById(Long id) {

@@ -1,13 +1,23 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
+import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
+import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
+import com.intellias.intellistart.interviewplanning.services.CandidateService;
+import com.intellias.intellistart.interviewplanning.services.InterviewerService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.SlotNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +43,17 @@ public class CoordinatorController {
 
   public final BookingService bookingService;
 
+  public final InterviewerService interviewerService;
+
+  public final CandidateService candidateService;
+
   @Autowired
-  public CoordinatorController(ModelMapper mapper, BookingService bookingService) {
+  public CoordinatorController(ModelMapper mapper, BookingService bookingService,
+      InterviewerService interviewerService, CandidateService candidateService) {
     this.mapper = mapper;
     this.bookingService = bookingService;
+    this.interviewerService = interviewerService;
+    this.candidateService = candidateService;
   }
 
   /**
@@ -109,8 +126,7 @@ public class CoordinatorController {
    */
   @GetMapping("/users/interviewers")
   public List<Interviewer> getInterviewers() {
-
-    return new ArrayList<>();
+    return interviewerService.getAllInterviewers();
   }
 
   /**
