@@ -47,6 +47,10 @@ public class CoordinatorController {
 
   public final CandidateService candidateService;
 
+  /**
+   * Constructor for CoordinatorController.
+   *
+   */
   @Autowired
   public CoordinatorController(ModelMapper mapper, BookingService bookingService,
       InterviewerService interviewerService, CandidateService candidateService) {
