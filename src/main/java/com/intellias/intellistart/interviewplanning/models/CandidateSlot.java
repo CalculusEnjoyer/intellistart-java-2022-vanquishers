@@ -45,8 +45,7 @@ public class CandidateSlot {
   @JoinColumn(name = "candidate_id")
   private Candidate candidate;
 
-  @OneToMany
-  @JoinColumn(name = "candidate_slot_id")
+  @OneToMany(mappedBy = "candidateSlot")
   private Set<Booking> booking = new HashSet<>();
 
   public CandidateSlot(LocalDateTime dateFrom, LocalDateTime dateTo) {
