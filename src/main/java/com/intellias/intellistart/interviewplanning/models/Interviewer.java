@@ -37,8 +37,7 @@ public class Interviewer {
   @Column(name = "booking_limit", nullable = false)
   private int bookingLimit;
 
-  @OneToMany
-  @JoinColumn(name = "interviewer_id")
+  @OneToMany(mappedBy = "interviewer")
   private Set<InterviewerSlot> interviewerSlot = new HashSet<>();
 
   /**
