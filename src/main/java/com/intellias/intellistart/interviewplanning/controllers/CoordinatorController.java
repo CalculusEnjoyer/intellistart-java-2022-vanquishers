@@ -4,10 +4,10 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -70,12 +70,13 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/bookings")
-  public ResponseEntity<HttpStatus> createBooking(@RequestBody Long interviewerSlotId,
-      @RequestBody Long candidateSlotId, @RequestBody LocalDateTime startTime,
-      @RequestBody LocalDateTime endTime, @RequestBody String subject,
-      @RequestBody String description) {
+  public ResponseEntity<Booking> createBooking(@RequestBody BookingDto bookingDto) {
 
-    return ResponseEntity.ok(HttpStatus.OK);
+    bookingDto.setStatus(Status.NEW);
+
+    Booking booking = mapper.map(bookingDto, Booking.class);
+    Booking registerBooking = bookingService.registerBooking(booking);
+    return ResponseEntity.status(HttpStatus.OK).body(registerBooking);
   }
 
   /**

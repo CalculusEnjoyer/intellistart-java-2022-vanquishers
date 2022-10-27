@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -51,7 +52,7 @@ public class InterviewerSlot {
   @JoinColumn(name = "interviewer_id")
   private Interviewer interviewer;
 
-
+  @JsonManagedReference
   @OneToMany(mappedBy = "interviewerSlot")
   private Set<Booking> booking = new HashSet<>();
 

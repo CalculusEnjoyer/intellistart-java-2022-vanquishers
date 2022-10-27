@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -44,10 +45,12 @@ public class Booking {
   @Column(name = "status", nullable = false)
   private Status status;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "interviewer_slots_id")
   private InterviewerSlot interviewerSlot;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "candidate_slots_id")
   private CandidateSlot candidateSlot;
