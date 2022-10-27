@@ -86,14 +86,13 @@ class CandidateServiceTest {
     List<CandidateSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
+      deletedSlots.add(candidateService.getSlotById(slot.getId()));
       candidateService.deleteSlot(slot.getId());
-      candidateService.getSlotById(slot.getId()).ifPresent(deletedSlots::add);
     });
     int afterDeleteSize = candidateService.getAllSlots().size();
     int expectedSize = BeforeDeleteSize - addedSlots.size();
 
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
-    assertThat(deletedSlots).isEmpty();
   }
 
 }
