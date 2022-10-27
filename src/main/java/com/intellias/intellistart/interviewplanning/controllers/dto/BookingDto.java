@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,6 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDto implements Serializable {
+
   @NotEmpty
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime dateFrom;
@@ -33,10 +33,8 @@ public class BookingDto implements Serializable {
   private String description;
   @NotEmpty
   private Status status;
-  @JsonIgnore
   @NotEmpty
   private Long candidateSlotId;
-  @JsonIgnore
   @NotEmpty
   private Long interviewerSlotId;
 }
