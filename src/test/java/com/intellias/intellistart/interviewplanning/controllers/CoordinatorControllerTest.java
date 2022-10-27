@@ -4,8 +4,10 @@ package com.intellias.intellistart.interviewplanning.controllers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.repositories.BookingRepository;
@@ -74,5 +76,19 @@ class CoordinatorControllerTest {
     } catch (Exception e) {
       fail();
     }
+  }
+
+  @Test
+  void updadeBooking() throws Exception {
+    Booking booking = new Booking(LocalDateTime.of(2015,
+        Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
+        Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
+    BookingDto newBookingDto = new BookingDto(LocalDateTime.of(2015,
+        Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
+        Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED,1L,1L);
+
+    bookingService.registerBooking(booking);
+    mockMvc.perform(post("/bookings/{bookingId}", booking.getId()))
+        .andExpect(status().isOk());
   }
 }

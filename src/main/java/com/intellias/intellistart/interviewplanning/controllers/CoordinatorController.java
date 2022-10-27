@@ -72,10 +72,16 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/bookings/{bookingId}")
-  public ResponseEntity<HttpStatus> updateBooking(@PathVariable Long bookingId,
+  public ResponseEntity<Booking> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+    Booking bookingToUpdate = bookingService.getBookingById(bookingId);
+    bookingToUpdate.setTo(bookingDto.getDateTo());
+    bookingToUpdate.setFrom(bookingDto.getDateFrom());
+    bookingToUpdate.setDescription(bookingDto.getDescription());
+    bookingToUpdate.setSubject(bookingDto.getSubject());
+    bookingToUpdate.setStatus(bookingDto.getStatus());
+    bookingService.registerBooking(bookingToUpdate);
+    return ResponseEntity.status(HttpStatus.OK).body(bookingToUpdate);
   }
 
   /**
