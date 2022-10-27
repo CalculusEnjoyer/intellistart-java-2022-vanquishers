@@ -3,7 +3,6 @@ package com.intellias.intellistart.interviewplanning.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
-import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +78,8 @@ class InterviewerServiceTest {
     List<InterviewerSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
-        deletedSlots.add(interviewerService.getSlotById(slot.getId()));
-        interviewerService.deleteSlotById(slot.getId());
+      deletedSlots.add(interviewerService.getSlotById(slot.getId()));
+      interviewerService.deleteSlotById(slot.getId());
     });
     int afterDeleteSize = interviewerService.getAllSlots().size();
     int expectedSize = BeforeDeleteSize - addedSlots.size();

@@ -33,6 +33,12 @@ public class InterviewerService {
     return interviewerRepository.findAll();
   }
 
+  /**
+   * Method for getting slot by id.
+   *
+   * @param id slot id
+   * @return deleted slot
+   */
   public InterviewerSlot getSlotById(Long id) {
     Optional<InterviewerSlot> resultSlot = slotRepository.findById(id);
     if (resultSlot.isPresent()) {
