@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class  BookingDto implements Serializable {
+public class BookingDto implements Serializable {
 
   @NotEmpty
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
