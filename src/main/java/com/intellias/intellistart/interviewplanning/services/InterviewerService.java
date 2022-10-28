@@ -40,12 +40,7 @@ public class InterviewerService {
    * @return deleted slot
    */
   public InterviewerSlot getSlotById(Long id) {
-    Optional<InterviewerSlot> resultSlot = slotRepository.findById(id);
-    if (resultSlot.isPresent()) {
-      return resultSlot.get();
-    } else {
-      throw new InterviewerSlotNotFoundException();
-    }
+    return slotRepository.findById(id).orElseThrow(InterviewerSlotNotFoundException::new);
   }
 
   public List<InterviewerSlot> getAllSlots() {

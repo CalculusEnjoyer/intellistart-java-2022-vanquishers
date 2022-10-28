@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -30,12 +31,7 @@ public class CandidateService {
    * @return deleted slot
    */
   public CandidateSlot getSlotById(Long id) {
-    Optional<CandidateSlot> resultSlot = slotRepository.findById(id);
-    if (resultSlot.isPresent()) {
-      return resultSlot.get();
-    } else {
-      throw new CandidateNotFoundException();
-    }
+    return slotRepository.findById(id).orElseThrow(CandidateSlotNotFoundException::new);
   }
 
   public List<CandidateSlot> getAllSlots() {
