@@ -1,4 +1,4 @@
-package com.intellias.intellistart.interviewplanning.services.controllers;
+package com.intellias.intellistart.interviewplanning.controllers;
 
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,15 +11,9 @@ import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.repositories.BookingRepository;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
-import org.apache.catalina.mapper.Mapper;
 import org.aspectj.lang.annotation.Before;
-import org.assertj.core.api.Assert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -62,7 +56,7 @@ class CoordinatorControllerTest {
   }
 
   @Test
-  public void deleteBoookingTest() throws Exception {
+  void deleteBookingTest() throws Exception {
     Booking booking = new Booking(LocalDateTime.of(2015,
         Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
         Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);

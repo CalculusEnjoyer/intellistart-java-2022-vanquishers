@@ -26,5 +26,7 @@ public class CandidateSlotDto implements Serializable {
   @NotEmpty
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime dateTo;
+  @NotEmpty
+  private Long candidateId;
 
 }

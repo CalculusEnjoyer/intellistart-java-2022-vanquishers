@@ -34,8 +34,7 @@ public class Candidate {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany
-  @JoinColumn(name = "candidate_id")
+  @OneToMany(mappedBy = "candidate")
   private Set<CandidateSlot> candidateSlot = new HashSet<>();
 
   /**

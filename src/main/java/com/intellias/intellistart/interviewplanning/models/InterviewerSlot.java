@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -46,8 +48,11 @@ public class InterviewerSlot {
   @Column(name = "t_to", nullable = false)
   private LocalTime to;
 
-  @OneToMany
-  @JoinColumn(name = "interviewer_slot_id")
+  @ManyToOne
+  @JoinColumn(name = "interviewer_id")
+  private Interviewer interviewer;
+
+  @OneToMany(mappedBy = "interviewerSlot")
   private Set<Booking> booking = new HashSet<>();
 
   /**
