@@ -1,8 +1,12 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
+import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +69,6 @@ class InterviewerServiceTest {
 
     List<InterviewerSlot> readSlots = interviewerService.getAllSlots().stream()
         .filter(slot -> addedSlotIds.contains(slot.getId()))
-        .map(slot -> mapper.map(slot, InterviewerSlot.class))
         .collect(Collectors.toList());
 
     assertThat(readSlots).hasSameElementsAs(addedSlots);
@@ -88,4 +91,54 @@ class InterviewerServiceTest {
     assertThat(deletedSlots).isEmpty();
   }
 
+  @Test
+  @Order(4)
+  void findInterviewerByIdThrowExceptionTest() {
+    assertThatThrownBy(() -> interviewerService.getInterviewerById(-1L))
+        .isInstanceOf(InterviewerNotFoundException.class);
+  }
+
+  @Test
+  @Order(5)
+  void registerAndGetInterviewerTest() {
+    int countBeforeRegister = interviewerService.getAllInterviewers().size();
+    int expectedBookingLimit = 10;
+    Interviewer interviewer = new Interviewer();
+    interviewer.setBookingLimit(expectedBookingLimit);
+
+    Interviewer interviewerRegistered =
+        interviewerService.registerInterviewer(interviewer);
+    Interviewer interviewerGot =
+        interviewerService.getInterviewerById(interviewerRegistered.getId());
+    int countAfterRegister = interviewerService.getAllInterviewers().size();
+
+    assertThat(countBeforeRegister).isEqualTo(countAfterRegister - 1);
+    assertThat(interviewerRegistered.getBookingLimit()).isEqualTo(expectedBookingLimit);
+    assertThat(interviewerGot.getBookingLimit()).isEqualTo(expectedBookingLimit);
+  }
+
+  @Test
+  @Order(6)
+  void getSlotsForIdAndWeekTest() {
+    long interviewerId = interviewerService.registerInterviewer(new Interviewer()).getId();
+
+    InterviewerSlotDto testSlotDto = new InterviewerSlotDto(202243, 1,
+        LocalTime.of(9, 30), LocalTime.of(11, 0), interviewerId);
+    InterviewerSlot testSlot = mapper.map(testSlotDto, InterviewerSlot.class);
+    InterviewerSlot registeredSlot = interviewerService.registerSlot(testSlot);
+
+    List<InterviewerSlot> wrongWeekSlots =
+        interviewerService.getSlotsForIdAndWeek(interviewerId, 0);
+    List<InterviewerSlot> wrongIdSlots =
+        interviewerService.getSlotsForIdAndWeek(0L, 202243);
+    List<InterviewerSlot> correctSlots =
+        interviewerService.getSlotsForIdAndWeek(interviewerId, 202243);
+
+    System.out.println(correctSlots);
+    interviewerService.deleteSlotById(registeredSlot.getId());
+
+    assertThat(wrongWeekSlots).isEmpty();
+    assertThat(wrongIdSlots).isEmpty();
+    assertThat(correctSlots).contains(registeredSlot);
+  }
 }

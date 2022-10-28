@@ -4,6 +4,7 @@ import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerRepository;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -32,6 +33,15 @@ public class InterviewerService {
     return interviewerRepository.findAll();
   }
 
+  public Interviewer registerInterviewer(Interviewer interviewer) {
+    return interviewerRepository.save(interviewer);
+  }
+
+  public Interviewer getInterviewerById(Long id) {
+    return interviewerRepository.findById(id)
+        .orElseThrow(InterviewerNotFoundException::new);
+  }
+
   public Optional<InterviewerSlot> getSlotById(Long id) {
     return slotRepository.findById(id);
   }
@@ -54,6 +64,10 @@ public class InterviewerService {
 
   public List<InterviewerSlot> registerSlots(List<InterviewerSlot> slots) {
     return slotRepository.saveAll(slots);
+  }
+
+  public List<InterviewerSlot> getSlotsForIdAndWeek(Long interviewerId, int weekNum) {
+    return slotRepository.findByInterviewerIdAndWeekNum(interviewerId, weekNum);
   }
 
 }

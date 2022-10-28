@@ -1,11 +1,8 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
-import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.intellias.intellistart.interviewplanning.services.WeekService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -23,17 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
  * Interviewer controller.
  */
 @RestController
-@RequestMapping(InterviewerController.MAPPING)
+@RequestMapping("/interviewers")
 public class InterviewerController {
-
-  public static final String MAPPING = "/interviewers";
-
-  public final InterviewerService interviewerService;
+  private final InterviewerService interviewerService;
+  private final WeekService weekService;
   public final ModelMapper mapper;
-
   @Autowired
-  public InterviewerController(InterviewerService interviewerService, ModelMapper mapper) {
+  public InterviewerController(InterviewerService interviewerService,
+      ModelMapper mapper, WeekService weekService) {
     this.interviewerService = interviewerService;
+    this.weekService = weekService;
     this.mapper = mapper;
   }
 
@@ -67,8 +63,16 @@ public class InterviewerController {
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/current_week")
-  public ResponseEntity<HttpStatus> getCurrentWeekSlots(@PathVariable Long interviewerId) {
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<List<InterviewerSlotDto>> getCurrentWeekSlots(
+      @PathVariable Long interviewerId) {
+    List<InterviewerSlotDto> currentWeekSlots = interviewerService
+        .getSlotsForIdAndWeek(interviewerId, weekService.getCurrentWeekNum())
+        .stream()
+        .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
+        .collect(Collectors.toList());
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(currentWeekSlots);
   }
 
   /**
@@ -77,8 +81,16 @@ public class InterviewerController {
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/next_week")
-  public ResponseEntity<HttpStatus> getNextWeekSlots(@PathVariable Long interviewerId) {
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<List<InterviewerSlotDto>> getNextWeekSlots(
+      @PathVariable Long interviewerId) {
+    List<InterviewerSlotDto> nextWeekSlots = interviewerService
+        .getSlotsForIdAndWeek(interviewerId, weekService.getNextWeekNum())
+        .stream()
+        .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
+        .collect(Collectors.toList());
+
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(nextWeekSlots);
   }
 
   /**
@@ -92,61 +104,4 @@ public class InterviewerController {
       @PathVariable Long interviewerId) {
     return ResponseEntity.ok(HttpStatus.OK);
   }
-
-  /**
-   * Test generating of interviewer time slots. /interviewers/addSlots
-   *
-   * @return string status
-   */
-  @PostMapping("/addSlots")
-  public ResponseEntity<HttpStatus> addSlots() {
-    List<InterviewerSlot> slots = new ArrayList<>(
-        Arrays.asList(
-            new InterviewerSlot(0, 1,
-                LocalTime.of(9, 30), LocalTime.of(11, 0)),
-
-            new InterviewerSlot(2, 2,
-                LocalTime.of(9, 30), LocalTime.of(11, 0)),
-
-            new InterviewerSlot(1, 3,
-                LocalTime.of(9, 30), LocalTime.of(11, 0)),
-
-            new InterviewerSlot(1, 4,
-                LocalTime.of(9, 30), LocalTime.of(11, 0))
-        )
-    );
-    interviewerService.registerSlots(slots);
-
-    return ResponseEntity.ok(HttpStatus.OK);
-  }
-
-  /**
-   * Test getting of interviewer time slots. /interviewers/getSlots
-   *
-   * @return list of interviewer slots in DB
-   */
-  @GetMapping("/getSlots")
-  public List<InterviewerSlotDto> getSlots() {
-    return interviewerService.getAllSlots().stream()
-        .map(e -> mapper.map(e, InterviewerSlotDto.class))
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Test deleting of interviewer time slots. /interviewers/delSlots
-   *
-   * @return list of interviewer slots in DB
-   */
-  @GetMapping("/delSlots")
-  public List<InterviewerSlotDto> delSlots() {
-    interviewerService.deleteSlotsById(
-        interviewerService.getAllSlots().stream()
-            .map(InterviewerSlot::getId)
-            .collect(Collectors.toList())
-    );
-    return interviewerService.getAllSlots().stream()
-        .map(e -> mapper.map(e, InterviewerSlotDto.class))
-        .collect(Collectors.toList());
-  }
-
 }
