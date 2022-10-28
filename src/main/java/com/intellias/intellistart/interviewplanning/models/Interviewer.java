@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -37,6 +38,7 @@ public class Interviewer {
   @Column(name = "booking_limit", nullable = false)
   private int bookingLimit;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "interviewer")
   private Set<InterviewerSlot> interviewerSlot = new HashSet<>();
 

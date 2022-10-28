@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
