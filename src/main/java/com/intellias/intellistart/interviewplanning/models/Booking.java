@@ -19,7 +19,6 @@ import org.hibernate.annotations.DynamicUpdate;
  * Booking entity class.
  */
 @Entity
-@DynamicUpdate
 @Getter
 @Setter
 @NoArgsConstructor
