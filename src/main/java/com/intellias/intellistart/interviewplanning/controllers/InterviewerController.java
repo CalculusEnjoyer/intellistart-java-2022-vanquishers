@@ -25,6 +25,10 @@ public class InterviewerController {
   private final InterviewerService interviewerService;
   private final WeekService weekService;
   public final ModelMapper mapper;
+
+  /**
+   * Constructor for CoordinatorController.
+   */
   @Autowired
   public InterviewerController(InterviewerService interviewerService,
       ModelMapper mapper, WeekService weekService) {
