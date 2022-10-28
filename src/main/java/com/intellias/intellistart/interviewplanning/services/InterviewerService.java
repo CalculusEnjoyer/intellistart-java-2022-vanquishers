@@ -5,6 +5,7 @@ import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerRepository;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -41,9 +42,15 @@ public class InterviewerService {
     return interviewerRepository.findById(id)
         .orElseThrow(InterviewerNotFoundException::new);
   }
-
-  public Optional<InterviewerSlot> getSlotById(Long id) {
-    return slotRepository.findById(id);
+  
+  /**
+   * Method for getting slot by id.
+   *
+   * @param id slot id
+   * @return deleted slot
+   */
+  public InterviewerSlot getSlotById(Long id) {
+    return slotRepository.findById(id).orElseThrow(InterviewerSlotNotFoundException::new);
   }
 
   public List<InterviewerSlot> getAllSlots() {

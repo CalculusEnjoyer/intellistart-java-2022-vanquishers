@@ -4,10 +4,10 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -70,12 +70,13 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/bookings")
-  public ResponseEntity<HttpStatus> createBooking(@RequestBody Long interviewerSlotId,
-      @RequestBody Long candidateSlotId, @RequestBody LocalDateTime startTime,
-      @RequestBody LocalDateTime endTime, @RequestBody String subject,
-      @RequestBody String description) {
+  public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto) {
 
-    return ResponseEntity.ok(HttpStatus.OK);
+    bookingDto.setStatus(Status.NEW);
+
+    Booking booking = mapper.map(bookingDto, Booking.class);
+    bookingService.registerBooking(booking);
+    return ResponseEntity.status(HttpStatus.OK).body(bookingDto);
   }
 
   /**
@@ -84,10 +85,20 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/bookings/{bookingId}")
-  public ResponseEntity<HttpStatus> updateBooking(@PathVariable Long bookingId,
+  public ResponseEntity<BookingDto> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
+    Booking bookingToUpdate = bookingService.getBookingById(bookingId);
+    bookingToUpdate.setTo(bookingDto.getDateTo());
+    bookingToUpdate.setFrom(bookingDto.getDateFrom());
+    bookingToUpdate.setDescription(bookingDto.getDescription());
+    bookingToUpdate.setSubject(bookingDto.getSubject());
+    bookingToUpdate.setStatus(bookingDto.getStatus());
+    bookingToUpdate.setCandidateSlot(candidateService.getSlotById(bookingDto.getCandidateSlotId()));
+    bookingToUpdate.setInterviewerSlot(
+        interviewerService.getSlotById(bookingDto.getInterviewerSlotId()));
 
-    return ResponseEntity.ok(HttpStatus.OK);
+    bookingService.registerBooking(bookingToUpdate);
+    return ResponseEntity.ok().body(mapper.map(bookingToUpdate, BookingDto.class));
   }
 
   /**
@@ -96,11 +107,11 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/bookings/{bookingId}")
-  public ResponseEntity<Booking> deleteBooking(@PathVariable Long bookingId) {
+  public ResponseEntity<BookingDto> deleteBooking(@PathVariable Long bookingId) {
     Booking deletedBooking = bookingService.getBookingById(bookingId);
     bookingService.deleteBookingById(bookingId);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(deletedBooking);
+        .body(mapper.map(deletedBooking, BookingDto.class));
   }
 
   /**
