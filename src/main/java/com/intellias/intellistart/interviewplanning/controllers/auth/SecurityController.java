@@ -22,7 +22,7 @@ public class SecurityController {
 
   private final UserService userService;
   private final ModelMapper mapper;
-  static Role userRole;
+  public static Role userRole;
   public static Long id;
 
   @Autowired
@@ -55,16 +55,21 @@ public class SecurityController {
   /**
    * Method to get User id.
    */
-  @RequestMapping("/getId")
+  @RequestMapping("/getInfo")
   public void getId(final Principal user) {
     Long facebookId = Long.valueOf(
         (String) ((OAuth2Authentication) user).getUserAuthentication().getPrincipal());
     id = findUserId(facebookId);
-    System.out.println(id);
+    userRole = findUserRole(facebookId);
+    System.out.println(id + " " + userRole);
   }
 
   public Long findUserId(Long facebookId) {
     return userService.findUserByFacebookId(facebookId).getId();
+  }
+
+  public Role findUserRole(Long facebookId) {
+    return userService.findUserByFacebookId(facebookId).getRole();
   }
 
   public UserDto findUser(Long facebookId) {
