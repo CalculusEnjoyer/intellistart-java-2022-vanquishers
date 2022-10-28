@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class WeekService {
+
   public static final ZoneId ZONE_ID = ZoneId.of("Europe/Kiev");
 
   /**

@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -74,18 +76,19 @@ class InterviewerServiceTest {
   @Test
   @Order(3)
   void deleteInterviewerSlotsTest() {
+
     int BeforeDeleteSize = interviewerService.getAllSlots().size();
     List<InterviewerSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
       interviewerService.deleteSlotById(slot.getId());
-      interviewerService.getSlotById(slot.getId()).ifPresent(deletedSlots::add);
+      assertThrows(InterviewerSlotNotFoundException.class,
+          () -> interviewerService.getSlotById(slot.getId()));
     });
     int afterDeleteSize = interviewerService.getAllSlots().size();
     int expectedSize = BeforeDeleteSize - addedSlots.size();
 
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
-    assertThat(deletedSlots).isEmpty();
   }
 
 }
