@@ -45,12 +45,10 @@ public class Booking {
   @Column(name = "status", nullable = false)
   private Status status;
 
-  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "interviewer_slots_id")
   private InterviewerSlot interviewerSlot;
 
-  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "candidate_slots_id")
   private CandidateSlot candidateSlot;

@@ -46,7 +46,6 @@ public class CandidateSlot {
   @JoinColumn(name = "candidate_id")
   private Candidate candidate;
 
-  @JsonManagedReference
   @OneToMany(mappedBy = "candidateSlot")
   private Set<Booking> booking = new HashSet<>();
 

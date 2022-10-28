@@ -70,13 +70,13 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/bookings")
-  public ResponseEntity<Booking> createBooking(@RequestBody BookingDto bookingDto) {
+  public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto) {
 
     bookingDto.setStatus(Status.NEW);
 
     Booking booking = mapper.map(bookingDto, Booking.class);
-    Booking registerBooking = bookingService.registerBooking(booking);
-    return ResponseEntity.status(HttpStatus.OK).body(registerBooking);
+    bookingService.registerBooking(booking);
+    return ResponseEntity.status(HttpStatus.OK).body(bookingDto);
   }
 
   /**
