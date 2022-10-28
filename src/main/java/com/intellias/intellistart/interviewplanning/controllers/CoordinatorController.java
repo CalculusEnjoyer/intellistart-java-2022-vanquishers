@@ -84,10 +84,20 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/bookings/{bookingId}")
-  public ResponseEntity<HttpStatus> updateBooking(@PathVariable Long bookingId,
+  public ResponseEntity<BookingDto> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
+    Booking bookingToUpdate = bookingService.getBookingById(bookingId);
+    bookingToUpdate.setTo(bookingDto.getDateTo());
+    bookingToUpdate.setFrom(bookingDto.getDateFrom());
+    bookingToUpdate.setDescription(bookingDto.getDescription());
+    bookingToUpdate.setSubject(bookingDto.getSubject());
+    bookingToUpdate.setStatus(bookingDto.getStatus());
+    bookingToUpdate.setCandidateSlot(candidateService.getSlotById(bookingDto.getCandidateSlotId()));
+    bookingToUpdate.setInterviewerSlot(
+        interviewerService.getSlotById(bookingDto.getInterviewerSlotId()));
 
-    return ResponseEntity.ok(HttpStatus.OK);
+    bookingService.registerBooking(bookingToUpdate);
+    return ResponseEntity.ok().body(mapper.map(bookingToUpdate, BookingDto.class));
   }
 
   /**
@@ -96,11 +106,11 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/bookings/{bookingId}")
-  public ResponseEntity<Booking> deleteBooking(@PathVariable Long bookingId) {
+  public ResponseEntity<BookingDto> deleteBooking(@PathVariable Long bookingId) {
     Booking deletedBooking = bookingService.getBookingById(bookingId);
     bookingService.deleteBookingById(bookingId);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(deletedBooking);
+        .body(mapper.map(deletedBooking, BookingDto.class));
   }
 
   /**
