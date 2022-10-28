@@ -14,12 +14,14 @@ VALUES (1, CURRENT_DATE + INTERVAL '2 days 9 hours',
        (2, CURRENT_DATE + INTERVAL '3 days 10 hours',
         CURRENT_DATE + INTERVAL '3 days 17 hours', 2);
 
-INSERT INTO interviewers(id, booking_limit, user_id) VALUES
-    (1, 5, 2),
-    (2, 10, 4);
+INSERT INTO interviewers(id, booking_limit, user_id)
+VALUES (1, 5, 2),
+       (2, 10, 4);
 
 INSERT INTO interviewer_slots(id, day_of_week, t_from, t_to, week_num, interviewer_id)
-VALUES (1, 4, '9:00', '18:00', 202243, 1);
+VALUES  (1, 4, '9:00', '18:00', 202243, 1),
+        (2, 4, '8:00', '19:30', 202243, 2),
+        (3, 4, '10:00', '16:30', 202244, 1);
 
 INSERT INTO bookings(id, description, t_from, status, subject, t_to, candidate_slots_id,
                      interviewer_slots_id)
