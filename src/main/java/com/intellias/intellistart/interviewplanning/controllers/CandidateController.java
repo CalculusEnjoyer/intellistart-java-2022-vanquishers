@@ -6,9 +6,7 @@ import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
-import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewApplicationException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
-import com.intellias.intellistart.interviewplanning.util.response.BadResponseBuilder;
 import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -55,24 +53,20 @@ public class CandidateController {
    */
   @PostMapping("/current/slots")
   public ResponseEntity<Object> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-    try {
-      if (SecurityController.userRole != Role.CANDIDATE) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-      }
-      if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-        throw new InvalidSlotBoundariesException();
-      }
 
-      Candidate candidate = candidateService.getCandidateById(SecurityController.id);
-      CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
-      slot.setCandidate(candidate);
-      candidateService.registerSlot(slot);
-
-      return ResponseEntity.ok(HttpStatus.OK);
-    } catch (InterviewApplicationException e) {
-      return BadResponseBuilder.makeResponse(e.getHttpStatus(), e.getErrorCode(),
-          e.getErrorMessage());
+    if (SecurityController.userRole != Role.CANDIDATE) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
+      throw new InvalidSlotBoundariesException();
+    }
+
+    Candidate candidate = candidateService.getCandidateById(SecurityController.id);
+    CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
+    slot.setCandidate(candidate);
+    candidateService.registerSlot(slot);
+
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   /**
@@ -84,24 +78,19 @@ public class CandidateController {
   public ResponseEntity<Object> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
       @PathVariable Long slotId) {
 
-    try {
-      if (SecurityController.userRole != Role.CANDIDATE) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-      }
-      if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-        throw new InvalidSlotBoundariesException();
-      }
-
-      CandidateSlot slot = candidateService.getSlotById(slotId);
-      slot.setDateFrom(candidateSlotDto.getDateFrom());
-      slot.setDateTo(candidateSlotDto.getDateTo());
-      candidateService.registerSlot(slot);
-
-      return ResponseEntity.ok(HttpStatus.OK);
-    } catch (InterviewApplicationException e) {
-      return BadResponseBuilder.makeResponse(e.getHttpStatus(), e.getErrorCode(),
-          e.getErrorMessage());
+    if (SecurityController.userRole != Role.CANDIDATE) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
+      throw new InvalidSlotBoundariesException();
+    }
+
+    CandidateSlot slot = candidateService.getSlotById(slotId);
+    slot.setDateFrom(candidateSlotDto.getDateFrom());
+    slot.setDateTo(candidateSlotDto.getDateTo());
+    candidateService.registerSlot(slot);
+
+    return ResponseEntity.ok(HttpStatus.OK);
   }
 
   /**

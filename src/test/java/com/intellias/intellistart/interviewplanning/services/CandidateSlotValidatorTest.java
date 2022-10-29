@@ -77,10 +77,8 @@ public class CandidateSlotValidatorTest {
     for (CandidateSlot slot: SLOTS) {
       try {
         CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-        System.out.println(CandidateSlotValidator.validDtoOrError(dto));
         validatedSlots.add(CandidateSlotValidator.validDtoOrError(dto));
       } catch (Exception e) {
-        System.out.println(e.getClass());
         errors++;
       }
     }
