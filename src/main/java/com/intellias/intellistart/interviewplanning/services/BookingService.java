@@ -56,7 +56,7 @@ public class BookingService {
   }
 
   public void deleteBookingsById(List<Long> ids) {
-    ids.forEach(this::deleteBookingById);
+    repository.deleteAllById(ids);
   }
 
   public Booking registerBooking(Booking booking) {
