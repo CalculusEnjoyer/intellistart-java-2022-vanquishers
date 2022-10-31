@@ -68,11 +68,8 @@ public class CandidateController {
     slot.setCandidate(candidate);
     candidateService.registerSlot(slot);
 
-    Map<String, String> data = new HashMap<>();
-    data.put("id", slot.getId().toString());
-    data.put("from", slot.getDateFrom().toString());
-    data.put("to", slot.getDateTo().toString());
-    return new ResponseEntity<>(data, HttpStatus.OK);
+    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
+    return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 
   /**
@@ -81,7 +78,7 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots/{slotId}")
-  public ResponseEntity<Object> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
+  public ResponseEntity<CandidateSlotDto> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
       @PathVariable Long slotId) {
 
     if (SecurityController.userRole != Role.CANDIDATE) {
@@ -96,11 +93,8 @@ public class CandidateController {
     slot.setDateTo(candidateSlotDto.getDateTo());
     candidateService.registerSlot(slot);
 
-    Map<String, String> data = new HashMap<>();
-    data.put("id", slot.getId().toString());
-    data.put("from", slot.getDateFrom().toString());
-    data.put("to", slot.getDateTo().toString());
-    return new ResponseEntity<>(data, HttpStatus.OK);
+    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
+    return new ResponseEntity<>(dto, HttpStatus.OK);
   }
 
   /**
