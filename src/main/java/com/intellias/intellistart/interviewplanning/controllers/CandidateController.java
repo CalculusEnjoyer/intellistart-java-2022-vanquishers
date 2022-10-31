@@ -11,6 +11,7 @@ import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlo
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,8 +104,10 @@ public class CandidateController {
    * @return list of candidate time slots
    */
   @GetMapping("/current/slots")
-  public List<CandidateSlot> getAllSlots() {
-    return candidateService.getAllSlots();
+  public List<CandidateSlotDto> getAllSlots() {
+    return candidateService.getAllSlots().stream()
+        .map(e -> mapper.map(e, CandidateSlotDto.class))
+        .collect(Collectors.toList());
   }
 
 }
