@@ -8,7 +8,9 @@ import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,7 +68,11 @@ public class CandidateController {
     slot.setCandidate(candidate);
     candidateService.registerSlot(slot);
 
-    return ResponseEntity.ok(HttpStatus.OK);
+    Map<String, String> data = new HashMap<>();
+    data.put("id", slot.getId().toString());
+    data.put("from", slot.getDateFrom().toString());
+    data.put("to", slot.getDateTo().toString());
+    return new ResponseEntity<>(data, HttpStatus.OK);
   }
 
   /**
@@ -90,7 +96,11 @@ public class CandidateController {
     slot.setDateTo(candidateSlotDto.getDateTo());
     candidateService.registerSlot(slot);
 
-    return ResponseEntity.ok(HttpStatus.OK);
+    Map<String, String> data = new HashMap<>();
+    data.put("id", slot.getId().toString());
+    data.put("from", slot.getDateFrom().toString());
+    data.put("to", slot.getDateTo().toString());
+    return new ResponseEntity<>(data, HttpStatus.OK);
   }
 
   /**
