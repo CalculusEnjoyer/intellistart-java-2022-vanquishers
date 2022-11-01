@@ -25,7 +25,7 @@ public class UserService {
   }
 
   public User findUserByFacebookId(Long facebookId) {
-    return userRepository.findUserByFacebookId(facebookId);
+    return userRepository.findByFacebookId(facebookId);
   }
 
 }

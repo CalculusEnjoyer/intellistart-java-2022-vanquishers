@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -70,4 +69,5 @@ public class CandidateSlot {
   public int hashCode() {
     return getClass().hashCode();
   }
+
 }
