@@ -2,6 +2,7 @@ package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.repositories.UserRepository;
+import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,10 @@ public class UserService {
 
   public User findUserByFacebookId(Long facebookId) {
     return userRepository.findByFacebookId(facebookId);
+  }
+
+  public User findUserByEmail(String email){
+    return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
   }
 
 }

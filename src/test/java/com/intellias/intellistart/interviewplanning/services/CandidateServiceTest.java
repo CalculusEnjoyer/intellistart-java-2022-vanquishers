@@ -3,7 +3,10 @@ package com.intellias.intellistart.interviewplanning.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
+import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,6 +31,9 @@ class CandidateServiceTest {
 
   @Autowired
   private CandidateService candidateService;
+
+  @Autowired
+  private UserService userService;
 
   @Autowired
   private ModelMapper mapper;
@@ -98,4 +104,18 @@ class CandidateServiceTest {
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
   }
 
+  @Test
+  @Order(4)
+  void findCandidateByUserId(){
+    User newUser = new User();
+    newUser.setFacebookId(12912L);
+    newUser.setRole(Role.CANDIDATE);
+    newUser.setEmail("check@gmail.com");
+    Candidate newCandidate = new Candidate();
+    userService.register(newUser);
+    newCandidate.setUser(newUser);
+    candidateService.registerCandidate(newCandidate);
+
+    assertThat(candidateService.getCandidateByUserId(newUser.getId())==newCandidate);
+  }
 }

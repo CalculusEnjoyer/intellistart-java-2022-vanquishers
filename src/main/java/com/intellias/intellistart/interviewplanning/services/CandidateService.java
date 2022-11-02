@@ -5,6 +5,7 @@ import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateRepository;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,10 @@ public class CandidateService {
    */
   public Candidate getCandidateByFacebookId(Long facebookId) {
     return repository.findByFacebookId(facebookId);
+  }
+
+  public Candidate getCandidateByUserId(Long userId){
+    return repository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
   }
 
   public List<Candidate> getAllCandidates() {

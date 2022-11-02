@@ -17,6 +17,7 @@ VALUES (1, CURRENT_DATE + INTERVAL '2 days 9 hours',
 INSERT INTO interviewers(id, booking_limit, user_id)
 VALUES (1, 5, 2),
        (2, 10, 4);
+alter sequence interviewers_id_seq restart with 3;
 
 INSERT INTO interviewer_slots(id, day_of_week, t_from, t_to, week_num, interviewer_id)
 VALUES  (1, 4, '9:00', '18:00', 202243, 1),
