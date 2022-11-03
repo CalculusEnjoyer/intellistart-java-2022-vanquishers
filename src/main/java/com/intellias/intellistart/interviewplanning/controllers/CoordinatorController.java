@@ -12,6 +12,7 @@ import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -159,9 +160,12 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/users/interviewers/{interviewerId}")
-  public ResponseEntity<HttpStatus> revokeInterviewerRole(@PathVariable Long interviewerId) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<Interviewer> revokeInterviewerRole(@PathVariable Long interviewerId) {
+    Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
+    User userToDowngrade = interviewerToDelete.getUser();
+    userToDowngrade.setRole(Role.CANDIDATE);
+    userService.register(userToDowngrade);
+    return ResponseEntity.ok().body(interviewerToDelete);
   }
 
   /**
@@ -170,9 +174,11 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/users/coordinators")
-  public ResponseEntity<HttpStatus> grantCoordinatorRole(@RequestBody String email) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
+    User userToGrand = userService.findUserByEmail(email.get("email"));
+    userToGrand.setRole(Role.COORDINATOR);
+    userService.register(userToGrand);
+    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
   }
 
   /**
@@ -182,8 +188,7 @@ public class CoordinatorController {
    */
   @GetMapping("/users/coordinators")
   public List<User> getCoordinators() {
-
-    return new ArrayList<>();
+    return userService.findAllUsersByRole(Role.COORDINATOR);
   }
 
   /**
@@ -192,9 +197,13 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/users/coordinators/{coordinatorId}")
-  public ResponseEntity<HttpStatus> revokeCoordinatorRole(@PathVariable Long coordinatorId) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<UserDto> revokeCoordinatorRole(@PathVariable Long coordinatorId) {
+    User user = userService.findUserById(coordinatorId);
+    if (user.getRole() != Role.COORDINATOR) {
+      throw new UserNotFoundException();
+    }
+    user.setRole(Role.CANDIDATE);
+    userService.register(user);
+    return ResponseEntity.ok().body(mapper.map(user, UserDto.class));
   }
-
 }

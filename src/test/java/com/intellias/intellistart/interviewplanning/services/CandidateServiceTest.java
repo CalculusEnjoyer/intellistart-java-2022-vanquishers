@@ -15,6 +15,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -106,16 +107,13 @@ class CandidateServiceTest {
 
   @Test
   @Order(4)
-  void findCandidateByUserId(){
-    User newUser = new User();
-    newUser.setFacebookId(12912L);
-    newUser.setRole(Role.CANDIDATE);
-    newUser.setEmail("check@gmail.com");
+  void findCandidateByUserId() {
+    User newUser = new User(12912L,"check@gmail.com",Role.CANDIDATE);
     Candidate newCandidate = new Candidate();
     userService.register(newUser);
     newCandidate.setUser(newUser);
     candidateService.registerCandidate(newCandidate);
 
-    assertThat(candidateService.getCandidateByUserId(newUser.getId())==newCandidate);
+    Assertions.assertEquals(newCandidate, candidateService.getCandidateByUserId(newUser.getId()));
   }
 }
