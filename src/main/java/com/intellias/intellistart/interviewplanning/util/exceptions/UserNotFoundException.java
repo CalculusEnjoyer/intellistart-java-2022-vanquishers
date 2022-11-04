@@ -2,10 +2,13 @@ package com.intellias.intellistart.interviewplanning.util.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class UserNotFoundException extends InterviewApplicationException{
+/**
+ * User not found exception.
+ */
+public class UserNotFoundException extends InterviewApplicationException {
 
   /**
-   * Can slot not found exception constructor.
+   * User not found exception constructor.
    */
   public UserNotFoundException() {
 

@@ -79,7 +79,7 @@ public class CandidateService {
     return repository.findByFacebookId(facebookId);
   }
 
-  public Candidate getCandidateByUserId(Long userId){
+  public Candidate getCandidateByUserId(Long userId) {
     return repository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
   }
 

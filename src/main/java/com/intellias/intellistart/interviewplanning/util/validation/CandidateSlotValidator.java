@@ -13,14 +13,10 @@ public class CandidateSlotValidator {
 
   /**
    * Method for checking DTO validity.
-
-   * @param dto DTO to be checked via next conditions:
-   *            1) future time (tomorrow or later)
-   *            2) duration >= 1.5 hours
-   *            3) start hour is 8-22 (exclusive 22)
-   *            4) end hour is 8-22 (inclusive)
-   *            5) minute, passed by user can only be :00 or :30
    *
+   * @param dto DTO to be checked via next conditions: 1) future time (tomorrow or later) 2)
+   *            duration >= 1.5 hours 3) start hour is 8-22 (exclusive 22) 4) end hour is 8-22
+   *            (inclusive) 5) minute, passed by user can only be :00 or :30
    * @return true if this DTO valid for adjustment
    */
   public static boolean isValidCandidateSlot(CandidateSlotDto dto) {
@@ -36,9 +32,8 @@ public class CandidateSlotValidator {
 
   /**
    * Method for getting valid DTO.
-
-   * @param dto DTO that needs to be adjusted and checked
    *
+   * @param dto DTO that needs to be adjusted and checked
    * @return adjusted DTO
    */
   public static CandidateSlotDto validDtoOrError(CandidateSlotDto dto) {

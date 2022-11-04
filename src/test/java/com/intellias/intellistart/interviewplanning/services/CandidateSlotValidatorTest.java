@@ -74,7 +74,7 @@ public class CandidateSlotValidatorTest {
     int errors = 0;
     List<CandidateSlotDto> validatedSlots = new ArrayList<>();
 
-    for (CandidateSlot slot: SLOTS) {
+    for (CandidateSlot slot : SLOTS) {
       try {
         CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
         validatedSlots.add(CandidateSlotValidator.validDtoOrError(dto));

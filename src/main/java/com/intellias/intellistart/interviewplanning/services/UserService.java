@@ -31,19 +31,19 @@ public class UserService {
     return userRepository.findByFacebookId(facebookId);
   }
 
-  public User findUserByEmail(String email){
+  public User findUserByEmail(String email) {
     return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
   }
 
-  public List<User> findAllUsersByRole(Role role){
+  public List<User> findAllUsersByRole(Role role) {
     return userRepository.findAllByRole(role);
   }
 
-  public void deleteUserByID(Long id){
+  public void deleteUserById(Long id) {
     userRepository.deleteById(id);
   }
 
-  public User findUserById(Long id){
+  public User findUserById(Long id) {
     return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
   }
 }

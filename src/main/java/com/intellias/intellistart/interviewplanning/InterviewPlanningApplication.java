@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
  * Main application.
  */
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-//@EnableOAuth2Sso
+@EnableOAuth2Sso
 public class InterviewPlanningApplication {
 
   public static void main(String[] args) {
@@ -20,9 +20,8 @@ public class InterviewPlanningApplication {
 
   /**
    * Bean for getting ModelMapper to map entity to DTO and back.
-   * modelMapper.getConfiguration().setAmbiguityIgnored(true) is used for
-   * determining whether destination properties that match more
-   * than one source property should be ignored/
+   * modelMapper.getConfiguration().setAmbiguityIgnored(true) is used for determining whether
+   * destination properties that match more than one source property should be ignored/
    *
    * @return ModelMapper
    */

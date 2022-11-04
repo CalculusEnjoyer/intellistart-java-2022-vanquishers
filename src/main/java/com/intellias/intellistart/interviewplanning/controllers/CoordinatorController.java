@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
-import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.UserDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
@@ -14,10 +13,10 @@ import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.validation.constraints.Email;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -150,7 +149,8 @@ public class CoordinatorController {
   @GetMapping("/users/interviewers")
   public ResponseEntity<List<Interviewer>> getInterviewers() {
     return ResponseEntity.status(HttpStatus.OK).body(
-        interviewerService.getAllInterviewers()
+        interviewerService.getAllInterviewers().stream().sorted(
+            Comparator.comparing(Interviewer::getId)).collect(Collectors.toList())
     );
   }
 
@@ -188,7 +188,8 @@ public class CoordinatorController {
    */
   @GetMapping("/users/coordinators")
   public List<User> getCoordinators() {
-    return userService.findAllUsersByRole(Role.COORDINATOR);
+    return userService.findAllUsersByRole(Role.COORDINATOR).stream().sorted(
+        Comparator.comparing(User::getId)).collect(Collectors.toList());
   }
 
   /**
