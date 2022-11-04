@@ -114,6 +114,7 @@ class CandidateServiceTest {
     newCandidate.setUser(newUser);
     candidateService.registerCandidate(newCandidate);
 
-    Assertions.assertEquals(newCandidate, candidateService.getCandidateByUserId(newUser.getId()));
+    Assertions.assertEquals(newCandidate.getId(),
+        candidateService.getCandidateByUserId(newUser.getId()).getId());
   }
 }
