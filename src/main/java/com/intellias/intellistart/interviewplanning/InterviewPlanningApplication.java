@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * Main application.
  */
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@SpringBootApplication
 @EnableOAuth2Sso
 public class InterviewPlanningApplication {
 
