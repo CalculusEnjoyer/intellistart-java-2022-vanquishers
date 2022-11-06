@@ -1,8 +1,11 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.repositories.UserRepository;
+import java.util.Optional;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Transactional
+@Slf4j
 public class UserService {
 
   private final UserRepository userRepository;
@@ -20,12 +24,13 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public void register(User user) {
-    userRepository.save(user);
+  public Optional<User> findUserByEmail(String email) {
+    return userRepository.findUserByEmail(email);
   }
 
-  public User findUserByFacebookId(Long facebookId) {
-    return userRepository.findUserByFacebookId(facebookId);
+  public User registerUser(User user, Role role) {
+    user.setRole(role);
+    return userRepository.save(user);
   }
 
 }

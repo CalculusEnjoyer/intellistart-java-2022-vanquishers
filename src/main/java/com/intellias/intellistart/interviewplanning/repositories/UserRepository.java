@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.repositories;
 
 import com.intellias.intellistart.interviewplanning.models.User;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  public User findUserByFacebookId(Long facebookId);
+  Optional<User> findUserByEmail(String email);
 }
