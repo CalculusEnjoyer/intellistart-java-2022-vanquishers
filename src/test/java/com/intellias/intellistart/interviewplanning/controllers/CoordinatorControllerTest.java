@@ -137,9 +137,7 @@ class CoordinatorControllerTest {
         .andExpect(jsonPath("$", hasSize(userService.findAllUsersByRole(Role.COORDINATOR).size())))
         .andExpect(jsonPath("$[0].role", equalTo("COORDINATOR")))
         .andExpect(jsonPath("$[1].role", equalTo("COORDINATOR")))
-        .andExpect(jsonPath("$[0].email", equalTo(coordinators.get(0).getEmail())))
-        .andExpect(
-            jsonPath("$[1].facebookId", is(coordinators.get(1).getFacebookId()), Long.class));
+        .andExpect(jsonPath("$[0].email", equalTo(coordinators.get(0).getEmail())));
   }
 
   @Test

@@ -161,12 +161,12 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/users/interviewers/{interviewerId}")
-  public ResponseEntity<Interviewer> revokeInterviewerRole(@PathVariable Long interviewerId) {
+  public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
     Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
     User userToDowngrade = interviewerToDelete.getUser();
     userToDowngrade.setRole(Role.CANDIDATE);
     userService.register(userToDowngrade);
-    return ResponseEntity.ok().body(interviewerToDelete);
+    return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
   }
 
   /**
@@ -188,9 +188,10 @@ public class CoordinatorController {
    * @return response status
    */
   @GetMapping("/users/coordinators")
-  public List<User> getCoordinators() {
+  public List<UserDto> getCoordinators() {
     return userService.findAllUsersByRole(Role.COORDINATOR).stream().sorted(
-        Comparator.comparing(User::getId)).collect(Collectors.toList());
+        Comparator.comparing(User::getId)).map(user -> mapper.map(user, UserDto.class)).collect(
+        Collectors.toList());
   }
 
   /**
