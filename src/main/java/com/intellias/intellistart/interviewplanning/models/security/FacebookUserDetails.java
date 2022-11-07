@@ -11,6 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * Facebook User details class.
+ */
 @ToString
 @Getter
 public class FacebookUserDetails implements UserDetails {

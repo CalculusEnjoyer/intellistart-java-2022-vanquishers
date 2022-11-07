@@ -7,7 +7,6 @@ import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlot
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class InterviewerService {
     return interviewerRepository.findById(id)
         .orElseThrow(InterviewerNotFoundException::new);
   }
-  
+
   /**
    * Method for getting slot by id.
    *

@@ -2,11 +2,8 @@ package com.intellias.intellistart.interviewplanning;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,9 +20,8 @@ public class InterviewPlanningApplication {
 
   /**
    * Bean for getting ModelMapper to map entity to DTO and back.
-   * modelMapper.getConfiguration().setAmbiguityIgnored(true) is used for
-   * determining whether destination properties that match more
-   * than one source property should be ignored/
+   * modelMapper.getConfiguration().setAmbiguityIgnored(true) is used for determining whether
+   * destination properties that match more than one source property should be ignored/
    *
    * @return ModelMapper
    */

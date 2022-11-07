@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Authenticate controller.
+ */
 @RestController
 @Slf4j
 public class AuthController {
@@ -23,6 +26,11 @@ public class AuthController {
     this.facebookService = facebookService;
   }
 
+  /**
+   * Method for login user via Facebook.
+   *
+   * @return response status
+   */
   @PostMapping("/facebook/signin")
   public ResponseEntity<?> facebookAuth(
       @Valid @RequestBody FacebookLoginRequest facebookLoginRequest) {

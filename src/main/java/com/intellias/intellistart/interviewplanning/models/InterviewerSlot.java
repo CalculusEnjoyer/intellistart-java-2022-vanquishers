@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
