@@ -3,7 +3,10 @@ package com.intellias.intellistart.interviewplanning.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
+import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +15,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -28,6 +32,9 @@ class CandidateServiceTest {
 
   @Autowired
   private CandidateService candidateService;
+
+  @Autowired
+  private UserService userService;
 
   @Autowired
   private ModelMapper mapper;
@@ -98,4 +105,16 @@ class CandidateServiceTest {
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
   }
 
+  @Test
+  @Order(4)
+  void findCandidateByUserId() {
+    User newUser = new User(12912L, "check@gmail.com", Role.CANDIDATE);
+    userService.register(newUser);
+    Candidate newCandidate = new Candidate();
+    newCandidate.setUser(newUser);
+    candidateService.registerCandidate(newCandidate);
+
+    Assertions.assertEquals(newCandidate.getId(),
+        candidateService.getCandidateByUserId(newUser.getId()).getId());
+  }
 }

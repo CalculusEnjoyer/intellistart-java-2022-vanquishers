@@ -20,7 +20,7 @@ import lombok.ToString;
 public class InterviewerDto implements Serializable {
 
   @NotEmpty
-  private User user;
+  private UserDto user;
 
   @NotEmpty
   private Integer bookingLimit;

@@ -31,12 +31,12 @@ public class Interviewer {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  @Column(name = "booking_limit", nullable = false)
+  private int bookingLimit;
+
   @OneToOne
   @JoinColumn(name = "user_id")
   private User user;
-
-  @Column(name = "booking_limit", nullable = false)
-  private int bookingLimit;
 
   @JsonIgnore
   @OneToMany(mappedBy = "interviewer")
@@ -50,5 +50,4 @@ public class Interviewer {
     this.bookingLimit = bookingLimit;
     this.interviewerSlot = interviewerSlot;
   }
-
 }

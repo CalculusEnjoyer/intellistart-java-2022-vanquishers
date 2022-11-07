@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface InterviewerSlotRepository extends JpaRepository<InterviewerSlot, Long> {
+
   List<InterviewerSlot> findByInterviewerIdAndWeekNum(Long interviewerId, int weekNum);
 }

@@ -41,7 +41,7 @@ public class InterviewerService {
     return interviewerRepository.findById(id)
         .orElseThrow(InterviewerNotFoundException::new);
   }
-  
+
   /**
    * Method for getting slot by id.
    *
@@ -54,6 +54,10 @@ public class InterviewerService {
 
   public List<InterviewerSlot> getAllSlots() {
     return slotRepository.findAll();
+  }
+
+  public void deleteInterviewerById(Long id) {
+    interviewerRepository.deleteById(id);
   }
 
   public void deleteSlotById(Long id) {

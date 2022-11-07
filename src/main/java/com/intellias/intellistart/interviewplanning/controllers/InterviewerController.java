@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/interviewers")
 public class InterviewerController {
+
   private final InterviewerService interviewerService;
   private final WeekService weekService;
   public final ModelMapper mapper;

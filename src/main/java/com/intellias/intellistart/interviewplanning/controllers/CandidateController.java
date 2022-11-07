@@ -8,9 +8,7 @@ import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,7 @@ public class CandidateController {
    * Autowired constructor for candidate controller.
    *
    * @param candidateService candidate service with needed methods
-   * @param mapper for mapping DTOs to entities and vice versa
+   * @param mapper           for mapping DTOs to entities and vice versa
    */
   @Autowired
   public CandidateController(

@@ -2,13 +2,20 @@ package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.UserDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
+import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
+import com.intellias.intellistart.interviewplanning.services.UserService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +46,20 @@ public class CoordinatorController {
 
   public final CandidateService candidateService;
 
+  public final UserService userService;
+
   /**
    * Constructor for CoordinatorController.
    */
   @Autowired
   public CoordinatorController(ModelMapper mapper, BookingService bookingService,
-      InterviewerService interviewerService, CandidateService candidateService) {
+      InterviewerService interviewerService, CandidateService candidateService,
+      UserService userService) {
     this.mapper = mapper;
     this.bookingService = bookingService;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
+    this.userService = userService;
   }
 
   /**
@@ -118,9 +129,14 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/users/interviewers")
-  public ResponseEntity<HttpStatus> grantInterviewerRole(@RequestBody String email) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<UserDto> grantInterviewerRole(@RequestBody Map<String, String> email) {
+    User userToGrand = userService.findUserByEmail(email.get("email"));
+    userToGrand.setRole(Role.INTERVIEWER);
+    userService.register(userToGrand);
+    Interviewer newInterviewer = new Interviewer();
+    newInterviewer.setUser(userToGrand);
+    interviewerService.registerInterviewer(newInterviewer);
+    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
   }
 
   /**
@@ -145,9 +161,12 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/users/interviewers/{interviewerId}")
-  public ResponseEntity<HttpStatus> revokeInterviewerRole(@PathVariable Long interviewerId) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
+    Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
+    User userToDowngrade = interviewerToDelete.getUser();
+    userToDowngrade.setRole(Role.CANDIDATE);
+    userService.register(userToDowngrade);
+    return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
   }
 
   /**
@@ -156,9 +175,11 @@ public class CoordinatorController {
    * @return response status
    */
   @PostMapping("/users/coordinators")
-  public ResponseEntity<HttpStatus> grantCoordinatorRole(@RequestBody String email) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
+    User userToGrand = userService.findUserByEmail(email.get("email"));
+    userToGrand.setRole(Role.COORDINATOR);
+    userService.register(userToGrand);
+    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
   }
 
   /**
@@ -167,9 +188,10 @@ public class CoordinatorController {
    * @return response status
    */
   @GetMapping("/users/coordinators")
-  public List<User> getCoordinators() {
-
-    return new ArrayList<>();
+  public List<UserDto> getCoordinators() {
+    return userService.findAllUsersByRole(Role.COORDINATOR).stream().sorted(
+        Comparator.comparing(User::getId)).map(user -> mapper.map(user, UserDto.class)).collect(
+        Collectors.toList());
   }
 
   /**
@@ -178,9 +200,13 @@ public class CoordinatorController {
    * @return response status
    */
   @DeleteMapping("/users/coordinators/{coordinatorId}")
-  public ResponseEntity<HttpStatus> revokeCoordinatorRole(@PathVariable Long coordinatorId) {
-
-    return ResponseEntity.ok(HttpStatus.OK);
+  public ResponseEntity<UserDto> revokeCoordinatorRole(@PathVariable Long coordinatorId) {
+    User user = userService.findUserById(coordinatorId);
+    if (user.getRole() != Role.COORDINATOR) {
+      throw new UserNotFoundException();
+    }
+    user.setRole(Role.CANDIDATE);
+    userService.register(user);
+    return ResponseEntity.ok().body(mapper.map(user, UserDto.class));
   }
-
 }
