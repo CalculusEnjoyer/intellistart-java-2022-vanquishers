@@ -1,15 +1,15 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
-import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
-import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,8 +72,6 @@ public class CoordinatorController {
   @PostMapping("/bookings")
   public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto) {
 
-    bookingDto.setStatus(Status.NEW);
-
     Booking booking = mapper.map(bookingDto, Booking.class);
     bookingService.registerBooking(booking);
     return ResponseEntity.status(HttpStatus.OK).body(bookingDto);
@@ -131,8 +129,14 @@ public class CoordinatorController {
    * @return response status
    */
   @GetMapping("/users/interviewers")
-  public List<Interviewer> getInterviewers() {
-    return interviewerService.getAllInterviewers();
+  public ResponseEntity<List<InterviewerDto>> getInterviewers() {
+    List<InterviewerDto> interviewerDtos = interviewerService
+        .getAllInterviewers()
+        .stream()
+        .map(interviewer -> mapper.map(interviewer, InterviewerDto.class))
+        .collect(Collectors.toList());
+
+    return ResponseEntity.status(HttpStatus.OK).body(interviewerDtos);
   }
 
   /**
