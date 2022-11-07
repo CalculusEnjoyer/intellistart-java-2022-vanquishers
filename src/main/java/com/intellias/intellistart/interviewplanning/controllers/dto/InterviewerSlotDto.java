@@ -3,12 +3,13 @@ package com.intellias.intellistart.interviewplanning.controllers.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalTime;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * Interviewer slot class.
@@ -19,17 +20,20 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InterviewerSlotDto implements Serializable {
-
-  @NotEmpty
+  @NotNull
   private Integer weekNum;
-  @NotEmpty
+
+  @NotNull
+  @Range(min = 1, max = 7)
   private Integer dayOfWeek;
-  @NotEmpty
+
+  @NotNull
   @JsonFormat(pattern = "HH:mm")
   private LocalTime timeFrom;
-  @NotEmpty
+
+  @NotNull
   @JsonFormat(pattern = "HH:mm")
   private LocalTime timeTo;
-  @NotEmpty
+
   private Long interviewerId;
 }
