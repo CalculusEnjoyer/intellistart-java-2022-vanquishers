@@ -1,11 +1,8 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.models.User;
-import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.repositories.UserRepository;
-import java.util.Optional;
 import javax.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +11,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Transactional
-@Slf4j
 public class UserService {
 
   private final UserRepository userRepository;
@@ -33,4 +29,15 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  public List<User> findAllUsersByRole(Role role) {
+    return userRepository.findAllByRole(role);
+  }
+
+  public void deleteUserById(Long id) {
+    userRepository.deleteById(id);
+  }
+
+  public User findUserById(Long id) {
+    return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+  }
 }

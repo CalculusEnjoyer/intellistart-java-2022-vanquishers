@@ -56,6 +56,10 @@ public class InterviewerService {
     return slotRepository.findAll();
   }
 
+  public void deleteInterviewerById(Long id) {
+    interviewerRepository.deleteById(id);
+  }
+
   public void deleteSlotById(Long id) {
     slotRepository.deleteById(id);
   }

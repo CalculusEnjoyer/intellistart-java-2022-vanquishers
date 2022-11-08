@@ -69,4 +69,5 @@ public class CandidateSlot {
   public int hashCode() {
     return getClass().hashCode();
   }
+
 }
