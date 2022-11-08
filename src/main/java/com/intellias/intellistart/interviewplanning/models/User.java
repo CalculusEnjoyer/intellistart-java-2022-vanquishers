@@ -34,4 +34,8 @@ public class User {
   @Column(name = "role", nullable = false)
   private Role role;
 
+  public User(String email, Role role) {
+    this.email = email;
+    this.role = role;
+  }
 }

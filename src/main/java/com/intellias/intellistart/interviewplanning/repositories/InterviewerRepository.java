@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InterviewerRepository extends JpaRepository<Interviewer, Long> {
 
-  @Query("SELECT r FROM Interviewer r where r.user.facebookId = :facebookId")
-  Interviewer findByFacebookId(Long facebookId);
+//  @Query("SELECT r FROM Interviewer r where r.user.facebookId = :facebookId")
+//  Interviewer findByFacebookId(Long facebookId);
 
 }

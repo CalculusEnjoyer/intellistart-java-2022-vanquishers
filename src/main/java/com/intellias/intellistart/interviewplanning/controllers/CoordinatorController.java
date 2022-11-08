@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@SuppressWarnings("all")
 /**
  * Coordinator controller.
  */
@@ -128,16 +129,16 @@ public class CoordinatorController {
    *
    * @return response status
    */
-  @PostMapping("/users/interviewers")
-  public ResponseEntity<UserDto> grantInterviewerRole(@RequestBody Map<String, String> email) {
-    User userToGrand = userService.findUserByEmail(email.get("email"));
-    userToGrand.setRole(Role.INTERVIEWER);
-    userService.register(userToGrand);
-    Interviewer newInterviewer = new Interviewer();
-    newInterviewer.setUser(userToGrand);
-    interviewerService.registerInterviewer(newInterviewer);
-    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
-  }
+//  @PostMapping("/users/interviewers")
+//  public ResponseEntity<UserDto> grantInterviewerRole(@RequestBody Map<String, String> email) {
+//    User userToGrand = userService.findUserByEmail(email.get("email"));
+//    userToGrand.setRole(Role.INTERVIEWER);
+//    userService.register(userToGrand);
+//    Interviewer newInterviewer = new Interviewer();
+//    newInterviewer.setUser(userToGrand);
+//    interviewerService.registerInterviewer(newInterviewer);
+//    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
+//  }
 
   /**
    * Method for getting all interviewers.
@@ -160,27 +161,27 @@ public class CoordinatorController {
    *
    * @return response status
    */
-  @DeleteMapping("/users/interviewers/{interviewerId}")
-  public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
-    Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
-    User userToDowngrade = interviewerToDelete.getUser();
-    userToDowngrade.setRole(Role.CANDIDATE);
-    userService.register(userToDowngrade);
-    return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
-  }
+//  @DeleteMapping("/users/interviewers/{interviewerId}")
+//  public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
+//    Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
+//    User userToDowngrade = interviewerToDelete.getUser();
+//    userToDowngrade.setRole(Role.CANDIDATE);
+//    userService.register(userToDowngrade);
+//    return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
+//  }
 
   /**
    * Method for granting the Coordinator role.
    *
    * @return response status
    */
-  @PostMapping("/users/coordinators")
-  public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
-    User userToGrand = userService.findUserByEmail(email.get("email"));
-    userToGrand.setRole(Role.COORDINATOR);
-    userService.register(userToGrand);
-    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
-  }
+//  @PostMapping("/users/coordinators")
+//  public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
+//    User userToGrand = userService.findUserByEmail(email.get("email"));
+//    userToGrand.setRole(Role.COORDINATOR);
+//    userService.register(userToGrand);
+//    return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
+//  }
 
   /**
    * Method for getting all coordinators.
@@ -199,14 +200,14 @@ public class CoordinatorController {
    *
    * @return response status
    */
-  @DeleteMapping("/users/coordinators/{coordinatorId}")
-  public ResponseEntity<UserDto> revokeCoordinatorRole(@PathVariable Long coordinatorId) {
-    User user = userService.findUserById(coordinatorId);
-    if (user.getRole() != Role.COORDINATOR) {
-      throw new UserNotFoundException();
-    }
-    user.setRole(Role.CANDIDATE);
-    userService.register(user);
-    return ResponseEntity.ok().body(mapper.map(user, UserDto.class));
-  }
+//  @DeleteMapping("/users/coordinators/{coordinatorId}")
+//  public ResponseEntity<UserDto> revokeCoordinatorRole(@PathVariable Long coordinatorId) {
+//    User user = userService.findUserById(coordinatorId);
+//    if (user.getRole() != Role.COORDINATOR) {
+//      throw new UserNotFoundException();
+//    }
+//    user.setRole(Role.CANDIDATE);
+//    userService.register(user);
+//    return ResponseEntity.ok().body(mapper.map(user, UserDto.class));
+//  }
 }

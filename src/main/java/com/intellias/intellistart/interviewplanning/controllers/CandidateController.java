@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
-import com.intellias.intellistart.interviewplanning.controllers.auth.SecurityController;
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@SuppressWarnings("all")
 /**
  * Candidate controller.
  */
@@ -52,49 +52,49 @@ public class CandidateController {
    *
    * @return response status
    */
-  @PostMapping("/current/slots")
-  public ResponseEntity<Object> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-
-    if (SecurityController.userRole != Role.CANDIDATE) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-      throw new InvalidSlotBoundariesException();
-    }
-
-    Candidate candidate = candidateService.getCandidateById(SecurityController.id);
-    CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
-    slot.setCandidate(candidate);
-    candidateService.registerSlot(slot);
-
-    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-    return new ResponseEntity<>(dto, HttpStatus.OK);
-  }
+//  @PostMapping("/current/slots")
+//  public ResponseEntity<Object> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
+//
+//    if (SecurityController.userRole != Role.CANDIDATE) {
+//      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//    }
+//    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
+//      throw new InvalidSlotBoundariesException();
+//    }
+//
+//    Candidate candidate = candidateService.getCandidateById(SecurityController.id);
+//    CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
+//    slot.setCandidate(candidate);
+//    candidateService.registerSlot(slot);
+//
+//    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
+//    return new ResponseEntity<>(dto, HttpStatus.OK);
+//  }
 
   /**
    * Method for updating time slot for candidate.
    *
    * @return response status
    */
-  @PostMapping("/current/slots/{slotId}")
-  public ResponseEntity<CandidateSlotDto> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
-      @PathVariable Long slotId) {
-
-    if (SecurityController.userRole != Role.CANDIDATE) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-      throw new InvalidSlotBoundariesException();
-    }
-
-    CandidateSlot slot = candidateService.getSlotById(slotId);
-    slot.setDateFrom(candidateSlotDto.getDateFrom());
-    slot.setDateTo(candidateSlotDto.getDateTo());
-    candidateService.registerSlot(slot);
-
-    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-    return new ResponseEntity<>(dto, HttpStatus.OK);
-  }
+//  @PostMapping("/current/slots/{slotId}")
+//  public ResponseEntity<CandidateSlotDto> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
+//      @PathVariable Long slotId) {
+//
+//    if (SecurityController.userRole != Role.CANDIDATE) {
+//      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+//    }
+//    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
+//      throw new InvalidSlotBoundariesException();
+//    }
+//
+//    CandidateSlot slot = candidateService.getSlotById(slotId);
+//    slot.setDateFrom(candidateSlotDto.getDateFrom());
+//    slot.setDateTo(candidateSlotDto.getDateTo());
+//    candidateService.registerSlot(slot);
+//
+//    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
+//    return new ResponseEntity<>(dto, HttpStatus.OK);
+//  }
 
   /**
    * Method for getting all time slots by candidate.
