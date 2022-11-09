@@ -43,8 +43,8 @@ public class FacebookService {
     var facebookUser = facebookClient.getUser(fbAccessToken);
 
     return userService.findUserByEmail(facebookUser.getEmail())
-        .or(() -> Optional.ofNullable(userService.registerUser(convertTo(facebookUser),
-            Role.CANDIDATE)))
+        .or(() -> Optional.ofNullable(userService.registerUserWithRole(convertTo(facebookUser),
+            Role.CANDIDATE);))
         .map(FacebookUserDetails::new)
         .map(userDetails -> new UsernamePasswordAuthenticationToken(facebookUser, null,
             userDetails.getAuthorities()))

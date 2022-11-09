@@ -44,140 +44,140 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-//@SpringBootTest
-//@ActiveProfiles("test")
-//@ExtendWith(SpringExtension.class)
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//@AutoConfigureMockMvc(addFilters = false)
+@SpringBootTest
+@ActiveProfiles("test")
+@ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@AutoConfigureMockMvc(addFilters = false)
 class CoordinatorControllerTest {
 
-//  @Autowired
-//  private MockMvc mockMvc;
+  @Autowired
+  private MockMvc mockMvc;
 
-//  @Autowired
-//  private InterviewerService interviewerService;
-//
-//  @Autowired
-//  private ModelMapper mapper;
-//
-//  @Autowired
-//  private BookingRepository bookingRepository;
-//
-//  @Autowired
-//  private BookingService bookingService;
-//
-//  @Autowired
-//  private UserService userService;
-//
-//  @Autowired
-//  private WebApplicationContext webApplicationContext;
+  @Autowired
+  private InterviewerService interviewerService;
 
-//  private static final List<User> USERS = List.of(
-//      new User(1231L, "email1", Role.INTERVIEWER),
-//      new User(2213L, "email2", Role.INTERVIEWER),
-//      new User(3213L, "email3", Role.COORDINATOR),
-//      new User(4213L, "email4", Role.COORDINATOR));
+  @Autowired
+  private ModelMapper mapper;
 
-//  private static final List<Interviewer> INTERVIEWERS = List.of(
-//      new Interviewer(USERS.get(0), 5, null),
-//      new Interviewer(USERS.get(1), 2, null));
-//
-//
-//  @BeforeEach
-//  public void setup() {
-//    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-//    USERS.forEach(u -> userService.register(u));
-//    INTERVIEWERS.forEach(i -> interviewerService.registerInterviewer(i));
-//  }
+  @Autowired
+  private BookingRepository bookingRepository;
 
-//  @Test
-//  @Order(1)
-//  void deleteBookingTest() throws Exception {
-//    Booking booking = new Booking(LocalDateTime.of(2015,
-//        Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
-//        Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
-//    bookingService.registerBooking(booking);
-//    booking = bookingService.getAllBookings().get(bookingService.getAllBookings().size() - 1);
-//
-////    mockMvc.perform(delete("/bookings/{bookingId}", booking.getId()))
-////        .andExpect(status().isOk());
-//
-//    try {
-//      bookingService.getBookingById(booking.getId());
-//      fail();
-//    } catch (BookingNotFoundException e) {
-//      assertNotNull(e);
-//    } catch (Exception e) {
-//      fail();
-//    }
-//  }
+  @Autowired
+  private BookingService bookingService;
 
-//  @Test
-//  @Order(2)
-//  void revokeCoordinatorRoleByIdTest() throws Exception {
-//    User coordinator = new User(12912L, "check@gmail.com", Role.COORDINATOR);
-//    userService.register(coordinator);
-//
-//    mockMvc.perform(delete("/users/coordinators/{coordinatorId}", coordinator.getId()))
-//        .andExpect(status().isOk());
-//
-//    Assertions.assertEquals(Role.CANDIDATE,
-//        userService.findUserById(coordinator.getId()).getRole());
-//  }
-//
-//  @Test
-//  @Order(3)
-//  void getCoordinatorsTest() throws Exception {
-//    List<User> coordinators = USERS.stream().filter(u -> u.getRole() == Role.COORDINATOR)
-//        .collect(Collectors.toList());
-//
-//    mockMvc.perform(
-//            MockMvcRequestBuilders.get("/users/coordinators").contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isOk())
-//        .andExpect(jsonPath("$", hasSize(userService.findAllUsersByRole(Role.COORDINATOR).size())))
-//        .andExpect(jsonPath("$[0].role", equalTo("COORDINATOR")))
-//        .andExpect(jsonPath("$[1].role", equalTo("COORDINATOR")))
-//        .andExpect(jsonPath("$[0].email", equalTo(coordinators.get(0).getEmail())));
-//  }
-//
-//  @Test
-//  @Order(4)
-//  void grantCoordinatorRoleTest() throws Exception {
-//    userService.register(new User(123L, "example34@gmail.com", Role.INTERVIEWER));
-//
-//    mockMvc.perform(post("/users/coordinators")
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .content("{\"email\":\"example34@gmail.com\"}")
-//            .accept(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isOk());
-//
-//    Assertions.assertEquals(Role.COORDINATOR,
-//        userService.findUserByEmail("example34@gmail.com").getRole());
-//  }
-//
-//  @Test
-//  @Order(5)
-//  void getAllInterviewersTest() throws Exception {
-//    mockMvc.perform(
-//            MockMvcRequestBuilders.get("/users/interviewers").contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isOk())
-//        .andExpect(jsonPath("$", hasSize(interviewerService.getAllInterviewers().size())))
-//        .andExpect(jsonPath("$[0].bookingLimit", equalTo(INTERVIEWERS.get(0).getBookingLimit())))
-//        .andExpect(jsonPath("$[1].user.email", equalTo(INTERVIEWERS.get(1).getUser().getEmail())));
-//  }
-//
-//  @Test
-//  @Order(6)
-//  void revokeInterviewerRoleTest() throws Exception {
-//    User interviewerUser = new User(12912L, "check@gmail.com", Role.INTERVIEWER);
-//    userService.register(interviewerUser);
-//    Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
-//    interviewerService.registerInterviewer(interviewer);
-//
-//    mockMvc.perform(delete("/users/interviewers/{interviewerId}", interviewer.getId()))
-//        .andExpect(status().isOk());
-//
-//    Assertions.assertEquals(Role.CANDIDATE,
-//        userService.findUserById(interviewerUser.getId()).getRole());
-//  }
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private WebApplicationContext webApplicationContext;
+
+  private static final List<User> USERS = List.of(
+      new User(1231L, "email1", Role.INTERVIEWER),
+      new User(2213L, "email2", Role.INTERVIEWER),
+      new User(3213L, "email3", Role.COORDINATOR),
+      new User(4213L, "email4", Role.COORDINATOR));
+
+  private static final List<Interviewer> INTERVIEWERS = List.of(
+      new Interviewer(USERS.get(0), 5, null),
+      new Interviewer(USERS.get(1), 2, null));
+
+
+  @BeforeEach
+  public void setup() {
+    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    USERS.forEach(u -> userService.register(u));
+    INTERVIEWERS.forEach(i -> interviewerService.registerInterviewer(i));
+  }
+
+  @Test
+  @Order(1)
+  void deleteBookingTest() throws Exception {
+    Booking booking = new Booking(LocalDateTime.of(2015,
+        Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
+        Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
+    bookingService.registerBooking(booking);
+    booking = bookingService.getAllBookings().get(bookingService.getAllBookings().size() - 1);
+
+    mockMvc.perform(delete("/bookings/{bookingId}", booking.getId()))
+        .andExpect(status().isOk());
+
+    try {
+      bookingService.getBookingById(booking.getId());
+      fail();
+    } catch (BookingNotFoundException e) {
+      assertNotNull(e);
+    } catch (Exception e) {
+      fail();
+    }
+  }
+
+  @Test
+  @Order(2)
+  void revokeCoordinatorRoleByIdTest() throws Exception {
+    User coordinator = new User(12912L, "check@gmail.com", Role.COORDINATOR);
+    userService.register(coordinator);
+
+    mockMvc.perform(delete("/users/coordinators/{coordinatorId}", coordinator.getId()))
+        .andExpect(status().isOk());
+
+    Assertions.assertEquals(Role.CANDIDATE,
+        userService.findUserById(coordinator.getId()).getRole());
+  }
+
+  @Test
+  @Order(3)
+  void getCoordinatorsTest() throws Exception {
+    List<User> coordinators = USERS.stream().filter(u -> u.getRole() == Role.COORDINATOR)
+        .collect(Collectors.toList());
+
+    mockMvc.perform(
+            MockMvcRequestBuilders.get("/users/coordinators").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(userService.findAllUsersByRole(Role.COORDINATOR).size())))
+        .andExpect(jsonPath("$[0].role", equalTo("COORDINATOR")))
+        .andExpect(jsonPath("$[1].role", equalTo("COORDINATOR")))
+        .andExpect(jsonPath("$[0].email", equalTo(coordinators.get(0).getEmail())));
+  }
+
+  @Test
+  @Order(4)
+  void grantCoordinatorRoleTest() throws Exception {
+    userService.register(new User(123L, "example34@gmail.com", Role.INTERVIEWER));
+
+    mockMvc.perform(post("/users/coordinators")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\":\"example34@gmail.com\"}")
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+    Assertions.assertEquals(Role.COORDINATOR,
+        userService.findUserByEmail("example34@gmail.com").getRole());
+  }
+
+  @Test
+  @Order(5)
+  void getAllInterviewersTest() throws Exception {
+    mockMvc.perform(
+            MockMvcRequestBuilders.get("/users/interviewers").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(interviewerService.getAllInterviewers().size())))
+        .andExpect(jsonPath("$[0].bookingLimit", equalTo(INTERVIEWERS.get(0).getBookingLimit())))
+        .andExpect(jsonPath("$[1].user.email", equalTo(INTERVIEWERS.get(1).getUser().getEmail())));
+  }
+
+  @Test
+  @Order(6)
+  void revokeInterviewerRoleTest() throws Exception {
+    User interviewerUser = new User(12912L, "check@gmail.com", Role.INTERVIEWER);
+    userService.register(interviewerUser);
+    Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
+    interviewerService.registerInterviewer(interviewer);
+
+    mockMvc.perform(delete("/users/interviewers/{interviewerId}", interviewer.getId()))
+        .andExpect(status().isOk());
+
+    Assertions.assertEquals(Role.CANDIDATE,
+        userService.findUserById(interviewerUser.getId()).getRole());
+  }
 }
