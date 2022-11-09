@@ -23,9 +23,9 @@ VALUES (1, 5, 2),
 alter sequence interviewers_id_seq restart with 3;
 
 INSERT INTO interviewer_slots(id, day_of_week, t_from, t_to, week_num, interviewer_id)
-VALUES  (1, 4, '9:00', '18:00', 202243, 1),
-        (2, 4, '8:00', '19:30', 202243, 2),
-        (3, 4, '10:00', '16:30', 202244, 1);
+VALUES  (1, 4, '9:00', '18:00', 202245, 1),
+        (2, 4, '8:00', '19:30', 202245, 2),
+        (3, 4, '10:00', '16:30', 202246, 1);
 alter sequence interviewer_slots_id_seq restart with 4;
 
 INSERT INTO bookings(id, description, t_from, status, subject, t_to, candidate_slots_id,

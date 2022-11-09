@@ -5,7 +5,6 @@ import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.repositories.UserRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +23,21 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public Optional<User> findUserByEmail(String email) {
-    return userRepository.findUserByEmail(email);
+  public void register(User user) {
+    userRepository.save(user);
   }
 
-  public User registerUser(User user, Role role) {
+  public void registerUserWithRole(User user, Role role){
     user.setRole(role);
-    return userRepository.save(user);
+    userRepository.save(user);
+  }
+
+  public User findUserByFacebookId(Long facebookId) {
+    return userRepository.findByFacebookId(facebookId);
+  }
+
+  public User findUserByEmail(String email) {
+    return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
   }
 
   public List<User> findAllUsersByRole(Role role) {
