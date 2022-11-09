@@ -1,10 +1,14 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
+import com.intellias.intellistart.interviewplanning.models.Interviewer;
+import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
+import com.intellias.intellistart.interviewplanning.util.validation.InterviewerValidator;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,13 +45,22 @@ public class InterviewerController {
   /**
    * Endpoint for adding a new interviewer time slot using interviewer id from request.
    *
-   * @return response status
+   * @return added slot as DTO
    */
   @PostMapping("/{interviewerId}/slots")
-  public ResponseEntity<HttpStatus> addSlot(
-      @RequestBody InterviewerSlotDto interviewerSlotDto,
+  public ResponseEntity<InterviewerSlotDto> addSlot(
+      @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId) {
-    return ResponseEntity.ok(HttpStatus.OK);
+    InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
+    Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
+    slot.setInterviewer(interviewer);
+
+    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
+    InterviewerValidator.validateSlot(slot);
+
+    InterviewerSlot registeredSlot = interviewerService.registerSlot(slot);
+    InterviewerSlotDto registeredSlotDto = mapper.map(registeredSlot, InterviewerSlotDto.class);
+    return ResponseEntity.ok(registeredSlotDto);
   }
 
   /**
@@ -104,9 +117,14 @@ public class InterviewerController {
    * @return response status
    */
   @PostMapping("/{interviewerId}/bookings/next_week_count")
-  public ResponseEntity<HttpStatus> setForNextWeekMaxBookings(
-      @RequestBody Integer maxBookings,
+  public ResponseEntity<Integer> setForNextWeekMaxBookings(
+      @RequestBody Integer bookingLimit,
       @PathVariable Long interviewerId) {
-    return ResponseEntity.ok(HttpStatus.OK);
+    InterviewerValidator.validateBookingLimit(bookingLimit);
+
+    Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
+    interviewer.setBookingLimit(bookingLimit);
+    Interviewer registeredInterviewer = interviewerService.registerInterviewer(interviewer);
+    return ResponseEntity.ok(registeredInterviewer.getBookingLimit());
   }
 }
