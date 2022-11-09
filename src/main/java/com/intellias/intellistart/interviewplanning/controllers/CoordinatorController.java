@@ -97,15 +97,7 @@ public class CoordinatorController {
   public ResponseEntity<BookingDto> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
     Booking bookingToUpdate = bookingService.getBookingById(bookingId);
-    bookingToUpdate.setTo(bookingDto.getDateTo());
-    bookingToUpdate.setFrom(bookingDto.getDateFrom());
-    bookingToUpdate.setDescription(bookingDto.getDescription());
-    bookingToUpdate.setSubject(bookingDto.getSubject());
-    bookingToUpdate.setStatus(bookingDto.getStatus());
-    bookingToUpdate.setCandidateSlot(candidateService.getSlotById(bookingDto.getCandidateSlotId()));
-    bookingToUpdate.setInterviewerSlot(
-        interviewerService.getSlotById(bookingDto.getInterviewerSlotId()));
-
+    Booking.updateFieldsExceptId(bookingToUpdate, mapper.map(bookingDto, Booking.class));
     bookingService.registerBooking(bookingToUpdate);
     return ResponseEntity.ok().body(mapper.map(bookingToUpdate, BookingDto.class));
   }

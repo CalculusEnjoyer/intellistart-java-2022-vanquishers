@@ -64,4 +64,16 @@ public class Booking {
     this.status = status;
   }
 
+  /**
+   * Method for coping fields from one booking to another.
+   */
+  public static void updateFieldsExceptId(Booking toUpdate, Booking source) {
+    toUpdate.setFrom(source.getFrom());
+    toUpdate.setTo(source.getTo());
+    toUpdate.setSubject(source.getSubject());
+    toUpdate.setStatus(source.getStatus());
+    toUpdate.setDescription(source.getDescription());
+    toUpdate.setInterviewerSlot(source.getInterviewerSlot());
+    toUpdate.setCandidateSlot(source.getCandidateSlot());
+  }
 }
