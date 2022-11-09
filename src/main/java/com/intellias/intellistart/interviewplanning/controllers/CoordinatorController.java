@@ -123,8 +123,7 @@ public class CoordinatorController {
   @PostMapping("/users/interviewers")
   public ResponseEntity<UserDto> grantInterviewerRole(@RequestBody Map<String, String> email) {
     User userToGrand = userService.findUserByEmail(email.get("email"));
-    userToGrand.setRole(Role.INTERVIEWER);
-    userService.register(userToGrand);
+    userService.registerUserWithRole(userToGrand, Role.INTERVIEWER);
     Interviewer newInterviewer = new Interviewer();
     newInterviewer.setUser(userToGrand);
     interviewerService.registerInterviewer(newInterviewer);
@@ -156,8 +155,7 @@ public class CoordinatorController {
   public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
     Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
     User userToDowngrade = interviewerToDelete.getUser();
-    userToDowngrade.setRole(Role.CANDIDATE);
-    userService.register(userToDowngrade);
+    userService.registerUserWithRole(userToDowngrade, Role.CANDIDATE);
     return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
   }
 
@@ -169,8 +167,7 @@ public class CoordinatorController {
   @PostMapping("/users/coordinators")
   public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
     User userToGrand = userService.findUserByEmail(email.get("email"));
-    userToGrand.setRole(Role.COORDINATOR);
-    userService.register(userToGrand);
+    userService.registerUserWithRole(userToGrand, Role.COORDINATOR);
     return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
   }
 
@@ -197,8 +194,7 @@ public class CoordinatorController {
     if (user.getRole() != Role.COORDINATOR) {
       throw new UserNotFoundException();
     }
-    user.setRole(Role.CANDIDATE);
-    userService.register(user);
+    userService.registerUserWithRole(user, Role.CANDIDATE);
     return ResponseEntity.ok().body(mapper.map(user, UserDto.class));
   }
 }

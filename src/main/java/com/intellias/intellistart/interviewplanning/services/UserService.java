@@ -27,6 +27,11 @@ public class UserService {
     userRepository.save(user);
   }
 
+  public void registerUserWithRole(User user, Role role){
+    user.setRole(role);
+    userRepository.save(user);
+  }
+
   public User findUserByFacebookId(Long facebookId) {
     return userRepository.findByFacebookId(facebookId);
   }
