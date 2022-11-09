@@ -7,6 +7,7 @@ import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRe
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,18 @@ public class CandidateService {
   private final CandidateRepository repository;
   private final CandidateSlotRepository slotRepository;
 
+  private final WeekService weekService;
+
+  /**
+   * CandidateService constructor.
+   */
   @Autowired
   public CandidateService(
       CandidateRepository repository,
-      CandidateSlotRepository slotRepository) {
+      CandidateSlotRepository slotRepository, WeekService weekService) {
     this.repository = repository;
     this.slotRepository = slotRepository;
+    this.weekService = weekService;
   }
 
   /**
@@ -99,8 +106,17 @@ public class CandidateService {
     return repository.save(candidate);
   }
 
-  public List<Candidate> registerCandidates(List<Candidate> slots) {
-    return repository.saveAll(slots);
+  public List<Candidate> registerCandidates(List<Candidate> candidates) {
+    return repository.saveAll(candidates);
   }
 
+  /**
+   * Gets all candidate slots that are arranged on a particular week.
+   */
+  public List<CandidateSlot> getCandidateSlotsForWeek(int weekNum) {
+    return slotRepository.findAll().stream()
+        .filter(slot -> weekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
+            || weekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum)
+        .collect(Collectors.toList());
+  }
 }

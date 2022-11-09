@@ -3,6 +3,8 @@ package com.intellias.intellistart.interviewplanning.services;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.IsoFields;
+import java.util.Calendar;
+import java.util.Date;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,6 +42,15 @@ public class WeekService {
     int year = date.get(IsoFields.WEEK_BASED_YEAR);
     int week = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     return Integer.parseInt(year + String.format("%02d", week));
+  }
+
+  /**
+   * Method for calculating day of week of an input date.
+   */
+  public int getDayOfWeek(LocalDate date) {
+    Calendar c = Calendar.getInstance();
+    c.setTime(Date.from(date.atStartOfDay(ZONE_ID).toInstant()));
+    return c.get(Calendar.DAY_OF_WEEK) - 1;
   }
 
   /**

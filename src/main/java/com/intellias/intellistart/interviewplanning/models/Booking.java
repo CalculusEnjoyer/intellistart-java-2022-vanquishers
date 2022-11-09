@@ -65,7 +65,7 @@ public class Booking {
   }
 
   /**
-   * Method for coping fields from one booking to another.
+   * Method for coping fields from one bookings to another.
    */
   public static void updateFieldsExceptId(Booking toUpdate, Booking source) {
     toUpdate.setFrom(source.getFrom());

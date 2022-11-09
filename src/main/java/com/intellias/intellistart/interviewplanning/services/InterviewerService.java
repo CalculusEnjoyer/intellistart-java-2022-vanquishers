@@ -7,7 +7,6 @@ import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlot
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
  * Interviewer entity service.
  */
 @Service
-@Transactional
 public class InterviewerService {
 
   private final InterviewerSlotRepository slotRepository;
@@ -80,4 +78,7 @@ public class InterviewerService {
     return slotRepository.findByInterviewerIdAndWeekNum(interviewerId, weekNum);
   }
 
+  public List<InterviewerSlot> getSlotsForWeek(int weekNum) {
+    return slotRepository.findByWeekNum(weekNum);
+  }
 }
