@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,12 +50,11 @@ public class InterviewerController {
   public ResponseEntity<InterviewerSlotDto> addSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId) {
-    InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
-    Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
-    slot.setInterviewer(interviewer);
-
     InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
-    InterviewerValidator.validateSlot(slot);
+    InterviewerValidator.validateSlotDto(slotDto);
+
+    InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
+    slot.setInterviewer(interviewerService.getInterviewerById(interviewerId));
 
     InterviewerSlot registeredSlot = interviewerService.registerSlot(slot);
     InterviewerSlotDto registeredSlotDto = mapper.map(registeredSlot, InterviewerSlotDto.class);
@@ -69,10 +67,18 @@ public class InterviewerController {
    * @return response status
    */
   @PostMapping("/{interviewerId}/slots/{slotId}")
-  public ResponseEntity<HttpStatus> updateSlot(
-      @RequestBody InterviewerSlotDto interviewerSlotDto,
+  public ResponseEntity<InterviewerSlotDto> updateSlot(
+      @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId, @PathVariable Long slotId) {
-    return ResponseEntity.ok(HttpStatus.OK);
+    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
+    InterviewerValidator.validateSlotDto(slotDto);
+
+    InterviewerSlot slot = interviewerService.getSlotById(slotId);
+    InterviewerValidator.validateHasAccessToSlot(interviewerId, slot);
+
+    InterviewerSlot updatedSlot = interviewerService.registerSlot(slot);
+    InterviewerSlotDto updatedSlotDto = mapper.map(updatedSlot, InterviewerSlotDto.class);
+    return ResponseEntity.ok(updatedSlotDto);
   }
 
   /**
@@ -89,8 +95,7 @@ public class InterviewerController {
         .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
         .collect(Collectors.toList());
 
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(currentWeekSlots);
+    return ResponseEntity.ok(currentWeekSlots);
   }
 
   /**
@@ -107,8 +112,7 @@ public class InterviewerController {
         .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
         .collect(Collectors.toList());
 
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(nextWeekSlots);
+    return ResponseEntity.ok(nextWeekSlots);
   }
 
   /**
