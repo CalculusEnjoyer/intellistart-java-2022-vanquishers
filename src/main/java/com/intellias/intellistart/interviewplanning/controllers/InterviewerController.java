@@ -72,9 +72,13 @@ public class InterviewerController {
       @PathVariable Long interviewerId, @PathVariable Long slotId) {
     InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
     InterviewerValidator.validateSlotDto(slotDto);
+    //voiding the interviewer id in dto, so it will not be mapped in the slot
+    slotDto.setInterviewerId(null);
 
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
     InterviewerValidator.validateHasAccessToSlot(interviewerId, slot);
+    InterviewerValidator.validateSlotWeekNum(slot.getWeekNum(), weekService.getNextWeekNum());
+    mapper.map(slotDto, slot);
 
     InterviewerSlot updatedSlot = interviewerService.registerSlot(slot);
     InterviewerSlotDto updatedSlotDto = mapper.map(updatedSlot, InterviewerSlotDto.class);
