@@ -141,20 +141,4 @@ class CandidateServiceTest {
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
         filteredSlots.get(0).getDateFrom());
   }
-
-  @Test
-  @Order(6)
-  void findCandidateSlotByWeekAndDayTest() {
-    CandidateSlot candidateSlotToFind = new CandidateSlot(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 13), LocalTime.of(9, 30)),
-        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 13), LocalTime.of(18, 0)));
-    candidateService.registerSlot(candidateSlotToFind);
-
-    List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeekAndDayOfWeek(
-        weekService.getWeekNumFrom(LocalDate.of(YEAR, Month.DECEMBER, 13)), 2);
-
-    Assertions.assertEquals(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 13), LocalTime.of(9, 30)),
-        slots.get(0).getDateFrom());
-  }
 }

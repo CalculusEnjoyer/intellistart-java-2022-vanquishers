@@ -50,7 +50,7 @@ public class WeekService {
   public int getDayOfWeek(LocalDate date) {
     Calendar c = Calendar.getInstance();
     c.setTime(Date.from(date.atStartOfDay(ZONE_ID).toInstant()));
-    return c.get(Calendar.DAY_OF_WEEK) - 1;
+    return c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 7 : c.get(Calendar.DAY_OF_WEEK) - 1;
   }
 
   /**
