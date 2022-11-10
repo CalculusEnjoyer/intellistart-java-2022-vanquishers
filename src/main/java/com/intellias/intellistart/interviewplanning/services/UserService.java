@@ -102,13 +102,13 @@ public class UserService {
 
       candidateService.getCandidateSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
-              booking -> weekService.getDayOfWeek(booking.getFrom().toLocalDate())
+              booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
                   == dashboardDayDto.getDay()).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
 
       interviewerService.getSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
-              booking -> weekService.getDayOfWeek(booking.getFrom().toLocalDate())
+              booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
                   == dashboardDayDto.getDay()).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
       resultDashBoard.add(dashboardDayDto);

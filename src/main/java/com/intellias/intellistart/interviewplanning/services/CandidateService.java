@@ -125,9 +125,22 @@ public class CandidateService {
    */
   public List<CandidateSlot> getCandidateSlotsForWeekAndDayOfWeek(int weekNum, int dayOfWeek) {
     return slotRepository.findAll().stream()
-        .filter(slot -> weekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
-            || weekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum).filter(s ->
-            weekService.getDayOfWeek(s.getDateFrom().toLocalDate()) == dayOfWeek)
+        .filter(slot -> getWeekNumOfCandidateSlot(slot) == weekNum)
+        .filter(slot -> getDayOfWeekOfCandidateSlot(slot) == dayOfWeek)
         .collect(Collectors.toList());
+  }
+
+  /**
+   * Gets week number of candidate slot.
+   */
+  public int getWeekNumOfCandidateSlot(CandidateSlot candidateSlot) {
+    return weekService.getWeekNumFrom(candidateSlot.getDateFrom().toLocalDate());
+  }
+
+  /**
+   * Gets day of week number of candidate slot.
+   */
+  public int getDayOfWeekOfCandidateSlot(CandidateSlot candidateSlot) {
+    return weekService.getDayOfWeekFrom(candidateSlot.getDateFrom().toLocalDate());
   }
 }
