@@ -152,13 +152,9 @@ class CandidateServiceTest {
 
     List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeekAndDayOfWeek(
         weekService.getWeekNumFrom(LocalDate.of(YEAR, Month.DECEMBER, 13)), 2);
-    List<CandidateSlot> filteredSlots = slots.stream()
-        .filter(slot -> Objects.equals(slot.getDateFrom(),
-            LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 13), LocalTime.of(9, 30)))).collect(
-            Collectors.toList());
 
     Assertions.assertEquals(
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 13), LocalTime.of(9, 30)),
-        filteredSlots.get(0).getDateFrom());
+        slots.get(0).getDateFrom());
   }
 }
