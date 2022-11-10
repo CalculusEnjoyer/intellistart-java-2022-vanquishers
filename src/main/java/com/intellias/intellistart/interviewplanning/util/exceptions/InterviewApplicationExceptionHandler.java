@@ -23,9 +23,9 @@ public class InterviewApplicationExceptionHandler {
 
   /**
    * Exception handler for MethodArgumentNotValidException that raises when
-   * {@code javax.validation.constraints} annotations are used for provided with request DTOs
-   * and corresponding checks are failing.
-
+   * {@code javax.validation.constraints} annotations are used for provided with request DTOs and
+   * corresponding checks are failing.
+   *
    * @param ex MethodArgumentNotValidException exception
    * @return map with accumulated in {@code errorMessage} key errors
    */

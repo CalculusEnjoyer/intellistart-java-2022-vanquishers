@@ -10,14 +10,15 @@ import org.springframework.http.HttpStatus;
  * Validator for interviewers and interviewer-related data.
  */
 public class InterviewerValidator {
+
   /**
    * Private constructor to hide the ability of instantiation of a utility class.
    */
-  private InterviewerValidator() {}
+  private InterviewerValidator() {
+  }
 
   /**
-   * Method that validates the maximum amount of bookings.
-   * It should be a positive integer.
+   * Method that validates the maximum amount of bookings. It should be a positive integer.
    *
    * @param maxBookings maximum amount of bookings.
    * @throws InterviewApplicationException if maxBookings is not valid
