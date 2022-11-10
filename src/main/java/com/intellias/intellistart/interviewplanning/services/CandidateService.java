@@ -119,4 +119,15 @@ public class CandidateService {
             || weekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum)
         .collect(Collectors.toList());
   }
+
+  /**
+   * Gets all candidate slots that are arranged on a particular week and day.
+   */
+  public List<CandidateSlot> getCandidateSlotsForWeekAndDayOfWeek(int weekNum, int dayOfWeek) {
+    return slotRepository.findAll().stream()
+        .filter(slot -> weekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
+            || weekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum).filter(s ->
+            weekService.getDayOfWeek(s.getDateFrom().toLocalDate()) == dayOfWeek)
+        .collect(Collectors.toList());
+  }
 }

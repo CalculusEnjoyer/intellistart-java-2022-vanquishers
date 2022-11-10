@@ -19,12 +19,12 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class DayForm implements Serializable {
+public class DashboardDayDto implements Serializable {
 
-  Integer day;
-  List<InterviewerSlotFormWithId> interviewerSlotFormsWithId = new ArrayList<>();
-  List<CandidateSlotFormWithId> candidateSlotsFormsWithId = new ArrayList<>();
-  Map<Long, BookingDto> bookings = new HashMap<>();
+  private Integer day;
+  private List<InterviewerSlotFormWithBookingIds> interviewerSlotFormsWithId = new ArrayList<>();
+  private List<CandidateSlotFormWithBookingIds> candidateSlotsFormsWithId = new ArrayList<>();
+  private Map<Long, BookingDto> bookings = new HashMap<>();
 
   /**
    * Stores InterviewerSlotDto and Bookings IDs attached to it. Created for easy serialisation in
@@ -36,10 +36,10 @@ public class DayForm implements Serializable {
   @ToString
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class InterviewerSlotFormWithId implements Serializable {
+  public static class InterviewerSlotFormWithBookingIds implements Serializable {
 
-    InterviewerSlotDto interviewerSlotDto;
-    List<Long> bookingsId = new ArrayList<>();
+    private InterviewerSlotDto interviewerSlotDto;
+    private List<Long> bookingsId = new ArrayList<>();
   }
 
   /**
@@ -52,9 +52,9 @@ public class DayForm implements Serializable {
   @ToString
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class CandidateSlotFormWithId implements Serializable {
+  public static class CandidateSlotFormWithBookingIds implements Serializable {
 
-    CandidateSlotDto candidateSlotDto;
-    List<Long> bookingsId = new ArrayList<>();
+    private CandidateSlotDto candidateSlotDto;
+    private List<Long> bookingsId = new ArrayList<>();
   }
 }

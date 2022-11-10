@@ -1,7 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
-import com.intellias.intellistart.interviewplanning.controllers.dto.DayForm;
+import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDayDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.UserDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
@@ -70,7 +70,7 @@ public class CoordinatorController {
    * @return list
    */
   @GetMapping("/weeks/{weekId}/dashboard")
-  public List<DayForm> getAllSlots(@PathVariable int weekId) {
+  public List<DashboardDayDto> getAllSlots(@PathVariable int weekId) {
     return userService.getDashBoard(weekId);
   }
 

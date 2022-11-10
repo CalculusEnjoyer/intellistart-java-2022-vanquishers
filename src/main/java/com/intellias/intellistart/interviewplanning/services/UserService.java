@@ -2,9 +2,9 @@ package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
-import com.intellias.intellistart.interviewplanning.controllers.dto.DayForm;
-import com.intellias.intellistart.interviewplanning.controllers.dto.DayForm.CandidateSlotFormWithId;
-import com.intellias.intellistart.interviewplanning.controllers.dto.DayForm.InterviewerSlotFormWithId;
+import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDayDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDayDto.CandidateSlotFormWithBookingIds;
+import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDayDto.InterviewerSlotFormWithBookingIds;
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.User;
@@ -80,39 +80,38 @@ public class UserService {
    * @return dashboard
    */
 
-  public List<DayForm> getDashBoard(int weekNum) {
-    List<DayForm> resultDashBoard = new ArrayList<>();
-    for (int i = 1; i <= 7; i++) {
-      DayForm dayForm = new DayForm();
-      dayForm.setDay(i);
+  public List<DashboardDayDto> getDashBoard(int weekNum) {
+    List<DashboardDayDto> resultDashBoard = new ArrayList<>();
+    for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
+      DashboardDayDto dashboardDayDto = new DashboardDayDto();
+      dashboardDayDto.setDay(dayOfWeek);
 
-      interviewerService.getSlotsForWeek(weekNum).stream()
-          .filter(slot -> slot.getDayOfWeek() == dayForm.getDay())
-          .forEach(slot -> dayForm.getInterviewerSlotFormsWithId()
-              .add(new InterviewerSlotFormWithId(modelMapper.map(slot, InterviewerSlotDto.class),
+      interviewerService.getSlotsForWeekAndDayOfWeek(weekNum, dayOfWeek)
+          .forEach(slot -> dashboardDayDto.getInterviewerSlotFormsWithId()
+              .add(new InterviewerSlotFormWithBookingIds(
+                  modelMapper.map(slot, InterviewerSlotDto.class),
                   slot.getBooking().stream().map(Booking::getId).collect(
                       Collectors.toList()))));
 
-      candidateService.getCandidateSlotsForWeek(weekNum).stream().filter(
-              slot -> weekService.getDayOfWeek(
-                  slot.getDateFrom().toLocalDate()) == dayForm.getDay())
-          .forEach(slot -> dayForm.getCandidateSlotsFormsWithId()
-              .add(new CandidateSlotFormWithId(modelMapper.map(slot, CandidateSlotDto.class),
-                  slot.getBooking().stream().map(Booking::getId).collect(
-                      Collectors.toList()))));
+      candidateService.getCandidateSlotsForWeekAndDayOfWeek(weekNum, dayOfWeek)
+          .forEach(slot -> dashboardDayDto.getCandidateSlotsFormsWithId()
+              .add(
+                  new CandidateSlotFormWithBookingIds(modelMapper.map(slot, CandidateSlotDto.class),
+                      slot.getBooking().stream().map(Booking::getId).collect(
+                          Collectors.toList()))));
 
       candidateService.getCandidateSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
               booking -> weekService.getDayOfWeek(booking.getFrom().toLocalDate())
-                  == dayForm.getDay()).forEach(booking -> dayForm.getBookings()
+                  == dashboardDayDto.getDay()).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
 
       interviewerService.getSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
               booking -> weekService.getDayOfWeek(booking.getFrom().toLocalDate())
-                  == dayForm.getDay()).forEach(booking -> dayForm.getBookings()
+                  == dashboardDayDto.getDay()).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
-      resultDashBoard.add(dayForm);
+      resultDashBoard.add(dashboardDayDto);
     }
     return resultDashBoard;
   }

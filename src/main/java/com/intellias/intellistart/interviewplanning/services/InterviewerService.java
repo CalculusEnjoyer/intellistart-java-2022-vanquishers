@@ -81,4 +81,8 @@ public class InterviewerService {
   public List<InterviewerSlot> getSlotsForWeek(int weekNum) {
     return slotRepository.findByWeekNum(weekNum);
   }
+
+  public List<InterviewerSlot> getSlotsForWeekAndDayOfWeek(int weekNum, int dayOfWeek) {
+    return slotRepository.findByWeekNumAndDayOfWeek(weekNum, dayOfWeek);
+  }
 }
