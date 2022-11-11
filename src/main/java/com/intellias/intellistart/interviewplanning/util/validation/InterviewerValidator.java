@@ -91,16 +91,16 @@ public class InterviewerValidator {
    * Checks if slot do not overlap with already existing Interviewer's slots.
    */
   public static void validateOverLappingOfSlots(Interviewer interviewer,
-      InterviewerSlot interviewerSlot) {
+      InterviewerSlotDto interviewerSlotDto) {
     Set<InterviewerSlot> allInterviewerSlots = interviewer.getInterviewerSlot();
 
     Set<InterviewerSlot> sameDayInterviewerSlots = allInterviewerSlots.stream().filter(
-        slot -> slot.getDayOfWeek() == interviewerSlot.getDayOfWeek()
-            && slot.getWeekNum() == interviewerSlot.getWeekNum()).collect(Collectors.toSet());
+        slot -> slot.getDayOfWeek() == interviewerSlotDto.getDayOfWeek()
+            && slot.getWeekNum() == interviewerSlotDto.getWeekNum()).collect(Collectors.toSet());
 
     for (InterviewerSlot slot : sameDayInterviewerSlots) {
-      if (isTimeInSlotTimeBoundaries(interviewerSlot.getFrom(), slot)
-          || isTimeInSlotTimeBoundaries(interviewerSlot.getTo(), slot)) {
+      if (isTimeInSlotTimeBoundaries(interviewerSlotDto.getTimeFrom(), slot)
+          || isTimeInSlotTimeBoundaries(interviewerSlotDto.getTimeTo(), slot)) {
         throw new OverlappingSlotException();
       }
     }

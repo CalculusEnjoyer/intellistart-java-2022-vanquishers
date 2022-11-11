@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
@@ -31,14 +32,14 @@ class InterviewerSlotValidatorTest {
     Interviewer interviewer = new Interviewer();
     InterviewerSlot interviewerSlot = new InterviewerSlot(202243, 1,
         LocalTime.of(9, 30), LocalTime.of(11, 0));
-    InterviewerSlot interviewerSlotThatOver = new InterviewerSlot(202243, 1,
-        LocalTime.of(10, 30), LocalTime.of(12, 0));
-    InterviewerSlot interviewerSlotThatOver1 = new InterviewerSlot(202243, 1,
-        LocalTime.of(9, 0), LocalTime.of(10, 30));
-    InterviewerSlot interviewerSlotThatNotOverlaps1 = new InterviewerSlot(202244, 1,
-        LocalTime.of(10, 30), LocalTime.of(12, 0));
-    InterviewerSlot interviewerSlotThatNotOverlaps2 = new InterviewerSlot(202244, 1,
-        LocalTime.of(16, 30), LocalTime.of(18, 0));
+    InterviewerSlotDto interviewerSlotThatOver = new InterviewerSlotDto(202243, 1,
+        LocalTime.of(10, 30), LocalTime.of(12, 0), 1L);
+    InterviewerSlotDto interviewerSlotThatOver1 = new InterviewerSlotDto(202243, 1,
+        LocalTime.of(9, 0), LocalTime.of(10, 30), 1L);
+    InterviewerSlotDto interviewerSlotThatNotOverlaps1 = new InterviewerSlotDto(202244, 1,
+        LocalTime.of(10, 30), LocalTime.of(12, 0), 1L);
+    InterviewerSlotDto interviewerSlotThatNotOverlaps2 = new InterviewerSlotDto(202244, 1,
+        LocalTime.of(16, 30), LocalTime.of(18, 0), 1L);
 
     interviewer.setInterviewerSlot(Set.of(interviewerSlot));
     interviewerService.registerInterviewer(interviewer);
