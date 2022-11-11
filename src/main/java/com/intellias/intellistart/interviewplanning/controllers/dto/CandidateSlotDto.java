@@ -28,5 +28,4 @@ public class CandidateSlotDto implements Serializable {
   private LocalDateTime dateTo;
   @NotEmpty
   private Long candidateId;
-
 }

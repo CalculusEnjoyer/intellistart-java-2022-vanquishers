@@ -7,17 +7,19 @@ import java.time.LocalTime;
  * Utility validator class for validating the simple, not related to a certain entity logic.
  */
 public class UtilValidator {
+
   /**
    * Private constructor to hide the ability of instantiation of a utility class.
    */
-  private UtilValidator() {}
+  private UtilValidator() {
+  }
 
   /**
-   * Method that checks are the given time boundaries (time from and time to)
-   * are valid (are they correspond to the functional requirements).
-
+   * Method that checks are the given time boundaries (time from and time to) are valid (are they
+   * correspond to the functional requirements).
+   *
    * @param from LocalTime from boundary
-   * @param to LocalTime to boundary
+   * @param to   LocalTime to boundary
    * @return boolean, are the given time boundaries valid
    */
   public static boolean isValidTimeBoundaries(LocalTime from, LocalTime to) {

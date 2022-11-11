@@ -1,6 +1,5 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
-import com.intellias.intellistart.interviewplanning.models.User;
 import java.io.Serializable;
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
