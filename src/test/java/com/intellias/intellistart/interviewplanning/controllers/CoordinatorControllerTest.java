@@ -3,7 +3,6 @@ package com.intellias.intellistart.interviewplanning.controllers;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -73,10 +72,10 @@ class CoordinatorControllerTest {
   private WebApplicationContext webApplicationContext;
 
   private static final List<User> USERS = List.of(
-      new User(1231L, "email1", Role.INTERVIEWER),
-      new User(2213L, "email2", Role.INTERVIEWER),
-      new User(3213L, "email3", Role.COORDINATOR),
-      new User(4213L, "email4", Role.COORDINATOR));
+      new User("email1@example.com", Role.INTERVIEWER),
+      new User("email2@example.com", Role.INTERVIEWER),
+      new User("email3@example.com", Role.COORDINATOR),
+      new User("email4@example.com", Role.COORDINATOR));
 
   private static final List<Interviewer> INTERVIEWERS = List.of(
       new Interviewer(USERS.get(0), 5, null),
@@ -115,7 +114,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(2)
   void revokeCoordinatorRoleByIdTest() throws Exception {
-    User coordinator = new User(12912L, "check@gmail.com", Role.COORDINATOR);
+    User coordinator = new User("check@gmail.com", Role.COORDINATOR);
     userService.register(coordinator);
 
     mockMvc.perform(delete("/users/coordinators/{coordinatorId}", coordinator.getId()))
@@ -143,7 +142,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(4)
   void grantCoordinatorRoleTest() throws Exception {
-    userService.register(new User(123L, "example34@gmail.com", Role.INTERVIEWER));
+    userService.register(new User("example34@gmail.com", Role.INTERVIEWER));
 
     mockMvc.perform(post("/users/coordinators")
             .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +168,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(6)
   void revokeInterviewerRoleTest() throws Exception {
-    User interviewerUser = new User(12912L, "check@gmail.com", Role.INTERVIEWER);
+    User interviewerUser = new User("check@gmail.com", Role.INTERVIEWER);
     userService.register(interviewerUser);
     Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
     interviewerService.registerInterviewer(interviewer);

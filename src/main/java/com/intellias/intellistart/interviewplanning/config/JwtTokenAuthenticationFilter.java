@@ -6,6 +6,7 @@ import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
       Claims claims = tokenProvider.getClaimsFromJwt(token);
       String username = claims.getSubject();
 
-      UsernamePasswordAuthenticationToken auth = userService.findUserByEmail(username)
+      UsernamePasswordAuthenticationToken auth = Optional.of(userService.findUserByEmail(username))
           .map(FacebookUserDetails::new).map(userDetails -> {
             UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(

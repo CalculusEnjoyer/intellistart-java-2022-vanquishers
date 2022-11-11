@@ -42,9 +42,9 @@ public class FacebookService {
   public String loginUser(String fbAccessToken) {
     var facebookUser = facebookClient.getUser(fbAccessToken);
 
-    return userService.findUserByEmail(facebookUser.getEmail())
+    return Optional.of(userService.findUserByEmail(facebookUser.getEmail()))
         .or(() -> Optional.ofNullable(userService.registerUserWithRole(convertTo(facebookUser),
-            Role.CANDIDATE);))
+            Role.CANDIDATE)))
         .map(FacebookUserDetails::new)
         .map(userDetails -> new UsernamePasswordAuthenticationToken(facebookUser, null,
             userDetails.getAuthorities()))
