@@ -1,0 +1,42 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven & Jacoco coverage
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: |
+        ./mvnw -B package --file pom.xml
+    
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.3
+      with:
+        paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+        token: ${{ secrets.REPO_COMMIT_TOKEN }}
+        min-coverage-overall: 10
+        min-coverage-changed-files: 10
+
+    - name: Log coverage percentage
+      run: |
+        echo "coverage overall = ${{ steps.jacoco.outputs.coverage-overall }}"
+        echo "coverage changed files = ${{ steps.jacoco.outputs.coverage-changed-files }}"  
+
