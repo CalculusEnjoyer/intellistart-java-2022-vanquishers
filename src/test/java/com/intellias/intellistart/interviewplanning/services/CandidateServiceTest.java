@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,6 +36,9 @@ class CandidateServiceTest {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private WeekService weekService;
 
   @Autowired
   private ModelMapper mapper;
@@ -116,5 +120,25 @@ class CandidateServiceTest {
 
     Assertions.assertEquals(newCandidate.getId(),
         candidateService.getCandidateByUserId(newUser.getId()).getId());
+  }
+
+  @Test
+  @Order(5)
+  void findCandidateSlotByWeekTest() {
+    CandidateSlot candidateSlotToFind = new CandidateSlot(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
+        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0)));
+    candidateService.registerSlot(candidateSlotToFind);
+
+    List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeek(
+        weekService.getWeekNumFrom(LocalDate.of(YEAR, Month.DECEMBER, 12)));
+    List<CandidateSlot> filteredSlots = slots.stream()
+        .filter(slot -> Objects.equals(slot.getDateFrom(),
+            LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)))).collect(
+            Collectors.toList());
+
+    Assertions.assertEquals(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
+        filteredSlots.get(0).getDateFrom());
   }
 }

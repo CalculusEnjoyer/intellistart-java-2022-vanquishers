@@ -1,8 +1,8 @@
-INSERT INTO users(id, email, facebook_id, role) VALUES
-    (1, 'example1@gmail.com', 100054896725641, 0),
-    (2, 'example2@gmail.com', 100016726783875, 1),
-    (3, 'example3@gmail.com', 100064126743752, 0),
-    (4, 'example4@gmail.com', 100064126743753, 1);
+INSERT INTO users(id, email, facebook_id, role)
+VALUES (1, 'example1@gmail.com', 100054896725641, 0),
+       (2, 'example2@gmail.com', 100016726783875, 1),
+       (3, 'example3@gmail.com', 100064126743752, 0),
+       (4, 'example4@gmail.com', 100064126743753, 1);
 alter sequence users_id_seq restart with 5;
 
 INSERT INTO candidates(id, user_id)
@@ -23,6 +23,7 @@ VALUES (1, 5, 2),
 alter sequence interviewers_id_seq restart with 3;
 
 INSERT INTO interviewer_slots(id, day_of_week, t_from, t_to, week_num, interviewer_id)
+
 VALUES  (1, 4, '9:00', '18:00', 202245, 1),
         (2, 4, '8:00', '19:30', 202245, 2),
         (3, 4, '8:00', '19:30', 202245, 2),

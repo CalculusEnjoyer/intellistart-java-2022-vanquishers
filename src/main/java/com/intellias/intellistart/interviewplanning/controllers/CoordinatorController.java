@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDayDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.UserDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
@@ -14,7 +15,6 @@ import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.ExcessBookingLimitException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -70,19 +70,18 @@ public class CoordinatorController {
 
   /**
    * Method for getting all the candidates and interviewers slots grouped by days, each day:
-   * contains all interviewers slots with booking's IDs inside contains all candidates slots with
-   * booking's IDs inside contains map of bookings as map bookingId => bookingData.
+   * contains all interviewers slots with bookings's IDs inside contains all candidates slots with
+   * bookings's IDs inside contains map of bookings as map bookingId => bookingData.
    *
    * @return list
    */
   @GetMapping("/weeks/{weekId}/dashboard")
-  public List<String> getAllSlots(@PathVariable Long weekId) {
-
-    return new ArrayList<>();
+  public List<DashboardDayDto> getAllSlots(@PathVariable int weekId) {
+    return userService.getDashBoard(weekId);
   }
 
   /**
-   * Method for creating booking.
+   * Method for creating bookings.
    *
    * @return response status
    */
@@ -105,7 +104,7 @@ public class CoordinatorController {
   }
 
   /**
-   * Method for updating booking.
+   * Method for updating bookings.
    *
    * @return response status
    */
@@ -119,7 +118,7 @@ public class CoordinatorController {
   }
 
   /**
-   * Method for deleting booking.
+   * Method for deleting bookings.
    *
    * @return response status
    */

@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.Range;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InterviewerSlotDto implements Serializable {
+
   @NotNull
   private Integer weekNum;
 

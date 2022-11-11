@@ -9,10 +9,12 @@ import java.time.LocalDateTime;
  * Validator for CandidateSlot DTOs.
  */
 public class CandidateSlotValidator {
+
   /**
    * Private constructor to hide the ability of instantiation of a utility class.
    */
-  private CandidateSlotValidator() {}
+  private CandidateSlotValidator() {
+  }
 
   /**
    * Method for checking DTO validity.
