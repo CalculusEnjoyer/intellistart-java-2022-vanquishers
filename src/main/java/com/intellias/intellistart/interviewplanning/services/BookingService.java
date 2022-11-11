@@ -67,4 +67,8 @@ public class BookingService {
     return repository.saveAll(bookings);
   }
 
+  public List<Booking> findByInterviewerIdAndWeekNum(Long interviewerId, int weekNum) {
+    return repository.findByInterviewerIdAndWeekNum(interviewerId, weekNum);
+  }
+
 }
