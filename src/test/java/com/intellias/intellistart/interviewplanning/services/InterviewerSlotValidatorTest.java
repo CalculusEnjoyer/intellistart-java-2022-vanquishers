@@ -45,14 +45,16 @@ class InterviewerSlotValidatorTest {
     interviewerService.registerInterviewer(interviewer);
 
     assertThrows(OverlappingSlotException.class,
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer,
+        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatOver));
     assertThrows(OverlappingSlotException.class,
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer,
+        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatOver1));
-    assertDoesNotThrow(() -> InterviewerValidator.validateOverLappingOfSlots(interviewer,
-        interviewerSlotThatNotOverlaps1));
-    assertDoesNotThrow(() -> InterviewerValidator.validateOverLappingOfSlots(interviewer,
-        interviewerSlotThatNotOverlaps2));
+    assertDoesNotThrow(
+        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+            interviewerSlotThatNotOverlaps1));
+    assertDoesNotThrow(
+        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+            interviewerSlotThatNotOverlaps2));
   }
 }

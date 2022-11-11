@@ -1,7 +1,6 @@
 package com.intellias.intellistart.interviewplanning.util.validation;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
-import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.util.exceptions.ForbiddenException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewApplicationException;
@@ -90,11 +89,10 @@ public class InterviewerValidator {
   /**
    * Checks if slot do not overlap with already existing Interviewer's slots.
    */
-  public static void validateOverLappingOfSlots(Interviewer interviewer,
+  public static void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
       InterviewerSlotDto interviewerSlotDto) {
-    Set<InterviewerSlot> allInterviewerSlots = interviewer.getInterviewerSlot();
 
-    Set<InterviewerSlot> sameDayInterviewerSlots = allInterviewerSlots.stream().filter(
+    Set<InterviewerSlot> sameDayInterviewerSlots = interviewerSlots.stream().filter(
         slot -> slot.getDayOfWeek() == interviewerSlotDto.getDayOfWeek()
             && slot.getWeekNum() == interviewerSlotDto.getWeekNum()).collect(Collectors.toSet());
 
