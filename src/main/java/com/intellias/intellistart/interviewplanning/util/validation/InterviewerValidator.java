@@ -5,8 +5,11 @@ import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.util.exceptions.ForbiddenException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewApplicationException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
 import java.time.LocalTime;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -49,12 +52,12 @@ public class InterviewerValidator {
   }
 
   /**
-   * Validates the all data in the slotDto dto.
-   * Throws exceptions if data in the slotDto is invalid, otherwise does nothing.
+   * Validates the all data in the slotDto dto. Throws exceptions if data in the slotDto is invalid,
+   * otherwise does nothing.
    *
    * @param slotDto slotDto to validate
-   * @throws InvalidSlotBoundariesException
-   *          if the time boundaries of the provided slotDto are invalid
+   * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
+   *                                        invalid
    */
   public static void validateSlotDto(InterviewerSlotDto slotDto) {
     validateDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
@@ -67,13 +70,13 @@ public class InterviewerValidator {
   }
 
   /**
-   * Validates that interviewer with provided {@code interviewerId}
-   * can access the provided {@code slot}.
+   * Validates that interviewer with provided {@code interviewerId} can access the provided
+   * {@code slot}.
    *
    * @param interviewerId id of the interviewer who tries to access the slot
-   * @param slot interviewer slot to which the interviewer tries to acquire the access
-   * @throws ForbiddenException if interviewer with provided {@code interviewerId}
-   *        has no access to the provided slot
+   * @param slot          interviewer slot to which the interviewer tries to acquire the access
+   * @throws ForbiddenException if interviewer with provided {@code interviewerId} has no access to
+   *                            the provided slot
    */
   public static void validateHasAccessToSlot(Long interviewerId, InterviewerSlot slot) {
     Long interviewerIdFromSlot = slot.getInterviewer().getId();
@@ -81,5 +84,41 @@ public class InterviewerValidator {
       throw new ForbiddenException("Interviewer with id " + interviewerId
           + " has no access to slot with id " + slot.getId());
     }
+  }
+
+  /**
+   * Checks if slot do not overlap with already existing Interviewer's slots.
+   */
+  public static void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
+      InterviewerSlotDto interviewerSlotDto) {
+
+    Set<InterviewerSlot> sameDayInterviewerSlots = interviewerSlots.stream().filter(
+        slot -> slot.getDayOfWeek() == interviewerSlotDto.getDayOfWeek()
+            && slot.getWeekNum() == interviewerSlotDto.getWeekNum()).collect(Collectors.toSet());
+
+    for (InterviewerSlot slot : sameDayInterviewerSlots) {
+      if (isTimeInSlotTimeBoundaries(interviewerSlotDto.getTimeFrom(), slot)
+          || isTimeInSlotTimeBoundaries(interviewerSlotDto.getTimeTo(), slot)
+          || isTimeInSlotTimeBoundaries(slot.getFrom(), interviewerSlotDto)
+          || (slot.getFrom().equals(interviewerSlotDto.getTimeFrom()) && slot.getTo()
+          .equals(interviewerSlotDto.getTimeTo()))) {
+        throw new OverlappingSlotException();
+      }
+    }
+  }
+
+  /**
+   * Checks if input time lays in interviewer slot time boundaries (without binding to date).
+   */
+  private static boolean isTimeInSlotTimeBoundaries(LocalTime time,
+      InterviewerSlot interviewerSlot) {
+    return time.compareTo(interviewerSlot.getFrom()) > 0
+        && time.compareTo(interviewerSlot.getTo()) < 0;
+  }
+
+  private static boolean isTimeInSlotTimeBoundaries(LocalTime time,
+      InterviewerSlotDto interviewerSlotDto) {
+    return time.compareTo(interviewerSlotDto.getTimeFrom()) > 0
+        && time.compareTo(interviewerSlotDto.getTimeTo()) < 0;
   }
 }
