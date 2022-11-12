@@ -1,9 +1,12 @@
 package com.intellias.intellistart.interviewplanning.util.validation;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
+import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Validator for CandidateSlot DTOs.
@@ -44,4 +47,31 @@ public class CandidateSlotValidator {
     return dto;
   }
 
+  /**
+   * Checks if slot do not overlap with already existing Candidates's slots.
+   */
+  public static void validateCandidateSlotForOverlapping(Set<CandidateSlot> candidateSlots,
+      CandidateSlotDto candidateSlotDto) {
+    for (CandidateSlot slot : candidateSlots) {
+      if (isTimeInSlotBoundaries(candidateSlotDto.getDateFrom(), slot)
+          || isTimeInSlotBoundaries(candidateSlotDto.getDateTo(), slot)
+          || isTimeInSlotBoundaries(slot.getDateFrom(), candidateSlotDto)
+          || (slot.getDateFrom().equals(candidateSlotDto.getDateFrom())
+          && slot.getDateTo().equals(candidateSlotDto.getDateTo()))) {
+        throw new OverlappingSlotException();
+      }
+    }
+  }
+
+  private static boolean isTimeInSlotBoundaries(LocalDateTime time,
+      CandidateSlot candidateSlot) {
+    return time.compareTo(candidateSlot.getDateFrom()) > 0
+        && time.compareTo(candidateSlot.getDateTo()) < 0;
+  }
+
+  private static boolean isTimeInSlotBoundaries(LocalDateTime time,
+      CandidateSlotDto candidateSlotDto) {
+    return time.compareTo(candidateSlotDto.getDateFrom()) > 0
+        && time.compareTo(candidateSlotDto.getDateTo()) < 0;
+  }
 }

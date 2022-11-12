@@ -1,15 +1,20 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
+import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
 import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -85,5 +90,49 @@ public class CandidateSlotValidatorTest {
 
     assertThat(errors).isEqualTo(ERROR_COUNT);
     assertThat(validatedSlots.size()).isEqualTo(FINAL_SIZE);
+  }
+
+  @Test
+  @Order(2)
+  void validateCandidateSlotForOverlapping() {
+    CandidateSlotDto overlapping = new CandidateSlotDto(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(13, 0)),
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(15, 0)), 1L
+    );
+
+    CandidateSlotDto overlapping1 = new CandidateSlotDto(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 15), LocalTime.of(10, 0)),
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 15), LocalTime.of(14, 0)), 1L
+    );
+
+    CandidateSlotDto notOverlapping = new CandidateSlotDto(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(14, 0)),
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(15, 0)), 1L
+    );
+
+    CandidateSlotDto notOverlapping1 = new CandidateSlotDto(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 26), LocalTime.of(12, 0)),
+        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 26), LocalTime.of(14, 0)), 1L
+    );
+
+    Candidate candidate = new Candidate();
+    candidate.setCandidateSlot(new HashSet<>(SLOTS));
+
+    assertThrows(OverlappingSlotException.class,
+        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+            candidate.getCandidateSlot(),
+            overlapping));
+    assertThrows(OverlappingSlotException.class,
+        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+            candidate.getCandidateSlot(),
+            overlapping1));
+    assertDoesNotThrow(
+        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+            candidate.getCandidateSlot(),
+            notOverlapping));
+    assertDoesNotThrow(
+        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+            candidate.getCandidateSlot(),
+            notOverlapping1));
   }
 }
