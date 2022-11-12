@@ -53,25 +53,12 @@ public class CandidateSlotValidator {
   public static void validateCandidateSlotForOverlapping(Set<CandidateSlot> candidateSlots,
       CandidateSlotDto candidateSlotDto) {
     for (CandidateSlot slot : candidateSlots) {
-      if (isTimeInSlotBoundaries(candidateSlotDto.getDateFrom(), slot)
-          || isTimeInSlotBoundaries(candidateSlotDto.getDateTo(), slot)
-          || isTimeInSlotBoundaries(slot.getDateFrom(), candidateSlotDto)
+      if (UtilValidator.areIntervalsOverLapping(slot.getDateFrom(), slot.getDateTo(),
+          candidateSlotDto.getDateFrom(), candidateSlotDto.getDateTo())
           || (slot.getDateFrom().equals(candidateSlotDto.getDateFrom())
           && slot.getDateTo().equals(candidateSlotDto.getDateTo()))) {
         throw new OverlappingSlotException();
       }
     }
-  }
-
-  private static boolean isTimeInSlotBoundaries(LocalDateTime time,
-      CandidateSlot candidateSlot) {
-    return time.compareTo(candidateSlot.getDateFrom()) > 0
-        && time.compareTo(candidateSlot.getDateTo()) < 0;
-  }
-
-  private static boolean isTimeInSlotBoundaries(LocalDateTime time,
-      CandidateSlotDto candidateSlotDto) {
-    return time.compareTo(candidateSlotDto.getDateFrom()) > 0
-        && time.compareTo(candidateSlotDto.getDateTo()) < 0;
   }
 }
