@@ -6,6 +6,7 @@ import com.intellias.intellistart.interviewplanning.repositories.InterviewerRepo
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,10 @@ public class InterviewerService {
 
   public void deleteSlotsById(List<Long> ids) {
     slotRepository.deleteAllById(ids);
+  }
+
+  public Interviewer getInterviewerByUserId(Long userId) {
+    return interviewerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
   }
 
   public InterviewerSlot registerSlot(InterviewerSlot slot) {
