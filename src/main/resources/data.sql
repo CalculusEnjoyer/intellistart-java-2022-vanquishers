@@ -19,17 +19,23 @@ alter sequence candidate_slots_id_seq restart with 3;
 
 INSERT INTO interviewers(id, booking_limit, user_id)
 VALUES (1, 5, 2),
-       (2, 10, 4);
+       (2, 3, 4);
 alter sequence interviewers_id_seq restart with 3;
 
 INSERT INTO interviewer_slots(id, day_of_week, t_from, t_to, week_num, interviewer_id)
-VALUES (1, 6, '9:00', '18:00', 202245, 1),
-       (2, 4, '8:00', '19:30', 202245, 2),
-       (3, 4, '10:00', '16:30', 202246, 1);
-alter sequence interviewer_slots_id_seq restart with 4;
+
+VALUES  (1, 4, '9:00', '18:00', 202245, 1),
+        (2, 4, '8:00', '19:30', 202245, 2),
+        (3, 4, '8:00', '19:30', 202245, 2),
+        (4, 4, '10:00', '16:30', 202246, 1);
+alter sequence interviewer_slots_id_seq restart with 5;
 
 INSERT INTO bookings(id, description, t_from, status, subject, t_to, candidate_slots_id,
                      interviewer_slots_id)
 VALUES (1, 'description', CURRENT_DATE + INTERVAL '2 days 9 hours', 1, 'subject',
         CURRENT_DATE + INTERVAL '2 days 13 hours', 1, 1);
+VALUES (2, 'description', CURRENT_DATE + INTERVAL '2 days 9 hours', 1, 'subject',
+        CURRENT_DATE + INTERVAL '2 days 13 hours', 1, 2);
+VALUES (3, 'description', CURRENT_DATE + INTERVAL '2 days 9 hours', 1, 'subject',
+        CURRENT_DATE + INTERVAL '2 days 13 hours', 1, 3);
 alter sequence bookings_id_seq restart with 4;

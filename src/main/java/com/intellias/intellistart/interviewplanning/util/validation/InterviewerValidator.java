@@ -105,4 +105,19 @@ public class InterviewerValidator {
       }
     }
   }
+
+  /**
+   * Checks if input time lays in interviewer slot time boundaries (without binding to date).
+   */
+  private static boolean isTimeInSlotTimeBoundaries(LocalTime time,
+      InterviewerSlot interviewerSlot) {
+    return time.compareTo(interviewerSlot.getFrom()) > 0
+        && time.compareTo(interviewerSlot.getTo()) < 0;
+  }
+
+  private static boolean isTimeInSlotTimeBoundaries(LocalTime time,
+      InterviewerSlotDto interviewerSlotDto) {
+    return time.compareTo(interviewerSlotDto.getTimeFrom()) > 0
+        && time.compareTo(interviewerSlotDto.getTimeTo()) < 0;
+  }
 }

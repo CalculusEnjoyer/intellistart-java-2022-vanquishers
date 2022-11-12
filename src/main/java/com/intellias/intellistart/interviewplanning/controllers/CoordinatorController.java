@@ -12,6 +12,8 @@ import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
+import com.intellias.intellistart.interviewplanning.services.WeekService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.ExcessBookingLimitException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.Comparator;
 import java.util.List;
@@ -48,18 +50,22 @@ public class CoordinatorController {
 
   public final UserService userService;
 
+  public final WeekService weekService;
+
+
   /**
    * Constructor for CoordinatorController.
    */
   @Autowired
   public CoordinatorController(ModelMapper mapper, BookingService bookingService,
       InterviewerService interviewerService, CandidateService candidateService,
-      UserService userService) {
+      UserService userService, WeekService weekService) {
     this.mapper = mapper;
     this.bookingService = bookingService;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
     this.userService = userService;
+    this.weekService = weekService;
   }
 
   /**
@@ -83,6 +89,16 @@ public class CoordinatorController {
   public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto) {
 
     Booking booking = mapper.map(bookingDto, Booking.class);
+    Interviewer interviewer = interviewerService
+        .getInterviewerById(booking.getInterviewerSlot().getInterviewer().getId());
+    int bookingLimit = interviewer.getBookingLimit();
+    List<Booking> bookingsByInterviewerId = bookingService
+        .findByInterviewerIdAndWeekNum(interviewer.getId(), weekService.getCurrentWeekNum());
+
+    if (bookingsByInterviewerId.size() >= bookingLimit) {
+      throw new ExcessBookingLimitException();
+    }
+
     bookingService.registerBooking(booking);
     return ResponseEntity.status(HttpStatus.OK).body(bookingDto);
   }
