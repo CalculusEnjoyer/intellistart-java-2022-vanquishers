@@ -61,11 +61,6 @@ public class BookingValidatorTest {
     InterviewerSlot interviewerSlot = new InterviewerSlot(202201, 1,
         LocalTime.of(9, 30), LocalTime.of(11, 0));
 
-    Booking notOutOfBoundaries = new Booking(
-        LocalDateTime.of(LocalDate.of(2022, Month.JANUARY, 3), LocalTime.of(9, 30)),
-        LocalDateTime.of(LocalDate.of(2022, Month.JANUARY, 3), LocalTime.of(11, 0)), "check",
-        "check", Status.BOOKED);
-
     Booking outOfBoundaries1 = new Booking(
         LocalDateTime.of(LocalDate.of(2022, Month.JANUARY, 3), LocalTime.of(11, 30)),
         LocalDateTime.of(LocalDate.of(2022, Month.JANUARY, 3), LocalTime.of(12, 30)), "check",
@@ -80,10 +75,6 @@ public class BookingValidatorTest {
         () -> BookingValidator.isInInterviewerSlotRange(
             interviewerSlot,
             outOfBoundaries1));
-    assertDoesNotThrow(
-        () -> BookingValidator.isInInterviewerSlotRange(
-            interviewerSlot,
-            notOutOfBoundaries));
     assertThrows(BookingOutOfSlotException.class,
         () -> BookingValidator.isInInterviewerSlotRange(
             interviewerSlot,
