@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.Month;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -105,5 +106,17 @@ class WeekServiceTest {
 
     assertThat(prevYearWeekNum).isEqualTo(nextYearWeekNum);
     assertThat(actualYear).isEqualTo(2026);
+  }
+
+  @Test
+  void getDateFromWeekAndDayOfWeekTest() {
+    int weekNum = 202204;
+    int dayOfWeek = 3;
+    LocalDate date = LocalDate.of(2022, Month.JANUARY, 26);
+    LocalDate dateIsNotCorrect = LocalDate.of(2022, Month.JANUARY, 27);
+
+    assertThat(date).isEqualTo(WeekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
+    assertThat(dateIsNotCorrect).isNotEqualTo(
+        WeekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
   }
 }

@@ -84,7 +84,7 @@ public class UserService {
     List<DashboardDayDto> resultDashBoard = new ArrayList<>();
     for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
       DashboardDayDto dashboardDayDto = new DashboardDayDto();
-      dashboardDayDto.setDay(dayOfWeek);
+      dashboardDayDto.setDay(WeekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
 
       interviewerService.getSlotsForWeekAndDayOfWeek(weekNum, dayOfWeek)
           .forEach(slot -> dashboardDayDto.getInterviewerSlotFormsWithId()
@@ -100,16 +100,17 @@ public class UserService {
                       slot.getBooking().stream().map(Booking::getId).collect(
                           Collectors.toList()))));
 
+      int finalDayOfWeek = dayOfWeek;
       candidateService.getCandidateSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
               booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
-                  == dashboardDayDto.getDay()).forEach(booking -> dashboardDayDto.getBookings()
+                  == finalDayOfWeek).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
 
       interviewerService.getSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
               booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
-                  == dashboardDayDto.getDay()).forEach(booking -> dashboardDayDto.getBookings()
+                  == finalDayOfWeek).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
       resultDashBoard.add(dashboardDayDto);
     }
