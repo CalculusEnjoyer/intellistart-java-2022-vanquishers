@@ -186,7 +186,7 @@ public class CoordinatorController {
     userToDowngrade.setRole(Role.CANDIDATE);
     userService.register(userToDowngrade);
     Interviewer interviewer = interviewerService.getInterviewerByUserId(userToDowngrade.getId());
-    if (interviewer.getInterviewerSlot() == null) {
+    if (interviewer.getInterviewerSlot().isEmpty()) {
       interviewerService.deleteInterviewerById(interviewer.getId());
     }
     return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
