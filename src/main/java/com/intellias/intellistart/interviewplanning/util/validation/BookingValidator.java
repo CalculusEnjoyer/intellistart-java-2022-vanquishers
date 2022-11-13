@@ -46,9 +46,7 @@ public class BookingValidator {
   public static void isOverLappingWithBookings(Set<Booking> bookings, Booking booking) {
     for (Booking bookingToCheck : bookings) {
       if (UtilValidator.areIntervalsOverLapping(bookingToCheck.getFrom(), bookingToCheck.getTo(),
-          booking.getFrom(), booking.getTo())
-          || (bookingToCheck.getFrom().equals(booking.getFrom())
-          && bookingToCheck.getTo().equals(booking.getTo()))) {
+          booking.getFrom(), booking.getTo())) {
         throw new OverlappingBookingException();
       }
     }

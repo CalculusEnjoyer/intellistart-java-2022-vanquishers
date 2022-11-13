@@ -13,6 +13,6 @@ public class OverlappingSlotException extends InterviewApplicationException {
   public OverlappingSlotException() {
     super("slot_is_overlapping",
         HttpStatus.BAD_REQUEST,
-        "This slot can not match with already existing slots");
+        "This slot can not match with already existing slots.");
   }
 }

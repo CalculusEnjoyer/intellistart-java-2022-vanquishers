@@ -54,9 +54,7 @@ public class CandidateSlotValidator {
       CandidateSlotDto candidateSlotDto) {
     for (CandidateSlot slot : candidateSlots) {
       if (UtilValidator.areIntervalsOverLapping(slot.getDateFrom(), slot.getDateTo(),
-          candidateSlotDto.getDateFrom(), candidateSlotDto.getDateTo())
-          || (slot.getDateFrom().equals(candidateSlotDto.getDateFrom())
-          && slot.getDateTo().equals(candidateSlotDto.getDateTo()))) {
+          candidateSlotDto.getDateFrom(), candidateSlotDto.getDateTo())) {
         throw new OverlappingSlotException();
       }
     }

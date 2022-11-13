@@ -13,6 +13,6 @@ public class OverlappingBookingException extends InterviewApplicationException {
   public OverlappingBookingException() {
     super("booking_is_overlapping",
         HttpStatus.BAD_REQUEST,
-        "This booking can not match with already existing slots");
+        "This booking can not match with already existing bookings.");
   }
 }

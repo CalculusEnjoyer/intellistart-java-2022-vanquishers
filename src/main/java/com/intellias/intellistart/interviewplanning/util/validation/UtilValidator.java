@@ -36,23 +36,25 @@ public class UtilValidator {
   }
 
   /**
-   *  Checks if two intervals overlap.
+   * Checks if two intervals overlap.
    */
   public static boolean areIntervalsOverLapping(LocalDateTime from1, LocalDateTime to1,
       LocalDateTime from2, LocalDateTime to2) {
     return isTimeInInterval(from1, from2, to2)
         || isTimeInInterval(to2, from2, to2)
-        || isTimeInInterval(from2, from1, to1);
+        || isTimeInInterval(from2, from1, to1)
+        || (from1.equals(from2) && to1.equals(to2));
   }
 
   /**
-   *  Checks if two intervals overlap.
+   * Checks if two intervals overlap.
    */
   public static boolean areIntervalsOverLapping(LocalTime from1, LocalTime to1,
       LocalTime from2, LocalTime to2) {
     return isTimeInInterval(from1, from2, to2)
         || isTimeInInterval(to2, from2, to2)
-        || isTimeInInterval(from2, from1, to1);
+        || isTimeInInterval(from2, from1, to1)
+        || (from1.equals(from2) && to1.equals(to2));
   }
 
   private static boolean isTimeInInterval(LocalDateTime time, LocalDateTime intervalBegin,
