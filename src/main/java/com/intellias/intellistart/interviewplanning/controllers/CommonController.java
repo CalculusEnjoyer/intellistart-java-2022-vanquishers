@@ -2,6 +2,7 @@ package com.intellias.intellistart.interviewplanning.controllers;
 
 
 import com.intellias.intellistart.interviewplanning.services.WeekService;
+import javax.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class CommonController {
    * @return response status
    */
   @GetMapping("/me")
+  @RolesAllowed("ROLE_CANDIDATE")
   public ResponseEntity<HttpStatus> getMe() {
     return ResponseEntity.ok(HttpStatus.OK);
   }

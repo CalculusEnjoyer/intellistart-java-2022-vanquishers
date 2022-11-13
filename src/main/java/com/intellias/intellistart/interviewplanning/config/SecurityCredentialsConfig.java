@@ -27,7 +27,7 @@ import org.springframework.web.filter.CorsFilter;
  * Security credential config class.
  */
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
 public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 
   private final UserDetailsService userDetailsService;

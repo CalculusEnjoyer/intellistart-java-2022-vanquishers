@@ -63,9 +63,9 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     if (tokenProvider.validateToken(token)) {
       Claims claims = tokenProvider.getClaimsFromJwt(token);
-      String username = claims.getSubject();
+      String email = claims.getSubject();
 
-      UsernamePasswordAuthenticationToken auth = userService.findUserByEmail(username)
+      UsernamePasswordAuthenticationToken auth = userService.findUserByEmail(email)
           .map(FacebookUserDetails::new).map(userDetails -> {
             UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
@@ -79,8 +79,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     } else {
       SecurityContextHolder.clearContext();
     }
-
-    SecurityContextHolder.getContext().setAuthentication(null);
 
     // go to the next filter in the filter chain
     chain.doFilter(request, response);
