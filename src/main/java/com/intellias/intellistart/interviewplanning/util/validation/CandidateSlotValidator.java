@@ -59,4 +59,18 @@ public class CandidateSlotValidator {
       }
     }
   }
+
+
+  /**
+   * Checks if slot do not overlap with already existing Candidates's slots.
+   */
+  public static void validateCandidateSlotForOverlapping(Set<CandidateSlot> candidateSlots,
+      CandidateSlot candidateSlot) {
+    for (CandidateSlot slot : candidateSlots) {
+      if (UtilValidator.areIntervalsOverLapping(slot.getDateFrom(), slot.getDateTo(),
+          candidateSlot.getDateFrom(), candidateSlot.getDateTo())) {
+        throw new OverlappingSlotException();
+      }
+    }
+  }
 }

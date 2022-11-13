@@ -103,4 +103,22 @@ public class InterviewerValidator {
       }
     }
   }
+
+  /**
+   * Checks if slot do not overlap with already existing Interviewer's slots.
+   */
+  public static void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
+      InterviewerSlot interviewerSlot) {
+
+    Set<InterviewerSlot> sameDayInterviewerSlots = interviewerSlots.stream().filter(
+        slot -> slot.getDayOfWeek() == interviewerSlot.getDayOfWeek()
+            && slot.getWeekNum() == interviewerSlot.getWeekNum()).collect(Collectors.toSet());
+
+    for (InterviewerSlot slot : sameDayInterviewerSlots) {
+      if (UtilValidator.areIntervalsOverLapping(slot.getFrom(), slot.getTo(),
+          interviewerSlot.getFrom(), interviewerSlot.getTo())) {
+        throw new OverlappingSlotException();
+      }
+    }
+  }
 }
