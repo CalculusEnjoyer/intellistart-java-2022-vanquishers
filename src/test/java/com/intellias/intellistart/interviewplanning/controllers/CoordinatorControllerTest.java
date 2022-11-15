@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 
+import static java.util.Calendar.YEAR;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,16 +12,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.intellias.intellistart.interviewplanning.models.Booking;
+import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
+import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.repositories.BookingRepository;
+import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
+import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
+import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,10 +71,18 @@ class CoordinatorControllerTest {
   private BookingRepository bookingRepository;
 
   @Autowired
+  private InterviewerSlotRepository interviewerSlotRepository;
+  @Autowired
+  private CandidateSlotRepository candidateSlotRepository;
+
+  @Autowired
   private BookingService bookingService;
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private CandidateService candidateService;
 
   @Autowired
   private WebApplicationContext webApplicationContext;
@@ -95,7 +111,14 @@ class CoordinatorControllerTest {
     Booking booking = new Booking(LocalDateTime.of(2015,
         Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
         Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
-    bookingService.registerBooking(booking);
+    InterviewerSlot intslot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
+        LocalTime.of(9, 30), LocalTime.of(11, 0)));
+    CandidateSlot candslot = candidateSlotRepository.save(new CandidateSlot(
+        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
+        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0))));
+    booking.setInterviewerSlot(intslot);
+    booking.setCandidateSlot(candslot);
+    bookingRepository.save(booking);
     booking = bookingService.getAllBookings().get(bookingService.getAllBookings().size() - 1);
 
     mockMvc.perform(delete("/bookings/{bookingId}", booking.getId()))

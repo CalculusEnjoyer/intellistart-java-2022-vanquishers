@@ -19,7 +19,7 @@ public class BookingValidator {
   /**
    * Validates that Booking lays in CandidateSlot range.
    */
-  public static void isInCandidateSlotRange(CandidateSlot slot, Booking booking) {
+  public static void isInSlotRange(CandidateSlot slot, Booking booking) {
     if (slot.getDateFrom().compareTo(booking.getFrom()) > 0
         || slot.getDateTo().compareTo(booking.getTo()) < 0) {
       throw new BookingOutOfSlotException();
@@ -29,7 +29,7 @@ public class BookingValidator {
   /**
    * Validates that BookingDto lays in InterviewerSlot range.
    */
-  public static void isInInterviewerSlotRange(InterviewerSlot slot, Booking booking) {
+  public static void isInSlotRange(InterviewerSlot slot, Booking booking) {
     if (slot.getWeekNum() != WeekService.getWeekNumFrom(booking.getFrom().toLocalDate())
         || slot.getDayOfWeek() != WeekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
         || slot.getWeekNum() != WeekService.getWeekNumFrom(booking.getTo().toLocalDate())

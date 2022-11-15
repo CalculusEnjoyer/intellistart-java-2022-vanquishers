@@ -3,8 +3,11 @@ package com.intellias.intellistart.interviewplanning.services;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.repositories.BookingRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.validation.BookingValidator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +20,18 @@ import org.springframework.stereotype.Service;
 public class BookingService {
 
   private final BookingRepository repository;
+  private final InterviewerService interviewerService;
+  private final CandidateService candidateService;
 
+  /**
+   * BookingService constructor.
+   */
   @Autowired
-  public BookingService(BookingRepository repository) {
+  public BookingService(BookingRepository repository, InterviewerService interviewerService,
+      CandidateService candidateService) {
     this.repository = repository;
+    this.interviewerService = interviewerService;
+    this.candidateService = candidateService;
   }
 
   /**
@@ -48,18 +59,33 @@ public class BookingService {
    * @param id id of bookings
    */
   public void deleteBookingById(Long id) {
-    if (repository.existsById(id)) {
-      repository.deleteById(id);
-    } else {
-      throw new BookingNotFoundException();
-    }
+    Booking booking = repository.findById(id).orElseThrow(BookingNotFoundException::new);
+    booking.getInterviewerSlot().getBooking().remove(booking);
+    booking.getCandidateSlot().getBooking().remove(booking);
+    repository.deleteById(id);
   }
 
   public void deleteBookingsById(List<Long> ids) {
     repository.deleteAllById(ids);
   }
 
+  /**
+   * Method that register booking and checks if it overlaps with other bookings or slots.
+   */
   public Booking registerBooking(Booking booking) {
+    BookingValidator.isInSlotRange(
+        candidateService.getSlotById(booking.getCandidateSlot().getId()), booking);
+    BookingValidator.isInSlotRange(
+        interviewerService.getSlotById(booking.getInterviewerSlot().getId()), booking);
+    BookingValidator.isOverLappingWithBookings(
+        interviewerService.getSlotById(booking.getInterviewerSlot().getId()).getBooking().stream()
+            .filter(b -> !Objects.equals(
+                b.getId(), booking.getId())).collect(
+                Collectors.toSet()), booking);
+    BookingValidator.isOverLappingWithBookings(
+        candidateService.getSlotById(booking.getCandidateSlot().getId()).getBooking().stream()
+            .filter(b -> !Objects.equals(b.getId(), booking.getId())).collect(
+                Collectors.toSet()), booking);
     return repository.save(booking);
   }
 

@@ -46,11 +46,11 @@ public class BookingValidatorTest {
             Month.OCTOBER, 12, 12, 00), "check", "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInCandidateSlotRange(
+        () -> BookingValidator.isInSlotRange(
             candidateSlot,
             outOfBoundaries));
     assertDoesNotThrow(
-        () -> BookingValidator.isInCandidateSlotRange(
+        () -> BookingValidator.isInSlotRange(
             candidateSlot,
             notOutOfBoundaries));
   }
@@ -72,11 +72,11 @@ public class BookingValidatorTest {
         "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInInterviewerSlotRange(
+        () -> BookingValidator.isInSlotRange(
             interviewerSlot,
             outOfBoundaries1));
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInInterviewerSlotRange(
+        () -> BookingValidator.isInSlotRange(
             interviewerSlot,
             outOfBoundaries2));
   }

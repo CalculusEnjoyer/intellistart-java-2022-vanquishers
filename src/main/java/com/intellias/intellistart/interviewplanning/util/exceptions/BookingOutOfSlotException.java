@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 public class BookingOutOfSlotException extends InterviewApplicationException {
 
   public BookingOutOfSlotException() {
-    super("booking_out_of_slot", HttpStatus.NOT_FOUND,
+    super("booking_out_of_slot", HttpStatus.BAD_REQUEST,
         "This booking is out of slot boundaries.");
   }
 }

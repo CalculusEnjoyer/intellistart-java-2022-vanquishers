@@ -4,8 +4,10 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -51,7 +53,7 @@ public class InterviewerSlot {
   @JoinColumn(name = "interviewer_id")
   private Interviewer interviewer;
 
-  @OneToMany(mappedBy = "interviewerSlot")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "interviewerSlot", cascade = CascadeType.ALL)
   private Set<Booking> booking = new HashSet<>();
 
   /**
