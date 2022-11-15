@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class DashboardDayDto implements Serializable {
 
-  private Integer day;
+  private LocalDate day;
   private List<InterviewerSlotFormWithBookingIds> interviewerSlotFormsWithId = new ArrayList<>();
   private List<CandidateSlotFormWithBookingIds> candidateSlotsFormsWithId = new ArrayList<>();
   private Map<Long, BookingDto> bookings = new HashMap<>();
