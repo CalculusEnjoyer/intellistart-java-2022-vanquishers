@@ -5,15 +5,18 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDay
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerDto;
 import com.intellias.intellistart.interviewplanning.controllers.dto.UserDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
+import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.ExcessBookingLimitException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.SameRoleChangeException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.Comparator;
 import java.util.List;
@@ -113,6 +116,7 @@ public class CoordinatorController {
       @RequestBody BookingDto bookingDto) {
     Booking bookingToUpdate = bookingService.getBookingById(bookingId);
     Booking.updateFieldsExceptId(bookingToUpdate, mapper.map(bookingDto, Booking.class));
+    bookingToUpdate.setStatus(Status.CHANGED);
     bookingService.registerBooking(bookingToUpdate);
     return ResponseEntity.ok().body(mapper.map(bookingToUpdate, BookingDto.class));
   }
@@ -138,11 +142,19 @@ public class CoordinatorController {
   @PostMapping("/users/interviewers")
   public ResponseEntity<UserDto> grantInterviewerRole(@RequestBody Map<String, String> email) {
     User userToGrand = userService.findUserByEmail(email.get("email"));
+    if (userToGrand.getRole() == Role.INTERVIEWER) {
+      throw new SameRoleChangeException();
+    }
     userToGrand.setRole(Role.INTERVIEWER);
     userService.register(userToGrand);
-    Interviewer newInterviewer = new Interviewer();
-    newInterviewer.setUser(userToGrand);
-    interviewerService.registerInterviewer(newInterviewer);
+    Interviewer interviewer;
+    try {
+      interviewer = interviewerService.getInterviewerByUserId(userToGrand.getId());
+    } catch (UserNotFoundException e) {
+      interviewer = new Interviewer();
+    }
+    interviewer.setUser(userToGrand);
+    interviewerService.registerInterviewer(interviewer);
     return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
   }
 
@@ -173,6 +185,10 @@ public class CoordinatorController {
     User userToDowngrade = interviewerToDelete.getUser();
     userToDowngrade.setRole(Role.CANDIDATE);
     userService.register(userToDowngrade);
+    Interviewer interviewer = interviewerService.getInterviewerByUserId(userToDowngrade.getId());
+    if (interviewer.getInterviewerSlot().isEmpty()) {
+      interviewerService.deleteInterviewerById(interviewer.getId());
+    }
     return ResponseEntity.ok().body(mapper.map(interviewerToDelete, InterviewerDto.class));
   }
 
@@ -214,6 +230,14 @@ public class CoordinatorController {
     }
     user.setRole(Role.CANDIDATE);
     userService.register(user);
+    Candidate candidate;
+    try {
+      candidate = candidateService.getCandidateByUserId(user.getId());
+    } catch (UserNotFoundException e) {
+      candidate = new Candidate();
+    }
+    candidate.setUser(user);
+    candidateService.registerCandidate(candidate);
     return ResponseEntity.ok().body(mapper.map(user, UserDto.class));
   }
 }

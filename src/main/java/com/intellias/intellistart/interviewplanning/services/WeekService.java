@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.services;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.IsoFields;
+import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,19 @@ public class WeekService {
     int year = date.get(IsoFields.WEEK_BASED_YEAR);
     int week = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     return Integer.parseInt(year + String.format("%02d", week));
+  }
+
+  /**
+   * Converts from weekNum + dayOfWeek format to LocalDate.
+   */
+  public static LocalDate getDateFromWeekAndDay(int weekNum, int dayOfWeek) {
+    String weekNumInString = String.valueOf(weekNum);
+    int year = Integer.parseInt(weekNumInString.substring(0, 4));
+    int weekNumWithoutYear = Integer.parseInt(weekNumInString.substring(4));
+    return LocalDate.now()
+        .with(WeekFields.ISO.weekBasedYear(), year)
+        .with(WeekFields.ISO.weekOfWeekBasedYear(), weekNumWithoutYear)
+        .with(WeekFields.ISO.dayOfWeek(), dayOfWeek);
   }
 
   /**
