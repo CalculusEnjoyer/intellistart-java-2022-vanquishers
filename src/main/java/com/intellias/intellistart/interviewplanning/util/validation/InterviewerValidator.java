@@ -97,28 +97,28 @@ public class InterviewerValidator {
             && slot.getWeekNum() == interviewerSlotDto.getWeekNum()).collect(Collectors.toSet());
 
     for (InterviewerSlot slot : sameDayInterviewerSlots) {
-      if (isTimeInSlotTimeBoundaries(interviewerSlotDto.getTimeFrom(), slot)
-          || isTimeInSlotTimeBoundaries(interviewerSlotDto.getTimeTo(), slot)
-          || isTimeInSlotTimeBoundaries(slot.getFrom(), interviewerSlotDto)
-          || (slot.getFrom().equals(interviewerSlotDto.getTimeFrom()) && slot.getTo()
-          .equals(interviewerSlotDto.getTimeTo()))) {
+      if (UtilValidator.areIntervalsOverLapping(slot.getFrom(), slot.getTo(),
+          interviewerSlotDto.getTimeFrom(), interviewerSlotDto.getTimeTo())) {
         throw new OverlappingSlotException();
       }
     }
   }
 
   /**
-   * Checks if input time lays in interviewer slot time boundaries (without binding to date).
+   * Checks if slot do not overlap with already existing Interviewer's slots.
    */
-  private static boolean isTimeInSlotTimeBoundaries(LocalTime time,
+  public static void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
       InterviewerSlot interviewerSlot) {
-    return time.compareTo(interviewerSlot.getFrom()) > 0
-        && time.compareTo(interviewerSlot.getTo()) < 0;
-  }
 
-  private static boolean isTimeInSlotTimeBoundaries(LocalTime time,
-      InterviewerSlotDto interviewerSlotDto) {
-    return time.compareTo(interviewerSlotDto.getTimeFrom()) > 0
-        && time.compareTo(interviewerSlotDto.getTimeTo()) < 0;
+    Set<InterviewerSlot> sameDayInterviewerSlots = interviewerSlots.stream().filter(
+        slot -> slot.getDayOfWeek() == interviewerSlot.getDayOfWeek()
+            && slot.getWeekNum() == interviewerSlot.getWeekNum()).collect(Collectors.toSet());
+
+    for (InterviewerSlot slot : sameDayInterviewerSlots) {
+      if (UtilValidator.areIntervalsOverLapping(slot.getFrom(), slot.getTo(),
+          interviewerSlot.getFrom(), interviewerSlot.getTo())) {
+        throw new OverlappingSlotException();
+      }
+    }
   }
 }

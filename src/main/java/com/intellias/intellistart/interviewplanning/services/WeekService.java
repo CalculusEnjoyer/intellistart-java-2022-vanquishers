@@ -39,7 +39,7 @@ public class WeekService {
    *
    * @return formatted week number for a given date
    */
-  public int getWeekNumFrom(LocalDate date) {
+  public static int getWeekNumFrom(LocalDate date) {
     int year = date.get(IsoFields.WEEK_BASED_YEAR);
     int week = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     return Integer.parseInt(year + String.format("%02d", week));
@@ -61,7 +61,7 @@ public class WeekService {
   /**
    * Method for calculating day of week of an input date.
    */
-  public int getDayOfWeekFrom(LocalDate date) {
+  public static int getDayOfWeekFrom(LocalDate date) {
     Calendar c = Calendar.getInstance();
     c.setTime(Date.from(date.atStartOfDay(ZONE_ID).toInstant()));
     return c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 7 : c.get(Calendar.DAY_OF_WEEK) - 1;
