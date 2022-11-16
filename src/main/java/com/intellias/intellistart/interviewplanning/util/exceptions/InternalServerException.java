@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * Internal server error exception.
  */
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-public class InternalServerException extends RuntimeException {
+public class InternalServerException extends InterviewApplicationException {
 
   public InternalServerException(String message) {
-    super(message);
+    super("internal_server_exception", HttpStatus.INTERNAL_SERVER_ERROR, message);
   }
+
 }
