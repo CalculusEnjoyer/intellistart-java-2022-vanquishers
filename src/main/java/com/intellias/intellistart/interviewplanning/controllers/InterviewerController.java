@@ -7,6 +7,7 @@ import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.validation.InterviewerValidator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -90,7 +91,7 @@ public class InterviewerController {
    *
    * @return response status
    */
-  @GetMapping("/{interviewerId}/slots/current_week")
+  @GetMapping("/{interviewerId}/slots/current-week")
   public ResponseEntity<List<InterviewerSlotDto>> getCurrentWeekSlots(
       @PathVariable Long interviewerId) {
     List<InterviewerSlotDto> currentWeekSlots = interviewerService
@@ -107,7 +108,7 @@ public class InterviewerController {
    *
    * @return response status
    */
-  @GetMapping("/{interviewerId}/slots/next_week")
+  @GetMapping("/{interviewerId}/slots/next-week")
   public ResponseEntity<List<InterviewerSlotDto>> getNextWeekSlots(
       @PathVariable Long interviewerId) {
     List<InterviewerSlotDto> nextWeekSlots = interviewerService
@@ -124,15 +125,16 @@ public class InterviewerController {
    *
    * @return response status
    */
-  @PostMapping("/{interviewerId}/bookings/next_week_count")
-  public ResponseEntity<Integer> setForNextWeekMaxBookings(
-      @RequestBody Integer bookingLimit,
+  @PostMapping("/{interviewerId}/bookings/booking-limit")
+  public ResponseEntity<Map<String, Integer>> setBookingLimit(
+      @RequestBody Map<String, Integer> bookingLimitMap,
       @PathVariable Long interviewerId) {
+    Integer bookingLimit = bookingLimitMap.get("bookingLimit");
     InterviewerValidator.validateBookingLimit(bookingLimit);
 
     Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
     interviewer.setBookingLimit(bookingLimit);
     Interviewer registeredInterviewer = interviewerService.registerInterviewer(interviewer);
-    return ResponseEntity.ok(registeredInterviewer.getBookingLimit());
+    return ResponseEntity.ok(Map.of("bookingLimit", registeredInterviewer.getBookingLimit()));
   }
 }
