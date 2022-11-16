@@ -13,7 +13,7 @@ public class InvalidSlotBoundariesException extends InterviewApplicationExceptio
   public InvalidSlotBoundariesException() {
     super("invalid_boundaries",
         HttpStatus.BAD_REQUEST,
-        "Slot duration have to be rounded to 30 minutes");
+        "Slot duration have to be rounded to 30 minutes.");
   }
 
   /**

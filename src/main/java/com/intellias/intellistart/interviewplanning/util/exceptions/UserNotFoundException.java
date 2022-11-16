@@ -14,6 +14,6 @@ public class UserNotFoundException extends InterviewApplicationException {
 
     super("user_not_found",
         HttpStatus.NOT_FOUND,
-        "There is no user with such id in the database");
+        "There is no such user in the database.");
   }
 }

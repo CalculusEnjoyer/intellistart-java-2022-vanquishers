@@ -1,11 +1,15 @@
 package com.intellias.intellistart.interviewplanning.util.validation;
 
+import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingOutOfSlotException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidBookingBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingBookingException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -50,5 +54,25 @@ public class BookingValidator {
         throw new OverlappingBookingException();
       }
     }
+  }
+
+  /**
+   * Method for validating booking boundaries.
+   */
+  public static boolean isValidBookingTimeBoundaries(BookingDto dto) {
+    LocalDateTime fromTime = dto.getDateFrom();
+    LocalDateTime toTime = dto.getDateTo();
+    return dto.getDateFrom().toLocalDate().isAfter(LocalDate.now())
+        && UtilValidator.isValidTimeBoundaries(fromTime.toLocalTime(), toTime.toLocalTime());
+  }
+
+  /**
+   * Method that throws exception if booking has invalid boundaries.
+   */
+  public static BookingDto validDtoBoundariesOrError(BookingDto dto) {
+    if (!isValidBookingTimeBoundaries(dto)) {
+      throw new InvalidBookingBoundariesException();
+    }
+    return dto;
   }
 }

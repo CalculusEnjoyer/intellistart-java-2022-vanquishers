@@ -13,6 +13,6 @@ public class SameRoleChangeException extends InterviewApplicationException {
   public SameRoleChangeException() {
     super("same_role",
         HttpStatus.BAD_REQUEST,
-        "Can not revoke or grand to the role that is already set");
+        "Can not revoke or grand to the role that has been already set.");
   }
 }
