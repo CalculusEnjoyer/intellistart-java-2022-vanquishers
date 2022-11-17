@@ -3,8 +3,10 @@ package com.intellias.intellistart.interviewplanning.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +41,7 @@ public class Interviewer {
   private User user;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "interviewer")
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "interviewer", cascade = CascadeType.PERSIST)
   private Set<InterviewerSlot> interviewerSlot = new HashSet<>();
 
   /**

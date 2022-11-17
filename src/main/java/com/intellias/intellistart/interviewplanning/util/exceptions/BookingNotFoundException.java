@@ -9,6 +9,6 @@ public class BookingNotFoundException extends InterviewApplicationException {
 
   public BookingNotFoundException() {
     super("booking_not_found", HttpStatus.NOT_FOUND,
-        "There is no bookings with such id in the database");
+        "There is no such bookings in the database");
   }
 }

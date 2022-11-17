@@ -128,6 +128,9 @@ class CandidateServiceTest {
     CandidateSlot candidateSlotToFind = new CandidateSlot(
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0)));
+    Candidate candidate = new Candidate();
+    candidateService.registerCandidate(candidate);
+    candidateSlotToFind.setCandidate(candidate);
     candidateService.registerSlot(candidateSlotToFind);
 
     List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeek(

@@ -6,7 +6,9 @@ import com.intellias.intellistart.interviewplanning.repositories.CandidateReposi
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,14 @@ public class CandidateService {
     slotRepository.deleteAllById(ids);
   }
 
+  /**
+   * Register slot and checks if it overlaps with other slots and bookings.
+   */
   public CandidateSlot registerSlot(CandidateSlot slot) {
+    CandidateSlotValidator.validateCandidateSlotForOverlapping(
+        getCandidateById(slot.getCandidate().getId()).getCandidateSlot().stream()
+            .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
+        slot);
     return slotRepository.save(slot);
   }
 

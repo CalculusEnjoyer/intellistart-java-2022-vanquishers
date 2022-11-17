@@ -4,11 +4,13 @@ import static java.util.Calendar.YEAR;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.intellias.intellistart.interviewplanning.controllers.dto.BookingDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.models.enums.Status;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingOutOfSlotException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidBookingBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingBookingException;
 import com.intellias.intellistart.interviewplanning.util.validation.BookingValidator;
 import java.time.LocalDate;
@@ -46,11 +48,11 @@ public class BookingValidatorTest {
             Month.OCTOBER, 12, 12, 00), "check", "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInCandidateSlotRange(
+        () -> BookingValidator.isInSlotRange(
             candidateSlot,
             outOfBoundaries));
     assertDoesNotThrow(
-        () -> BookingValidator.isInCandidateSlotRange(
+        () -> BookingValidator.isInSlotRange(
             candidateSlot,
             notOutOfBoundaries));
   }
@@ -72,11 +74,11 @@ public class BookingValidatorTest {
         "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInInterviewerSlotRange(
+        () -> BookingValidator.isInSlotRange(
             interviewerSlot,
             outOfBoundaries1));
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInInterviewerSlotRange(
+        () -> BookingValidator.isInSlotRange(
             interviewerSlot,
             outOfBoundaries2));
   }
@@ -127,5 +129,33 @@ public class BookingValidatorTest {
     assertDoesNotThrow(() -> BookingValidator.isOverLappingWithBookings(bookings, notOverlap));
     assertDoesNotThrow(() -> BookingValidator.isOverLappingWithBookings(bookings, notOverlap1));
     assertDoesNotThrow(() -> BookingValidator.isOverLappingWithBookings(bookings, notOverlap2));
+  }
+
+  @Test
+  @Order(4)
+  void isValidBookingBoundariesTest() {
+    BookingDto bookingDtoValid1 = new BookingDto(
+        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 30)),
+        LocalDateTime.of(2048,
+            Month.OCTOBER, 12, 11, 00), "check", "check", Status.BOOKED, 1L, 1L);
+    BookingDto bookingDtoValid2 = new BookingDto(
+        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(16, 30)),
+        LocalDateTime.of(2048,
+            Month.OCTOBER, 12, 18, 00), "check", "check", Status.BOOKED, 1L, 1L);
+    BookingDto bookingDtoInValid1 = new BookingDto(
+        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 30)),
+        LocalDateTime.of(2048,
+            Month.OCTOBER, 12, 10, 0), "check", "check", Status.BOOKED, 1L, 1L);
+    BookingDto bookingDtoInValid2 = new BookingDto(
+        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 31)),
+        LocalDateTime.of(2048,
+            Month.OCTOBER, 12, 13, 00), "check", "check", Status.BOOKED, 1L, 1L);
+
+    assertThrows(InvalidBookingBoundariesException.class,
+        () -> BookingValidator.validDtoBoundariesOrError(bookingDtoInValid1));
+    assertThrows(InvalidBookingBoundariesException.class,
+        () -> BookingValidator.validDtoBoundariesOrError(bookingDtoInValid2));
+    assertDoesNotThrow(() -> BookingValidator.validDtoBoundariesOrError(bookingDtoValid1));
+    assertDoesNotThrow(() -> BookingValidator.validDtoBoundariesOrError(bookingDtoValid2));
   }
 }

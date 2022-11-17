@@ -7,7 +7,10 @@ import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlot
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.validation.InterviewerValidator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +74,14 @@ public class InterviewerService {
     return interviewerRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
   }
 
+  /**
+   * Register slot and checks if it overlaps with other slots.
+   */
   public InterviewerSlot registerSlot(InterviewerSlot slot) {
+    InterviewerValidator.validateOverLappingOfSlots(
+        getInterviewerById(slot.getInterviewer().getId()).getInterviewerSlot().stream()
+            .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
+        slot);
     return slotRepository.save(slot);
   }
 

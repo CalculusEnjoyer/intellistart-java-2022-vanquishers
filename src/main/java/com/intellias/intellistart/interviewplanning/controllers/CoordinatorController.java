@@ -18,6 +18,7 @@ import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.ExcessBookingLimitException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.SameRoleChangeException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.validation.BookingValidator;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class CoordinatorController {
    */
   @PostMapping("/bookings")
   public ResponseEntity<BookingDto> createBooking(@RequestBody BookingDto bookingDto) {
-
+    BookingValidator.validDtoBoundariesOrError(bookingDto);
     Booking booking = mapper.map(bookingDto, Booking.class);
     Interviewer interviewer = interviewerService
         .getInterviewerById(booking.getInterviewerSlot().getInterviewer().getId());
@@ -114,6 +115,7 @@ public class CoordinatorController {
   @PostMapping("/bookings/{bookingId}")
   public ResponseEntity<BookingDto> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
+    BookingValidator.validDtoBoundariesOrError(bookingDto);
     Booking bookingToUpdate = bookingService.getBookingById(bookingId);
     Booking.updateFieldsExceptId(bookingToUpdate, mapper.map(bookingDto, Booking.class));
     bookingToUpdate.setStatus(Status.CHANGED);
