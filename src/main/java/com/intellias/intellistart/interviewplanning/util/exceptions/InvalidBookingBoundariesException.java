@@ -13,6 +13,6 @@ public class InvalidBookingBoundariesException extends InterviewApplicationExcep
   public InvalidBookingBoundariesException() {
     super("invalid_booking_boundaries",
         HttpStatus.BAD_REQUEST,
-        "Booking duration have to be rounded to 30 minutes and be greater than 1.5 hours.");
+        "Booking duration have to be 1.5 hours and it have to be registered in future.");
   }
 }

@@ -135,11 +135,11 @@ public class BookingValidatorTest {
   @Order(4)
   void isValidBookingBoundariesTest() {
     BookingDto bookingDtoValid1 = new BookingDto(
-        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 00)),
+        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(2048,
             Month.OCTOBER, 12, 11, 00), "check", "check", Status.BOOKED, 1L, 1L);
     BookingDto bookingDtoValid2 = new BookingDto(
-        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(14, 30)),
+        LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(16, 30)),
         LocalDateTime.of(2048,
             Month.OCTOBER, 12, 18, 00), "check", "check", Status.BOOKED, 1L, 1L);
     BookingDto bookingDtoInValid1 = new BookingDto(

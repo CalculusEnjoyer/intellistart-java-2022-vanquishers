@@ -41,7 +41,7 @@ public class Interviewer {
   private User user;
 
   @JsonIgnore
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "interviewer", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "interviewer", cascade = CascadeType.PERSIST)
   private Set<InterviewerSlot> interviewerSlot = new HashSet<>();
 
   /**

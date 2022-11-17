@@ -36,7 +36,7 @@ public class Candidate {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "candidate", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "candidate", cascade = CascadeType.PERSIST)
   private Set<CandidateSlot> candidateSlot = new HashSet<>();
 
   /**

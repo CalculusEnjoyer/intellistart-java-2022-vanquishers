@@ -8,7 +8,7 @@ import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingOutOfSlotException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidBookingBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingBookingException;
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -62,8 +62,8 @@ public class BookingValidator {
   public static boolean isValidBookingTimeBoundaries(BookingDto dto) {
     LocalDateTime fromTime = dto.getDateFrom();
     LocalDateTime toTime = dto.getDateTo();
-    return dto.getDateFrom().toLocalDate().isAfter(LocalDate.now())
-        && UtilValidator.isValidTimeBoundaries(fromTime.toLocalTime(), toTime.toLocalTime());
+    return dto.getDateFrom().isAfter(LocalDateTime.now(WeekService.ZONE_ID))
+        && Duration.between(fromTime, toTime).toMinutes() == 90;
   }
 
   /**

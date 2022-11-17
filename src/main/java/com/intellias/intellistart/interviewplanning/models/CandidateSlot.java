@@ -47,7 +47,7 @@ public class CandidateSlot {
   @JoinColumn(name = "candidate_id")
   private Candidate candidate;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "candidateSlot", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "candidateSlot", cascade = CascadeType.PERSIST)
   private Set<Booking> booking = new HashSet<>();
 
   public CandidateSlot(LocalDateTime dateFrom, LocalDateTime dateTo) {

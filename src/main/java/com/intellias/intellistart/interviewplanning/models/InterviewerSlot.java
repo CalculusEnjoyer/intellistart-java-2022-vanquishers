@@ -53,7 +53,7 @@ public class InterviewerSlot {
   @JoinColumn(name = "interviewer_id")
   private Interviewer interviewer;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "interviewerSlot", cascade = CascadeType.ALL)
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "interviewerSlot", cascade = CascadeType.PERSIST)
   private Set<Booking> booking = new HashSet<>();
 
   /**

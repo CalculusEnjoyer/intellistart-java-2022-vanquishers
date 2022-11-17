@@ -24,9 +24,9 @@ alter sequence interviewers_id_seq restart with 3;
 
 INSERT INTO interviewer_slots(id, day_of_week, t_from, t_to, week_num, interviewer_id)
 
-VALUES (1, 4, '9:00', '18:00', 202246, 1),
-       (2, 4, '8:00', '19:30', 202246, 2),
-       (3, 4, '8:00', '19:30', 202246, 2),
+VALUES (1, 5, '9:00', '18:00', 202246, 1),
+       (2, 5, '8:00', '19:30', 202246, 2),
+       (3, 5, '8:00', '19:30', 202246, 2),
        (4, 4, '10:00', '16:30', 202247, 1);
 alter sequence interviewer_slots_id_seq restart with 5;
 
