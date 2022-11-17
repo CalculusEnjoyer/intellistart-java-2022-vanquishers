@@ -3,16 +3,21 @@ package com.intellias.intellistart.interviewplanning.controllers;
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
-import com.intellias.intellistart.interviewplanning.models.enums.Role;
+import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.models.CandidateSlotFlat;
 import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,12 +42,14 @@ public class CandidateController {
    * Autowired constructor for candidate controller.
    *
    * @param candidateService candidate service with needed methods
+   * @param userService
    * @param mapper           for mapping DTOs to entities and vice versa
    */
   @Autowired
   public CandidateController(
       CandidateService candidateService,
       ModelMapper mapper) {
+
     this.candidateService = candidateService;
     this.mapper = mapper;
   }
@@ -52,49 +59,77 @@ public class CandidateController {
    *
    * @return response status
    */
-//  @PostMapping("/current/slots")
-//  public ResponseEntity<Object> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-//
-//    if (SecurityController.userRole != Role.CANDIDATE) {
-//      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//    }
-//    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-//      throw new InvalidSlotBoundariesException();
-//    }
-//
-//    Candidate candidate = candidateService.getCandidateById(SecurityController.id);
-//    CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
-//    slot.setCandidate(candidate);
-//    candidateService.registerSlot(slot);
-//
-//    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-//    return new ResponseEntity<>(dto, HttpStatus.OK);
-//  }
+  @PostMapping("/current/slots")
+  public ResponseEntity<Object> addSlot(
+      Authentication authentication,
+      @RequestBody CandidateSlotDto candidateSlotDto) {
+
+    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
+      throw new InvalidSlotBoundariesException();
+    }
+
+    FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
+    Candidate candidate;
+    // Temporary solution
+    // Creates new Candidate if not found in table
+    // Currently users are not registered in candidate table
+    // Needs to be fixed in FacebookService
+    try {
+      candidate = candidateService.getCandidateByUserId(details.getUser().getId());
+    } catch (UserNotFoundException e) {
+      candidate = new Candidate(new HashSet<>(), details.getUser());
+      candidateService.registerCandidate(candidate);
+    }
+
+    CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
+    slot.setCandidate(candidate);
+    candidateService.registerSlot(slot);
+
+    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
+    return new ResponseEntity<>(dto, HttpStatus.OK);
+  }
 
   /**
    * Method for updating time slot for candidate.
    *
    * @return response status
    */
-//  @PostMapping("/current/slots/{slotId}")
-//  public ResponseEntity<CandidateSlotDto> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
-//      @PathVariable Long slotId) {
-//
-//    if (SecurityController.userRole != Role.CANDIDATE) {
-//      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-//    }
-//    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-//      throw new InvalidSlotBoundariesException();
-//    }
-//
-//    CandidateSlot slot = candidateService.getSlotById(slotId);
-//    slot.setDateFrom(candidateSlotDto.getDateFrom());
-//    slot.setDateTo(candidateSlotDto.getDateTo());
-//    candidateService.registerSlot(slot);
-//
-//    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-//    return new ResponseEntity<>(dto, HttpStatus.OK);
-//  }
+  @PostMapping("/current/slots/{slotId}")
+  public ResponseEntity<CandidateSlotDto> updateSlot(
+      Authentication authentication,
+      @RequestBody CandidateSlotDto candidateSlotDto,
+      @PathVariable Long slotId) {
+
+    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
+      throw new InvalidSlotBoundariesException();
+    }
+
+    FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
+    Candidate candidate;
+
+    // Temporary solution
+    // Creates new Candidate if not found in table
+    // Currently users are not registered in candidate table
+    // Needs to be fixed in FacebookService
+    try {
+      candidate = candidateService.getCandidateByUserId(details.getUser().getId());
+    } catch (UserNotFoundException e) {
+      candidate = new Candidate(new HashSet<>(), details.getUser());
+      candidateService.registerCandidate(candidate);
+    }
+
+    CandidateSlot slot = candidateService.getSlotById(slotId);
+    if (slot.getCandidate().getUser().getId() != candidate.getUser().getId()) {
+      throw new CandidateSlotNotFoundException();
+    }
+
+    slot.setDateFrom(candidateSlotDto.getDateFrom());
+    slot.setDateTo(candidateSlotDto.getDateTo());
+    candidateService.registerSlot(slot);
+
+    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
+    return new ResponseEntity<>(dto, HttpStatus.OK);
+  }
 
   /**
    * Method for getting all time slots by candidate.
@@ -102,9 +137,13 @@ public class CandidateController {
    * @return list of candidate time slots
    */
   @GetMapping("/current/slots")
-  public List<CandidateSlotDto> getAllSlots() {
+  public List<CandidateSlotFlat> getAllSlots(Authentication authentication) {
+
+    FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
+
     return candidateService.getAllSlots().stream()
-        .map(e -> mapper.map(e, CandidateSlotDto.class))
+        .filter(e -> e.getCandidate().getUser().getId() == details.getUser().getId())
+        .map(e -> new CandidateSlotFlat(e))
         .collect(Collectors.toList());
   }
 

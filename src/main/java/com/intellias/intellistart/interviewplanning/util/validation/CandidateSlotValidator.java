@@ -20,27 +20,16 @@ public class CandidateSlotValidator {
    * @return true if this DTO valid for adjustment
    */
   public static boolean isValidCandidateSlot(CandidateSlotDto dto) {
+
     LocalDateTime fromTime = dto.getDateFrom();
     LocalDateTime toTime = dto.getDateTo();
+
     return dto.getDateFrom().toLocalDate().isAfter(LocalDate.now())
         && Duration.between(fromTime, toTime).toMinutes() >= 90
         && fromTime.getMinute() % 30 == 0 && toTime.getMinute() % 30 == 0
         && fromTime.getHour() >= 8 && fromTime.getHour() < 22
         && toTime.getHour() >= 8 && toTime.getHour() <= 22
         && toTime.getHour() > fromTime.getHour();
-  }
-
-  /**
-   * Method for getting valid DTO.
-   *
-   * @param dto DTO that needs to be adjusted and checked
-   * @return adjusted DTO
-   */
-  public static CandidateSlotDto validDtoOrError(CandidateSlotDto dto) {
-    if (!isValidCandidateSlot(dto)) {
-      throw new InvalidSlotBoundariesException();
-    }
-    return dto;
   }
 
 }
