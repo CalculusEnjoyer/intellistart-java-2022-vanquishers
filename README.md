@@ -8,3 +8,11 @@ Application will run on localhost:8080 by default.
 
 If it is needed, you can configure ports and other properties in docker-compose.yml.
 
+## .properties files
+application.properties contains properties about database connection
+
+application-test.properties contains properties about database connection for testing
+
+timezone.properties contains properties about current timezone system is working with.
+
+If necessary change the zone or other properties it must be written in this files
