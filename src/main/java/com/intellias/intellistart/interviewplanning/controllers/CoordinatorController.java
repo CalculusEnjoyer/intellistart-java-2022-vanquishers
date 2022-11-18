@@ -103,6 +103,9 @@ public class CoordinatorController {
       throw new ExcessBookingLimitException();
     }
 
+    booking.setStatus(Status.NEW);
+    bookingDto.setStatus(Status.NEW);
+
     bookingService.registerBooking(booking);
     return ResponseEntity.status(HttpStatus.OK).body(bookingDto);
   }

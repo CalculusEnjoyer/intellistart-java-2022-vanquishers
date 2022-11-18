@@ -6,12 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Main application.
  */
 @SpringBootApplication
 @EnableOAuth2Sso
+@PropertySource("classpath:timezone.properties")
 public class InterviewPlanningApplication {
 
   public static void main(String[] args) {

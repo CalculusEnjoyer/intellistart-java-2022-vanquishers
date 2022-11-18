@@ -6,15 +6,26 @@ import java.time.temporal.IsoFields;
 import java.time.temporal.WeekFields;
 import java.util.Calendar;
 import java.util.Date;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  * Week service.
  */
 @Service
+@Component
 public class WeekService {
 
-  public static final ZoneId ZONE_ID = ZoneId.of("Europe/Kiev");
+  @Value("${current.timezone}")
+  public String zone;
+
+  public static ZoneId ZONE_ID;
+
+  @Value("${current.timezone}")
+  public void setZoneStatic(String zone) {
+    WeekService.ZONE_ID = ZoneId.of(zone);
+  }
 
   /**
    * Method for getting the current week number with current year (202243).
