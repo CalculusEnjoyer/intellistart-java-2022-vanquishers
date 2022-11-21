@@ -91,10 +91,10 @@ class CoordinatorControllerTest {
   private WebApplicationContext webApplicationContext;
 
   private static final List<User> USERS = List.of(
-      new User("email1", Role.INTERVIEWER),
-      new User("email2", Role.INTERVIEWER),
-      new User("email3", Role.COORDINATOR),
-      new User("email4", Role.COORDINATOR));
+      new User("email1@gmail.com", Role.INTERVIEWER),
+      new User("email2@gmail.com", Role.INTERVIEWER),
+      new User("email3@gmail.com", Role.COORDINATOR),
+      new User("email4@gmail.com", Role.COORDINATOR));
 
   private static final List<Interviewer> INTERVIEWERS = List.of(
       new Interviewer(USERS.get(0), 5, null),

@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
+import javax.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
