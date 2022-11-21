@@ -85,16 +85,6 @@ public class CandidateService {
     return repository.findById(id).orElseThrow(CandidateSlotNotFoundException::new);
   }
 
-  /**
-   * Method for getting candidate by Facebook ID.
-   *
-   * @param facebookId facebook id
-   * @return find result - candidate
-   */
-  public Candidate getCandidateByFacebookId(Long facebookId) {
-    return repository.findByFacebookId(facebookId);
-  }
-
   public Candidate getCandidateByUserId(Long userId) {
     return repository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
   }

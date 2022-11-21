@@ -7,6 +7,8 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDay
 import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDayDto.InterviewerSlotFormWithBookingIds;
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
+import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.repositories.UserRepository;
@@ -53,12 +55,25 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public User findUserByFacebookId(Long facebookId) {
-    return userRepository.findByFacebookId(facebookId);
+  /**
+   * Method to register new User and add him to table
+   * Interviewer/Coordinator if necessary.
+   *
+   * @param role used to set a Role and add User to right table if necessary
+   * @return created User
+   */
+  public User registerUser(User user, Role role) {
+    if (role == Role.CANDIDATE) {
+      candidateService.registerCandidate(new Candidate(null, user));
+    } else if (role == Role.INTERVIEWER) {
+      interviewerService.registerInterviewer(new Interviewer(user, 0, null));
+    }
+    user.setRole(role);
+    return userRepository.save(user);
   }
 
-  public User findUserByEmail(String email) {
-    return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+  public User findUserByEmail(String email) throws NullPointerException {
+    return userRepository.findUserByEmail(email);
   }
 
   public List<User> findAllUsersByRole(Role role) {
@@ -79,7 +94,6 @@ public class UserService {
    * @param weekNum number of week to generate a dashboard
    * @return dashboard
    */
-
   public List<DashboardDayDto> getDashBoard(int weekNum) {
     List<DashboardDayDto> resultDashBoard = new ArrayList<>();
     for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
