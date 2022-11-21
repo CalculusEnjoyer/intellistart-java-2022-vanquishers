@@ -112,7 +112,7 @@ class CandidateServiceTest {
   @Test
   @Order(4)
   void findCandidateByUserId() {
-    User newUser = new User(12912L, "check@gmail.com", Role.CANDIDATE);
+    User newUser = new User("check@gmail.com", Role.CANDIDATE);
     userService.register(newUser);
     Candidate newCandidate = new Candidate();
     newCandidate.setUser(newUser);

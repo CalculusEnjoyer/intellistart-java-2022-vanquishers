@@ -13,8 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
 
-  @Query("SELECT r FROM Candidate r where r.user.facebookId = :facebookId")
-  Candidate findByFacebookId(@Param("facebookId") Long id);
-
   Optional<Candidate> findByUserId(Long userId);
 }

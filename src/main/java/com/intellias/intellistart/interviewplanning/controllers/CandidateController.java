@@ -1,10 +1,9 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
-import com.intellias.intellistart.interviewplanning.controllers.auth.SecurityController;
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
-import com.intellias.intellistart.interviewplanning.models.enums.Role;
+import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
@@ -14,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,16 +53,14 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots")
-  public ResponseEntity<Object> addSlot(@RequestBody CandidateSlotDto candidateSlotDto) {
-
-    if (SecurityController.userRole != Role.CANDIDATE) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
+  public ResponseEntity<Object> addSlot(@RequestBody CandidateSlotDto candidateSlotDto,
+      Authentication authentication) {
     if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
       throw new InvalidSlotBoundariesException();
     }
 
-    Candidate candidate = candidateService.getCandidateById(SecurityController.id);
+    FacebookUserDetails facebookUserDetails = (FacebookUserDetails) authentication.getPrincipal();
+    Candidate candidate = candidateService.getCandidateById(facebookUserDetails.getUser().getId());
     CandidateSlot slot = mapper.map(candidateSlotDto, CandidateSlot.class);
     slot.setCandidate(candidate);
     candidateService.registerSlot(slot);
@@ -80,9 +78,6 @@ public class CandidateController {
   public ResponseEntity<CandidateSlotDto> updateSlot(@RequestBody CandidateSlotDto candidateSlotDto,
       @PathVariable Long slotId) {
 
-    if (SecurityController.userRole != Role.CANDIDATE) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
     if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
       throw new InvalidSlotBoundariesException();
     }
