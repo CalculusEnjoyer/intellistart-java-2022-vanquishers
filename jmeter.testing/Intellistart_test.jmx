@@ -1869,7 +1869,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\test_results.csv</stringProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
       <kg.apc.jmeter.vizualizers.CorrectedResultCollector guiclass="kg.apc.jmeter.vizualizers.LatenciesOverTimeGui" testclass="kg.apc.jmeter.vizualizers.CorrectedResultCollector" testname="jp@gc - Response Latencies Over Time" enabled="true">
@@ -1961,6 +1961,15 @@
         <boolProp name="include_checkbox_state">false</boolProp>
         <boolProp name="exclude_checkbox_state">false</boolProp>
       </kg.apc.jmeter.vizualizers.CorrectedResultCollector>
+      <hashTree/>
+      <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+        <collectionProp name="HeaderManager.headers">
+          <elementProp name="" elementType="Header">
+            <stringProp name="Header.name">Authorization</stringProp>
+            <stringProp name="Header.value">Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmF2Y2h1azg4M0BnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQvtCy0LAiLCJsYXN0X25hbWUiOiLQmtGA0LDQstGH0YPQuiIsImF1dGhvcml0aWVzIjpbIlJPTEVfQ09PUkRJTkFUT1IiXSwiaWF0IjoxNjY5MDQwNzA4LCJleHAiOjE2NjkxMjcxMDh9.rnMQ3LKzGWUPO4nkV2296sek0x00-H14CuSXn1a38SkhdOtWntDaEPzsYkijegxOCGJq28UdSsw_P4cPIUStiw</stringProp>
+          </elementProp>
+        </collectionProp>
+      </HeaderManager>
       <hashTree/>
     </hashTree>
   </hashTree>

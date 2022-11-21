@@ -29,8 +29,8 @@ Load-testing was performed using Apache Jmeter with the following test plan: <br
 * Each user (thread) adds booking, requests dashboard and delete created booking. Every request performs with a random delay in the range of 0.5 seconds.
 * Load testing was performed for 10 minutes straight.<br />
 <br />
-After conducting test plan, 17495 requests were made without any errors. ![Summary report](./jmeter.testing/Test-summary.png)<br />
+After conducting test plan, 17411 requests were made without any errors. ![Summary report](./jmeter.testing/Test-summary.png)<br />
 <br />
-Average latency was under 30 ms, and the highest value was 135 ms. ![Latency graph](./jmeter.testing/Latency_graph.png)<br />
+Average latency was under 15 ms, and all requests latency was under 500 ms (as was mentioned in requirements) . ![Latency graph](./jmeter.testing/Latency_graph.png)<br />
 <br />
 To conclude, those performance results totally satisfies the requirements.
