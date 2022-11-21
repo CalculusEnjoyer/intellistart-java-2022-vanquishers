@@ -14,9 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  User findByFacebookId(Long facebookId);
-
-  Optional<User> findByEmail(String email);
+  User findUserByEmail(String email);
 
   List<User> findAllByRole(Role role);
 }

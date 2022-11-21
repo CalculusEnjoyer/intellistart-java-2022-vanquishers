@@ -61,8 +61,8 @@ class InterviewerControllerTest {
   private InterviewerService interviewerService;
 
   private static final List<User> USERS = List.of(
-      new User(1L, "email1@test.com", Role.INTERVIEWER),
-      new User(2L, "email2@test.com", Role.INTERVIEWER)
+      new User("email1@test.com", Role.INTERVIEWER),
+      new User("email2@test.com", Role.INTERVIEWER)
   );
 
   private static final List<Interviewer> INTERVIEWERS = List.of(

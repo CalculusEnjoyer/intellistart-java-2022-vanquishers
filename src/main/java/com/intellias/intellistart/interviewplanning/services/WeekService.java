@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.IsoFields;
 import java.time.temporal.WeekFields;
-import java.util.Calendar;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -63,7 +61,7 @@ public class WeekService {
     String weekNumInString = String.valueOf(weekNum);
     int year = Integer.parseInt(weekNumInString.substring(0, 4));
     int weekNumWithoutYear = Integer.parseInt(weekNumInString.substring(4));
-    return LocalDate.now()
+    return getCurrentDate()
         .with(WeekFields.ISO.weekBasedYear(), year)
         .with(WeekFields.ISO.weekOfWeekBasedYear(), weekNumWithoutYear)
         .with(WeekFields.ISO.dayOfWeek(), dayOfWeek);
@@ -73,9 +71,7 @@ public class WeekService {
    * Method for calculating day of week of an input date.
    */
   public static int getDayOfWeekFrom(LocalDate date) {
-    Calendar c = Calendar.getInstance();
-    c.setTime(Date.from(date.atStartOfDay(ZONE_ID).toInstant()));
-    return c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 7 : c.get(Calendar.DAY_OF_WEEK) - 1;
+    return date.getDayOfWeek().getValue();
   }
 
   /**
@@ -83,7 +79,7 @@ public class WeekService {
    *
    * @return LocalDate instance with current date for ZONE_ID timezone
    */
-  private LocalDate getCurrentDate() {
+  private static LocalDate getCurrentDate() {
     return LocalDate.now(ZONE_ID);
   }
 }

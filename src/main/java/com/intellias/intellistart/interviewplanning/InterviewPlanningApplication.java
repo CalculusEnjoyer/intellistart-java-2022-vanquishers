@@ -1,5 +1,6 @@
 package com.intellias.intellistart.interviewplanning;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -7,12 +8,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Main application.
  */
 @SpringBootApplication
-@EnableOAuth2Sso
+@Slf4j
 @PropertySource("classpath:timezone.properties")
 public class InterviewPlanningApplication {
 
@@ -39,4 +41,8 @@ public class InterviewPlanningApplication {
     return modelMapper;
   }
 
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
 }
