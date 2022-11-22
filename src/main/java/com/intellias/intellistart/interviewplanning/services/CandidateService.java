@@ -4,13 +4,15 @@ import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateRepository;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
+import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
-import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
+import com.intellias.intellistart.interviewplanning.util.validation.CandidateValidator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +28,17 @@ public class CandidateService {
 
   private final WeekService weekService;
 
+  @Autowired
+  private ModelMapper mapper;
+
   /**
    * CandidateService constructor.
    */
   @Autowired
   public CandidateService(
       CandidateRepository repository,
-      CandidateSlotRepository slotRepository, WeekService weekService) {
+      CandidateSlotRepository slotRepository,
+      WeekService weekService) {
     this.repository = repository;
     this.slotRepository = slotRepository;
     this.weekService = weekService;
@@ -53,6 +59,7 @@ public class CandidateService {
   }
 
   public void deleteSlot(Long id) {
+    getSlotById(id).getCandidate().getCandidateSlot().remove(getSlotById(id));
     slotRepository.deleteById(id);
   }
 
@@ -61,18 +68,18 @@ public class CandidateService {
   }
 
   /**
-   * Register slot and checks if it overlaps with other slots and bookings.
+   * Register slot and checks its overlapping with other slots and bookings.
    */
   public CandidateSlot registerSlot(CandidateSlot slot) {
-    CandidateSlotValidator.validateCandidateSlotForOverlapping(
+    if (slot.getCandidate() == null) {
+      throw new CandidateNotFoundException();
+    }
+    CandidateValidator.validateCandidateSlotForBoundaries(slot);
+    CandidateValidator.validateCandidateSlotForOverlapping(
         getCandidateById(slot.getCandidate().getId()).getCandidateSlot().stream()
             .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
         slot);
     return slotRepository.save(slot);
-  }
-
-  public List<CandidateSlot> registerSlots(List<CandidateSlot> slots) {
-    return slotRepository.saveAll(slots);
   }
 
   /**
