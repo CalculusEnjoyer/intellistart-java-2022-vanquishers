@@ -26,6 +26,7 @@ import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.SameRoleChangeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -225,5 +226,20 @@ class CoordinatorControllerTest {
 
     Assertions.assertEquals(Role.INTERVIEWER,
         userService.findUserByEmail("example100@gmail.com").getRole());
+  }
+
+  @Test
+  @Order(8)
+  void grantInterviewerRoleTest_whenAlreadyInterviewer() throws Exception {
+    User user = new User("example100@gmail.com", Role.INTERVIEWER);
+    userService.register(user);
+
+    try {
+      user.setRole(Role.INTERVIEWER);
+    } catch (SameRoleChangeException e) {
+      assertNotNull(e);
+    } catch (Exception e) {
+      fail();
+    }
   }
 }
