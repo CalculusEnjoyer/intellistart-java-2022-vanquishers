@@ -13,8 +13,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -43,44 +45,70 @@ class CandidateServiceTest {
   @Autowired
   private ModelMapper mapper;
 
-  private static final int YEAR = LocalDate.now().getYear();
-  private static final List<CandidateSlot> slots = List.of(
+  private static final int YEAR = LocalDate.now().getYear() + 1;
+
+  private static final List<CandidateSlot> SLOTS = List.of(
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 12), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 12), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 12), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 12), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 13), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 13), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 13), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 13), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 14), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 14), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 14), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 14), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 15), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 15), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 15), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(YEAR, 10, 15), LocalTime.of(11, 0))
       )
   );
-  private static List<CandidateSlot> addedSlots;
+
+  private static List<CandidateSlot> ADDED_SLOTS;
+
+  @Test
+  @Order(0)
+  void registerValidUserAndCheck() {
+    User user = new User("emailtest@test.com", Role.CANDIDATE);
+    userService.registerUser(user);
+    assertThat(userService.findAllUsersByRole(Role.CANDIDATE).size()).isEqualTo(1);
+
+    Candidate candidate = new Candidate(new HashSet<>(), user);
+    candidateService.registerCandidate(candidate);
+    assertThat(candidateService.getAllCandidates().size()).isEqualTo(1);
+
+    SLOTS.forEach(e -> e.setCandidate(candidate));
+  }
 
   @Test
   @Order(1)
   void addCandidateSlotsTest() {
     int initSize = candidateService.getAllSlots().size();
 
-    addedSlots = candidateService.registerSlots(slots);
-    int expectedDbTableSize = initSize + slots.size();
+    ADDED_SLOTS = new ArrayList<>();
+    SLOTS.forEach(slot -> {
+      try {
+        candidateService.registerSlot(slot);
+      } catch (Exception ex) {
+        return;
+      }
+
+      ADDED_SLOTS.add(slot);
+    });
+
+    int expectedDbTableSize = initSize + SLOTS.size();
     int actualDbTableSize = candidateService.getAllSlots().size();
 
-    assertThat(addedSlots).hasSameSizeAs(slots);
+    assertThat(ADDED_SLOTS).hasSameSizeAs(SLOTS);
     assertThat(actualDbTableSize).isEqualTo(expectedDbTableSize);
   }
 
   @Test
   @Order(2)
   void readInterviewerSlotsTest() {
-    List<Long> addedSlotIds = addedSlots.stream()
+    List<Long> addedSlotIds = ADDED_SLOTS.stream()
         .map(CandidateSlot::getId)
         .collect(Collectors.toList());
 
@@ -89,22 +117,22 @@ class CandidateServiceTest {
         .map(slot -> mapper.map(slot, CandidateSlot.class))
         .collect(Collectors.toList());
 
-    assertThat(readSlots).hasSameElementsAs(addedSlots);
+    assertThat(readSlots).hasSameElementsAs(ADDED_SLOTS);
   }
 
   @Test
   @Order(3)
   void deleteInterviewerSlotsTest() {
-    int BeforeDeleteSize = candidateService.getAllSlots().size();
+    int beforeDeleteSize = candidateService.getAllSlots().size();
     List<CandidateSlot> deletedSlots = new ArrayList<>();
 
-    addedSlots.forEach(slot -> {
+    ADDED_SLOTS.forEach(slot -> {
       candidateService.deleteSlot(slot.getId());
       assertThrows(CandidateSlotNotFoundException.class,
           () -> candidateService.getSlotById(slot.getId()));
     });
     int afterDeleteSize = candidateService.getAllSlots().size();
-    int expectedSize = BeforeDeleteSize - addedSlots.size();
+    int expectedSize = beforeDeleteSize - ADDED_SLOTS.size();
 
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
   }
@@ -113,7 +141,7 @@ class CandidateServiceTest {
   @Order(4)
   void findCandidateByUserId() {
     User newUser = new User("check@gmail.com", Role.CANDIDATE);
-    userService.register(newUser);
+    userService.registerUser(newUser);
     Candidate newCandidate = new Candidate();
     newCandidate.setUser(newUser);
     candidateService.registerCandidate(newCandidate);
