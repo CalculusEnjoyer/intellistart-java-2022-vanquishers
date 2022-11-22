@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,12 +95,17 @@ class CoordinatorControllerTest {
       new User("email1@gmail.com", Role.INTERVIEWER),
       new User("email2@gmail.com", Role.INTERVIEWER),
       new User("email3@gmail.com", Role.COORDINATOR),
-      new User("email4@gmail.com", Role.COORDINATOR));
+      new User("email4@gmail.com", Role.COORDINATOR),
+      new User("email5@gmail.com", Role.CANDIDATE),
+      new User("email6@gmail.com", Role.CANDIDATE));
 
   private static final List<Interviewer> INTERVIEWERS = List.of(
-      new Interviewer(USERS.get(0), 5, null),
-      new Interviewer(USERS.get(1), 2, null));
-
+      new Interviewer(USERS.get(0), 5,
+          Set.of(new InterviewerSlot(202246, 2, LocalTime.of(10, 00), LocalTime.of(12, 00)),
+              new InterviewerSlot(202246, 3, LocalTime.of(10, 00), LocalTime.of(12, 00)))),
+      new Interviewer(USERS.get(1), 2,
+          Set.of(new InterviewerSlot(202247, 2, LocalTime.of(10, 00), LocalTime.of(12, 00)),
+              new InterviewerSlot(202247, 3, LocalTime.of(10, 00), LocalTime.of(12, 00)))));
 
   @BeforeEach
   public void setup() {
@@ -157,7 +163,7 @@ class CoordinatorControllerTest {
         .collect(Collectors.toList());
 
     mockMvc.perform(
-            MockMvcRequestBuilders.get("/users/coordinators").contentType(MediaType.APPLICATION_JSON))
+        MockMvcRequestBuilders.get("/users/coordinators").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(userService.findAllUsersByRole(Role.COORDINATOR).size())))
         .andExpect(jsonPath("$[0].role", equalTo("COORDINATOR")))
@@ -171,9 +177,9 @@ class CoordinatorControllerTest {
     userService.register(new User("example34@gmail.com", Role.INTERVIEWER));
 
     mockMvc.perform(post("/users/coordinators")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"email\":\"example34@gmail.com\"}")
-            .accept(MediaType.APPLICATION_JSON))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"email\":\"example34@gmail.com\"}")
+        .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
 
     Assertions.assertEquals(Role.COORDINATOR,
@@ -184,7 +190,7 @@ class CoordinatorControllerTest {
   @Order(5)
   void getAllInterviewersTest() throws Exception {
     mockMvc.perform(
-            MockMvcRequestBuilders.get("/users/interviewers").contentType(MediaType.APPLICATION_JSON))
+        MockMvcRequestBuilders.get("/users/interviewers").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(interviewerService.getAllInterviewers().size())))
         .andExpect(jsonPath("$[0].bookingLimit", equalTo(INTERVIEWERS.get(0).getBookingLimit())))
@@ -204,5 +210,20 @@ class CoordinatorControllerTest {
 
     Assertions.assertEquals(Role.CANDIDATE,
         userService.findUserById(interviewerUser.getId()).getRole());
+  }
+
+  @Test
+  @Order(7)
+  void grantInterviewerRoleTest() throws Exception {
+    userService.register(new User("example100@gmail.com", Role.COORDINATOR));
+
+    mockMvc.perform(post("/users/interviewers")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"email\":\"example100@gmail.com\"}")
+        .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+    Assertions.assertEquals(Role.INTERVIEWER,
+        userService.findUserByEmail("example100@gmail.com").getRole());
   }
 }
