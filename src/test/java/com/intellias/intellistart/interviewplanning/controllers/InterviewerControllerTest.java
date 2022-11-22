@@ -28,9 +28,13 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -47,6 +51,18 @@ import org.springframework.web.context.WebApplicationContext;
 @AutoConfigureMockMvc(addFilters = false)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class InterviewerControllerTest {
+
+  @TestConfiguration
+  static class ControllerTestConfiguration {
+    @Bean
+    @Primary
+    public WeekService weekService() {
+      WeekService weekService = Mockito.spy(new WeekService());
+      Mockito.doReturn(1).when(weekService).getCurrentDayOfWeek();
+
+      return weekService;
+    }
+  }
 
   @Autowired
   private MockMvc mockMvc;
@@ -166,6 +182,50 @@ class InterviewerControllerTest {
 
   @Test
   @Order(3)
+  void addSlotTest_whenWeekNumIsPast() throws Exception {
+    String url = "/interviewers/{interviewerId}/slots";
+    Long interviewerId = INTERVIEWERS.get(0).getId();
+    String slotDtoJsonStr = constructSlotDtoAsString(
+        197015, 5, "09:00", "18:00");
+    int slotCountBeforeAdd = interviewerService.getAllSlots().size();
+
+    mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
+            .content(slotDtoJsonStr)
+            .characterEncoding("utf-8"))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode", equalTo("invalid_weeknum")))
+        .andExpect(jsonPath("$.errorMessage",
+            equalTo("Cannot create or update slot for past weekNum.")));
+    int slotCountAfterAdd = interviewerService.getAllSlots().size();
+
+    assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);
+  }
+
+  @Test
+  @Order(4)
+  void addSlotTest_whenWeekNumIsCurrent() throws Exception {
+    String url = "/interviewers/{interviewerId}/slots";
+    Long interviewerId = INTERVIEWERS.get(0).getId();
+    String slotDtoJsonStr = constructSlotDtoAsString(
+        CURRENT_WEEK_NUM, 5, "09:00", "18:00");
+    int slotCountBeforeAdd = interviewerService.getAllSlots().size();
+
+    mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
+            .content(slotDtoJsonStr)
+            .characterEncoding("utf-8"))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode", equalTo("invalid_weeknum")))
+        .andExpect(jsonPath("$.errorMessage",
+            equalTo("Cannot create or update slot for current weekNum.")));
+    int slotCountAfterAdd = interviewerService.getAllSlots().size();
+
+    assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);
+  }
+
+  @Test
+  @Order(5)
   void updateSlotTest_whenCorrectData() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -191,7 +251,7 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(4)
+  @Order(6)
   void updateSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -217,7 +277,7 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(5)
+  @Order(7)
   void getCurrentWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/current-week";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -231,7 +291,7 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(6)
+  @Order(8)
   void getNextWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/next-week";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -245,7 +305,7 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(7)
+  @Order(9)
   void setBookingLimitTest_whenCorrectBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -264,7 +324,7 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(8)
+  @Order(10)
   void setBookingLimitTest_whenInvalidBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
     Long interviewerId = INTERVIEWERS.get(0).getId();

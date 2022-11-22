@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.controllers;
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.validation.InterviewerValidator;
@@ -44,6 +45,7 @@ public class InterviewerController {
 
   /**
    * Endpoint for adding a new interviewer time slot using interviewer id from request.
+   * Slot can be created only for next week (until Friday 00:00), or for weeks after the next week.
    *
    * @return added slot as DTO
    */
@@ -51,8 +53,10 @@ public class InterviewerController {
   public ResponseEntity<InterviewerSlotDto> addSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId) {
-    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
-    InterviewerValidator.validateSlotDto(slotDto);
+    if (slotDto.getWeekNum() == null) {
+      slotDto.setWeekNum(weekService.getNextWeekNum());
+    }
+    InterviewerValidator.validateSlotCreateForDtoWithService(slotDto, weekService);
 
     InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
     slot.setInterviewer(interviewerService.getInterviewerById(interviewerId));
@@ -71,14 +75,16 @@ public class InterviewerController {
   public ResponseEntity<InterviewerSlotDto> updateSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId, @PathVariable Long slotId) {
-    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
-    InterviewerValidator.validateSlotDto(slotDto);
+    Role role = Role.INTERVIEWER; //TODO: get this from OAuth2
     //voiding the interviewer id in dto, so it will not be mapped in the slot
     slotDto.setInterviewerId(null);
 
+    InterviewerValidator.validateSlotUpdateForDtoAndRole(slotDto, role, weekService);
+
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
     InterviewerValidator.validateHasAccessToSlot(interviewerId, slot);
-    InterviewerValidator.validateSlotWeekNum(slot.getWeekNum(), weekService.getNextWeekNum());
+    InterviewerValidator.validateSlotUpdateForWeekNumAndRole(slot.getWeekNum(), role, weekService);
+
     mapper.map(slotDto, slot);
 
     InterviewerSlot updatedSlot = interviewerService.registerSlot(slot);
