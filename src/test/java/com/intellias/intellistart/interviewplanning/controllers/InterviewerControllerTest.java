@@ -98,7 +98,7 @@ class InterviewerControllerTest {
   void setupBeforeEach() {
     mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
 
-    USERS.forEach(u -> userService.register(u));
+    USERS.forEach(u -> userService.registerUser(u));
     INTERVIEWERS.forEach(i -> interviewerService.registerInterviewer(i));
 
     SLOTS.get(0).setWeekNum(CURRENT_WEEK_NUM);

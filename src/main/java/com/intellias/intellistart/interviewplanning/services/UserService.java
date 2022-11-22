@@ -51,7 +51,7 @@ public class UserService {
     this.modelMapper = modelMapper;
   }
 
-  public void register(User user) {
+  public void registerUser(User user) {
     userRepository.save(user);
   }
 

@@ -8,19 +8,17 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlo
 import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
-import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
+import com.intellias.intellistart.interviewplanning.util.validation.CandidateValidator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,7 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class CandidateSlotValidatorTest {
 
   @Autowired
-  private ModelMapper mapper;
+  private CandidateService candidateService;
 
   private static final int YEAR = LocalDate.now().getYear() + 1;
   private static final List<CandidateSlot> SLOTS = List.of(
@@ -77,19 +75,21 @@ public class CandidateSlotValidatorTest {
   public void testValidator() {
 
     int errors = 0;
-    List<CandidateSlotDto> validatedSlots = new ArrayList<>();
+    int validatedSlots = 0;
 
     for (CandidateSlot slot : SLOTS) {
       try {
-        CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-        validatedSlots.add(CandidateSlotValidator.validDtoOrError(dto));
+        CandidateValidator.validateCandidateSlotForBoundaries(slot);
+        CandidateValidator.validateCandidateSlotForOverlapping(
+            new HashSet<>(candidateService.getAllSlots()), slot);
+        validatedSlots++;
       } catch (Exception e) {
         errors++;
       }
     }
 
     assertThat(errors).isEqualTo(ERROR_COUNT);
-    assertThat(validatedSlots.size()).isEqualTo(FINAL_SIZE);
+    assertThat(validatedSlots).isEqualTo(FINAL_SIZE);
   }
 
   @Test
@@ -119,19 +119,19 @@ public class CandidateSlotValidatorTest {
     candidate.setCandidateSlot(new HashSet<>(SLOTS));
 
     assertThrows(OverlappingSlotException.class,
-        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+        () -> CandidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             overlapping));
     assertThrows(OverlappingSlotException.class,
-        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+        () -> CandidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             overlapping1));
     assertDoesNotThrow(
-        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+        () -> CandidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             notOverlapping));
     assertDoesNotThrow(
-        () -> CandidateSlotValidator.validateCandidateSlotForOverlapping(
+        () -> CandidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             notOverlapping1));
   }
