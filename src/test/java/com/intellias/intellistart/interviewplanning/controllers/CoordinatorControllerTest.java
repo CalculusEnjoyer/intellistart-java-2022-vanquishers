@@ -104,7 +104,7 @@ class CoordinatorControllerTest {
   @BeforeEach
   public void setup() {
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    USERS.forEach(u -> userService.register(u));
+    USERS.forEach(u -> userService.registerUser(u));
     INTERVIEWERS.forEach(i -> interviewerService.registerInterviewer(i));
   }
 
@@ -141,7 +141,7 @@ class CoordinatorControllerTest {
   @Order(2)
   void revokeCoordinatorRoleByIdTest() throws Exception {
     User coordinator = new User("check@gmail.com", Role.COORDINATOR);
-    userService.register(coordinator);
+    userService.registerUser(coordinator);
 
     mockMvc.perform(delete("/users/coordinators/{coordinatorId}", coordinator.getId()))
         .andExpect(status().isOk());
@@ -168,7 +168,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(4)
   void grantCoordinatorRoleTest() throws Exception {
-    userService.register(new User("example34@gmail.com", Role.INTERVIEWER));
+    userService.registerUser(new User("example34@gmail.com", Role.INTERVIEWER));
 
     mockMvc.perform(post("/users/coordinators")
             .contentType(MediaType.APPLICATION_JSON)
@@ -195,7 +195,7 @@ class CoordinatorControllerTest {
   @Order(6)
   void revokeInterviewerRoleTest() throws Exception {
     User interviewerUser = new User("check@gmail.com", Role.INTERVIEWER);
-    userService.register(interviewerUser);
+    userService.registerUser(interviewerUser);
     Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
     interviewerService.registerInterviewer(interviewer);
 
