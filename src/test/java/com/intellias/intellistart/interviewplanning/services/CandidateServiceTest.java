@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
@@ -45,24 +44,24 @@ class CandidateServiceTest {
   @Autowired
   private ModelMapper mapper;
 
-  private static final int YEAR = LocalDate.now().getYear() + 1;
+  private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
 
   private static final List<CandidateSlot> SLOTS = List.of(
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 12), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 12), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 12), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 12), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 13), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 13), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 13), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 13), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 14), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 14), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 14), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 14), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 15), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, 10, 15), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 15), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, 10, 15), LocalTime.of(11, 0))
       )
   );
 
@@ -154,22 +153,22 @@ class CandidateServiceTest {
   @Order(5)
   void findCandidateSlotByWeekTest() {
     CandidateSlot candidateSlotToFind = new CandidateSlot(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
-        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0)));
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0)));
     Candidate candidate = new Candidate();
     candidateService.registerCandidate(candidate);
     candidateSlotToFind.setCandidate(candidate);
     candidateService.registerSlot(candidateSlotToFind);
 
     List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeek(
-        weekService.getWeekNumFrom(LocalDate.of(YEAR, Month.DECEMBER, 12)));
+        weekService.getWeekNumFrom(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12)));
     List<CandidateSlot> filteredSlots = slots.stream()
         .filter(slot -> Objects.equals(slot.getDateFrom(),
-            LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)))).collect(
+            LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)))).collect(
             Collectors.toList());
 
     Assertions.assertEquals(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
         filteredSlots.get(0).getDateFrom());
   }
 }

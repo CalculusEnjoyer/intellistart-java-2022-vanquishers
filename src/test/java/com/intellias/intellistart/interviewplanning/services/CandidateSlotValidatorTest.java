@@ -31,40 +31,40 @@ public class CandidateSlotValidatorTest {
   @Autowired
   private CandidateService candidateService;
 
-  private static final int YEAR = LocalDate.now().getYear() + 1;
+  private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
   private static final List<CandidateSlot> SLOTS = List.of(
       new CandidateSlot(
           // 13.05.2023
           // PASS
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(12, 0)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(14, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 13), LocalTime.of(12, 0)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 13), LocalTime.of(14, 0))
       ),
       new CandidateSlot(
           // 15.05.2023
           // PASS
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 15), LocalTime.of(9, 30)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 15), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 15), LocalTime.of(9, 30)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 15), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
           // 12.05.2023
           // minutes are not rounded to 30
           // ERROR
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 12), LocalTime.of(8, 55)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 12), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 12), LocalTime.of(8, 55)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 12), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
           // 14.05.2023
           // duration lass than 90 min
           // ERROR
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 14), LocalTime.of(10, 0)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 14), LocalTime.of(11, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 14), LocalTime.of(10, 0)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 14), LocalTime.of(11, 0))
       ),
       new CandidateSlot(
           // 14.05.2023
           // from-hour is larger than to-hour
           // ERROR
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 14), LocalTime.of(11, 0)),
-          LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 14), LocalTime.of(10, 0))
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 14), LocalTime.of(11, 0)),
+          LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 14), LocalTime.of(10, 0))
       )
   );
   private static final int ERROR_COUNT = 3;
@@ -96,23 +96,23 @@ public class CandidateSlotValidatorTest {
   @Order(2)
   void validateCandidateSlotForOverlapping() {
     CandidateSlotDto overlapping = new CandidateSlotDto(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(13, 0)),
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(15, 0)), 1L
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 13), LocalTime.of(13, 0)),
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 13), LocalTime.of(15, 0)), 1L
     );
 
     CandidateSlotDto overlapping1 = new CandidateSlotDto(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 15), LocalTime.of(10, 0)),
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 15), LocalTime.of(14, 0)), 1L
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 15), LocalTime.of(10, 0)),
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 15), LocalTime.of(14, 0)), 1L
     );
 
     CandidateSlotDto notOverlapping = new CandidateSlotDto(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(14, 0)),
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 13), LocalTime.of(15, 0)), 1L
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 13), LocalTime.of(14, 0)),
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 13), LocalTime.of(15, 0)), 1L
     );
 
     CandidateSlotDto notOverlapping1 = new CandidateSlotDto(
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 26), LocalTime.of(12, 0)),
-        LocalDateTime.of(LocalDate.of(YEAR, Month.MAY, 26), LocalTime.of(14, 0)), 1L
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 26), LocalTime.of(12, 0)),
+        LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.MAY, 26), LocalTime.of(14, 0)), 1L
     );
 
     Candidate candidate = new Candidate();

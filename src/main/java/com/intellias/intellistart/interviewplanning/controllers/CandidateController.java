@@ -56,9 +56,9 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots")
-  public ResponseEntity<Object> addSlot(
-      Authentication authentication,
-      @RequestBody CandidateSlotDto candidateSlotDto) {
+  public ResponseEntity<CandidateSlotDto> addSlot(
+      @RequestBody CandidateSlotDto candidateSlotDto,
+      Authentication authentication) {
 
     FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
     Candidate candidate = candidateService.getCandidateByUserId(details.getUser().getId());
@@ -107,10 +107,10 @@ public class CandidateController {
   public List<CandidateSlotForm> getAllSlots(Authentication authentication) {
 
     FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
+    Candidate candidate = candidateService.getCandidateByUserId(details.getUser().getId());
 
-    return candidateService.getAllSlots().stream()
-        .filter(e -> e.getCandidate().getUser().getId() == details.getUser().getId())
-        .map(e -> new CandidateSlotForm(e))
+    return candidate.getCandidateSlot().stream()
+        .map(CandidateSlotForm::new)
         .collect(Collectors.toList());
   }
 
