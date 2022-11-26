@@ -29,10 +29,10 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserRepository userRepository;
+
   private final InterviewerService interviewerService;
+
   private final CandidateService candidateService;
-  private final BookingService bookingService;
-  private final WeekService weekService;
 
   private final ModelMapper modelMapper;
 
@@ -41,13 +41,10 @@ public class UserService {
    */
   @Autowired
   public UserService(UserRepository userRepository, InterviewerService interviewerService,
-      CandidateService candidateService, BookingService bookingService, WeekService weekService,
-      ModelMapper modelMapper) {
+      CandidateService candidateService, ModelMapper modelMapper) {
     this.userRepository = userRepository;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
-    this.bookingService = bookingService;
-    this.weekService = weekService;
     this.modelMapper = modelMapper;
   }
 
@@ -78,10 +75,6 @@ public class UserService {
 
   public List<User> findAllUsersByRole(Role role) {
     return userRepository.findAllByRole(role);
-  }
-
-  public void deleteUserById(Long id) {
-    userRepository.deleteById(id);
   }
 
   public User findUserById(Long id) {
@@ -117,13 +110,13 @@ public class UserService {
       int finalDayOfWeek = dayOfWeek;
       candidateService.getCandidateSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
-              booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
+              booking -> WeekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
                   == finalDayOfWeek).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
 
       interviewerService.getSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
-              booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
+              booking -> WeekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
                   == finalDayOfWeek).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
       resultDashBoard.add(dashboardDayDto);
