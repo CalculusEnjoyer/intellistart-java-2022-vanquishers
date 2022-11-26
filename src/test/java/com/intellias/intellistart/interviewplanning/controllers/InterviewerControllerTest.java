@@ -147,7 +147,7 @@ class InterviewerControllerTest {
   @Test
   @Order(1)
   @WithMockUser(roles={"INTERVIEWER"})
-  void addSlotTest_whenCorrectData() throws Exception {
+  void addSlotTest_whenCorrectDataWithWeekNum() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
     Long interviewerId = DEFAULT_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
@@ -171,6 +171,33 @@ class InterviewerControllerTest {
     assertThat(savedSlot.getDayOfWeek()).isEqualTo(5);
     assertThat(savedSlot.getFrom()).isEqualTo(LocalTime.of(10, 0));
     assertThat(savedSlot.getTo()).isEqualTo(LocalTime.of(15, 30));
+  }
+
+  @Test
+  @Order(1)
+  @WithMockUser(roles={"INTERVIEWER"})
+  void addSlotTest_whenCorrectDataWithoutWeekNum() throws Exception {
+    String url = "/interviewers/{interviewerId}/slots";
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    int slotCountBeforeAdd = interviewerService.getAllSlots().size();
+
+    mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
+            .content("{\"dayOfWeek\": 1,\"timeFrom\": \"18:00\",\"timeTo\": \"20:00\"}")
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.weekNum", equalTo(NEXT_WEEK_NUM)))
+        .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
+    int slotCountAfterAdd = interviewerService.getAllSlots().size();
+    InterviewerSlot savedSlot = Collections.max(
+        interviewerService.getSlotsForIdAndWeek(interviewerId, NEXT_WEEK_NUM),
+        Comparator.comparing(InterviewerSlot::getId));
+
+    assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd + 1);
+    assertThat(savedSlot.getDayOfWeek()).isEqualTo(1);
+    assertThat(savedSlot.getFrom()).isEqualTo(LocalTime.of(18, 0));
+    assertThat(savedSlot.getTo()).isEqualTo(LocalTime.of(20, 0));
   }
 
   @Test
