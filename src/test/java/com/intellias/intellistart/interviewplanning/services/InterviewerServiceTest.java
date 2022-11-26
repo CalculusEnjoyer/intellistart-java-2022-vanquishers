@@ -10,7 +10,6 @@ import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.MethodOrderer;
@@ -81,7 +80,6 @@ class InterviewerServiceTest {
   void deleteInterviewerSlotsTest() {
 
     int BeforeDeleteSize = interviewerService.getAllSlots().size();
-    List<InterviewerSlot> deletedSlots = new ArrayList<>();
 
     addedSlots.forEach(slot -> {
       interviewerService.deleteSlotById(slot.getId());

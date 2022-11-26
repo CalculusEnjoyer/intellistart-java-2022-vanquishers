@@ -16,8 +16,8 @@ class WeekServiceTest {
   @Test
   void getSameWeekNumsForSameDateTest() {
     LocalDate date = LocalDate.now(WeekService.ZONE_ID);
-    int expectedWeekNum = weekService.getWeekNumFrom(date);
-    int actualWeekNum = weekService.getWeekNumFrom(date);
+    int expectedWeekNum = WeekService.getWeekNumFrom(date);
+    int actualWeekNum = WeekService.getWeekNumFrom(date);
 
     assertThat(actualWeekNum).isEqualTo(expectedWeekNum);
   }
@@ -25,14 +25,14 @@ class WeekServiceTest {
   @Test
   void getCurrentWeekNumTest() {
     int actualWeekNum = weekService.getCurrentWeekNum();
-    int expectedWeekNum = weekService.getWeekNumFrom(LocalDate.now(WeekService.ZONE_ID));
+    int expectedWeekNum = WeekService.getWeekNumFrom(LocalDate.now(WeekService.ZONE_ID));
 
     //for avoiding the test failure on rare cases when the test
     //is performed on midnight of day, so two weekNums got different values
     //because got calculated in different days
     if (actualWeekNum != expectedWeekNum) {
       actualWeekNum = weekService.getCurrentWeekNum();
-      expectedWeekNum = weekService.getWeekNumFrom(LocalDate.now(WeekService.ZONE_ID));
+      expectedWeekNum = WeekService.getWeekNumFrom(LocalDate.now(WeekService.ZONE_ID));
     }
 
     assertThat(actualWeekNum).isEqualTo(expectedWeekNum);
@@ -41,7 +41,7 @@ class WeekServiceTest {
   @Test
   void getNextWeekNumTest() {
     int actualWeekNum = weekService.getNextWeekNum();
-    int expectedWeekNum = weekService.getWeekNumFrom(
+    int expectedWeekNum = WeekService.getWeekNumFrom(
         LocalDate.now(WeekService.ZONE_ID).plusDays(7));
 
     //for avoiding the test failure on rare cases when the test
@@ -49,7 +49,7 @@ class WeekServiceTest {
     //because got calculated in different days
     if (actualWeekNum != expectedWeekNum) {
       actualWeekNum = weekService.getNextWeekNum();
-      expectedWeekNum = weekService.getWeekNumFrom(
+      expectedWeekNum = WeekService.getWeekNumFrom(
           LocalDate.now(WeekService.ZONE_ID).plusDays(7));
     }
 
@@ -61,8 +61,8 @@ class WeekServiceTest {
     LocalDate date1 = LocalDate.of(2022, 11, 24);
     LocalDate date2 = LocalDate.of(2022, 11, 25);
 
-    int actualWeekNum = weekService.getWeekNumFrom(date1);
-    int expectedWeekNum = weekService.getWeekNumFrom(date2);
+    int actualWeekNum = WeekService.getWeekNumFrom(date1);
+    int expectedWeekNum = WeekService.getWeekNumFrom(date2);
 
     assertThat(actualWeekNum).isEqualTo(expectedWeekNum);
   }
@@ -72,8 +72,8 @@ class WeekServiceTest {
     LocalDate date1 = LocalDate.of(2022, 11, 23); //sunday
     LocalDate date2 = LocalDate.of(2022, 11, 24); //monday
 
-    int actualWeekNum = weekService.getWeekNumFrom(date1);
-    int expectedWeekNum = weekService.getWeekNumFrom(date2);
+    int actualWeekNum = WeekService.getWeekNumFrom(date1);
+    int expectedWeekNum = WeekService.getWeekNumFrom(date2);
 
     assertThat(actualWeekNum).isEqualTo(expectedWeekNum);
   }
@@ -85,8 +85,8 @@ class WeekServiceTest {
     LocalDate date1 = LocalDate.of(2019, 12, 31);
     LocalDate date2 = LocalDate.of(2020, 1, 1);
 
-    int prevYearWeekNum = weekService.getWeekNumFrom(date1);
-    int nextYearWeekNum = weekService.getWeekNumFrom(date2);
+    int prevYearWeekNum = WeekService.getWeekNumFrom(date1);
+    int nextYearWeekNum = WeekService.getWeekNumFrom(date2);
     int actualYear = prevYearWeekNum / 100;
 
     assertThat(prevYearWeekNum).isEqualTo(nextYearWeekNum);
@@ -100,8 +100,8 @@ class WeekServiceTest {
     LocalDate date1 = LocalDate.of(2026, 12, 31); //saturday
     LocalDate date2 = LocalDate.of(2027, 1, 1);   //monday
 
-    int prevYearWeekNum = weekService.getWeekNumFrom(date1);
-    int nextYearWeekNum = weekService.getWeekNumFrom(date2);
+    int prevYearWeekNum = WeekService.getWeekNumFrom(date1);
+    int nextYearWeekNum = WeekService.getWeekNumFrom(date2);
     int actualYear = prevYearWeekNum / 100;
 
     assertThat(prevYearWeekNum).isEqualTo(nextYearWeekNum);

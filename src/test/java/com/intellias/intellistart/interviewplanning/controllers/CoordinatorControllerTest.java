@@ -22,7 +22,6 @@ import com.intellias.intellistart.interviewplanning.repositories.BookingReposito
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
-import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
@@ -39,7 +38,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,9 +66,6 @@ class CoordinatorControllerTest {
   private InterviewerService interviewerService;
 
   @Autowired
-  private ModelMapper mapper;
-
-  @Autowired
   private BookingRepository bookingRepository;
 
   @Autowired
@@ -83,9 +78,6 @@ class CoordinatorControllerTest {
 
   @Autowired
   private UserService userService;
-
-  @Autowired
-  private CandidateService candidateService;
 
   @Autowired
   private WebApplicationContext webApplicationContext;

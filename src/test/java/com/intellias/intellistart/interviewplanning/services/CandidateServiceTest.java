@@ -39,9 +39,6 @@ class CandidateServiceTest {
   private UserService userService;
 
   @Autowired
-  private WeekService weekService;
-
-  @Autowired
   private ModelMapper mapper;
 
   private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
@@ -123,7 +120,6 @@ class CandidateServiceTest {
   @Order(3)
   void deleteInterviewerSlotsTest() {
     int beforeDeleteSize = candidateService.getAllSlots().size();
-    List<CandidateSlot> deletedSlots = new ArrayList<>();
 
     ADDED_SLOTS.forEach(slot -> {
       candidateService.deleteSlot(slot.getId());
@@ -161,7 +157,7 @@ class CandidateServiceTest {
     candidateService.registerSlot(candidateSlotToFind);
 
     List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeek(
-        weekService.getWeekNumFrom(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12)));
+        WeekService.getWeekNumFrom(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12)));
     List<CandidateSlot> filteredSlots = slots.stream()
         .filter(slot -> Objects.equals(slot.getDateFrom(),
             LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)))).collect(

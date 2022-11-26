@@ -40,12 +40,12 @@ public class BookingValidatorTest {
     Booking notOutOfBoundaries = new Booking(
         LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(YEAR,
-            Month.OCTOBER, 12, 10, 00), "check", "check", Status.BOOKED);
+            Month.OCTOBER, 12, 10, 0), "check", "check", Status.BOOKED);
 
     Booking outOfBoundaries = new Booking(
         LocalDateTime.of(LocalDate.of(YEAR, Month.OCTOBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(YEAR,
-            Month.OCTOBER, 12, 12, 00), "check", "check", Status.BOOKED);
+            Month.OCTOBER, 12, 12, 0), "check", "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
         () -> BookingValidator.isInSlotRange(
@@ -137,11 +137,11 @@ public class BookingValidatorTest {
     BookingDto bookingDtoValid1 = new BookingDto(
         LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(2048,
-            Month.OCTOBER, 12, 11, 00), "check", "check", Status.BOOKED, 1L, 1L);
+            Month.OCTOBER, 12, 11, 0), "check", "check", Status.BOOKED, 1L, 1L);
     BookingDto bookingDtoValid2 = new BookingDto(
         LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(16, 30)),
         LocalDateTime.of(2048,
-            Month.OCTOBER, 12, 18, 00), "check", "check", Status.BOOKED, 1L, 1L);
+            Month.OCTOBER, 12, 18, 0), "check", "check", Status.BOOKED, 1L, 1L);
     BookingDto bookingDtoInValid1 = new BookingDto(
         LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(2048,
@@ -149,7 +149,7 @@ public class BookingValidatorTest {
     BookingDto bookingDtoInValid2 = new BookingDto(
         LocalDateTime.of(LocalDate.of(2048, Month.OCTOBER, 12), LocalTime.of(9, 31)),
         LocalDateTime.of(2048,
-            Month.OCTOBER, 12, 13, 00), "check", "check", Status.BOOKED, 1L, 1L);
+            Month.OCTOBER, 12, 13, 0), "check", "check", Status.BOOKED, 1L, 1L);
 
     assertThrows(InvalidBookingBoundariesException.class,
         () -> BookingValidator.validDtoBoundariesOrError(bookingDtoInValid1));
