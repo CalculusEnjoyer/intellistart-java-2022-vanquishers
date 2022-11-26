@@ -386,7 +386,7 @@ public class CandidateControllerTest {
   }
 
   /**
-   * Check user[1] illegal access for user[0] slot update.
+   * Check user[1] illegal access for user[0] update.
    */
   @Test
   @Order(5)
