@@ -14,6 +14,7 @@ import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
+import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
@@ -36,6 +37,9 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
@@ -78,13 +82,17 @@ class InterviewerControllerTest {
 
   private static final List<User> USERS = List.of(
       new User("email1@test.com", Role.INTERVIEWER),
-      new User("email2@test.com", Role.INTERVIEWER)
+      new User("email2@test.com", Role.INTERVIEWER),
+      new User("email3@test.com", Role.COORDINATOR)
   );
+  private static final User DEFAULT_USER_INTERVIEWER = USERS.get(0);
+  private static final User DEFAULT_USER_COORDINATOR = USERS.get(2);
 
   private static final List<Interviewer> INTERVIEWERS = List.of(
       new Interviewer(USERS.get(0), 5, null),
       new Interviewer(USERS.get(1), 7, null)
   );
+  private static final Interviewer DEFAULT_INTERVIEWER = INTERVIEWERS.get(0);
 
   private static final List<InterviewerSlot> SLOTS = List.of(
       new InterviewerSlot(null, 0, 1,
@@ -95,6 +103,9 @@ class InterviewerControllerTest {
           INTERVIEWERS.get(0), null),
       new InterviewerSlot(null, 0, 4,
           LocalTime.of(13, 30), LocalTime.of(19, 0),
+          INTERVIEWERS.get(1), null),
+      new InterviewerSlot(null, 0, 4,
+          LocalTime.of(8, 30), LocalTime.of(20, 0),
           INTERVIEWERS.get(1), null)
   );
 
@@ -120,6 +131,7 @@ class InterviewerControllerTest {
     SLOTS.get(0).setWeekNum(CURRENT_WEEK_NUM);
     SLOTS.get(1).setWeekNum(NEXT_WEEK_NUM);
     SLOTS.get(2).setWeekNum(NEXT_WEEK_NUM);
+    SLOTS.get(3).setWeekNum(CURRENT_WEEK_NUM);
     SLOTS.forEach(slot -> interviewerService.registerSlot(slot));
   }
 
@@ -134,15 +146,18 @@ class InterviewerControllerTest {
 
   @Test
   @Order(1)
+  @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenCorrectData() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 5, "10:00", "15:30");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
-            .content(slotDtoJsonStr))
+            .content(slotDtoJsonStr)
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.weekNum", equalTo(NEXT_WEEK_NUM)))
@@ -159,17 +174,19 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(2)
+  @Order(1)
+  @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 5, "06:00", "15:49");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
             .content(slotDtoJsonStr)
-            .characterEncoding("utf-8"))
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errorCode", equalTo("invalid_boundaries")))
@@ -181,17 +198,19 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(3)
+  @Order(1)
+  @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenWeekNumIsPast() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         197015, 5, "09:00", "18:00");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
             .content(slotDtoJsonStr)
-            .characterEncoding("utf-8"))
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errorCode", equalTo("invalid_weeknum")))
@@ -203,17 +222,19 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(4)
+  @Order(1)
+  @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenWeekNumIsCurrent() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         CURRENT_WEEK_NUM, 5, "09:00", "18:00");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
             .content(slotDtoJsonStr)
-            .characterEncoding("utf-8"))
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errorCode", equalTo("invalid_weeknum")))
@@ -225,59 +246,110 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(5)
+  @Order(2)
+  @WithMockUser(roles={"INTERVIEWER"})
   void updateSlotTest_whenCorrectData() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     Long slotId = SLOTS.get(1).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 3, "08:00", "17:30");
-    int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
             .content(slotDtoJsonStr)
-            .characterEncoding("utf-8"))
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.weekNum", equalTo(NEXT_WEEK_NUM)))
         .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
-    int slotCountAfterAdd = interviewerService.getAllSlots().size();
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
 
-    assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);
     assertThat(slot.getDayOfWeek()).isEqualTo(3);
     assertThat(slot.getFrom()).isEqualTo(LocalTime.of(8, 0));
     assertThat(slot.getTo()).isEqualTo(LocalTime.of(17, 30));
   }
 
   @Test
-  @Order(6)
+  @Order(2)
+  @WithMockUser(roles={"INTERVIEWER"})
   void updateSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     Long slotId = SLOTS.get(1).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 5, "05:00", "15:19");
-    int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
-            .content(slotDtoJsonStr))
+            .content(slotDtoJsonStr)
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errorCode", equalTo("invalid_boundaries")))
         .andExpect(jsonPath("$.errorMessage",
             equalTo("Invalid slot time boundaries")));
-    int slotCountAfterAdd = interviewerService.getAllSlots().size();
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
 
-    assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);
     assertThat(slot.getDayOfWeek()).isEqualTo(SLOTS.get(1).getDayOfWeek());
     assertThat(slot.getFrom()).isEqualTo(SLOTS.get(1).getFrom());
     assertThat(slot.getTo()).isEqualTo(SLOTS.get(1).getTo());
   }
 
   @Test
-  @Order(7)
+  @Order(2)
+  @WithMockUser(roles={"INTERVIEWER"})
+  void updateSlotTest_whenInterviewerUpdatesCurrWeekSlot() throws Exception {
+    String url = "/interviewers/{interviewerId}/slots/{slotId}";
+    Long interviewerId = INTERVIEWERS.get(1).getId();
+    Long slotId = SLOTS.get(3).getId();
+    String slotDtoJsonStr = constructSlotDtoAsString(
+        CURRENT_WEEK_NUM, 4, "09:00", "18:30");
+
+    mockMvc.perform(post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
+            .content(slotDtoJsonStr)
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(INTERVIEWERS.get(1).getUser())))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode", equalTo("invalid_weeknum")))
+        .andExpect(jsonPath("$.errorMessage",
+            equalTo("Cannot create or update slot for current weekNum.")));
+    InterviewerSlot slot = interviewerService.getSlotById(slotId);
+
+    assertThat(slot.getDayOfWeek()).isEqualTo(SLOTS.get(3).getDayOfWeek());
+    assertThat(slot.getFrom()).isEqualTo(SLOTS.get(3).getFrom());
+    assertThat(slot.getTo()).isEqualTo(SLOTS.get(3).getTo());
+  }
+
+  @Test
+  @Order(2)
+  @WithMockUser(roles={"COORDINATOR"})
+  void updateSlotTest_whenCoordinatorUpdatesCurrWeekSlot() throws Exception {
+    String url = "/interviewers/{interviewerId}/slots/{slotId}";
+    Long interviewerId = INTERVIEWERS.get(1).getId();
+    Long slotId = SLOTS.get(3).getId();
+    String slotDtoJsonStr = constructSlotDtoAsString(
+        CURRENT_WEEK_NUM, 2, "11:00", "15:30");
+
+    mockMvc.perform(post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
+            .content(slotDtoJsonStr)
+            .characterEncoding("utf-8")
+            .principal(getAuthForUser(DEFAULT_USER_COORDINATOR)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.weekNum", equalTo(CURRENT_WEEK_NUM)))
+        .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
+    InterviewerSlot slot = interviewerService.getSlotById(slotId);
+
+    assertThat(slot.getDayOfWeek()).isEqualTo(2);
+    assertThat(slot.getFrom()).isEqualTo(LocalTime.of(11, 0));
+    assertThat(slot.getTo()).isEqualTo(LocalTime.of(15, 30));
+  }
+
+  @Test
+  @Order(3)
+  @WithMockUser(roles={"INTERVIEWER"})
   void getCurrentWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/current-week";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -291,7 +363,8 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(8)
+  @Order(4)
+  @WithMockUser(roles={"INTERVIEWER"})
   void getNextWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/next-week";
     Long interviewerId = INTERVIEWERS.get(0).getId();
@@ -305,14 +378,16 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(9)
+  @Order(5)
+  @WithMockUser(roles={"INTERVIEWER"})
   void setBookingLimitTest_whenCorrectBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
     int bookingLimitExpected = 99;
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
-            .content("{\"bookingLimit\": 99}"))
+            .content("{\"bookingLimit\": 99}")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.bookingLimit", equalTo(99)));
@@ -324,16 +399,18 @@ class InterviewerControllerTest {
   }
 
   @Test
-  @Order(10)
+  @Order(5)
+  @WithMockUser(roles={"INTERVIEWER"})
   void setBookingLimitTest_whenInvalidBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_INTERVIEWER.getId();
 
     int bookingLimitBeforeCall = interviewerService
         .getInterviewerById(interviewerId).getBookingLimit();
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
-            .content("{\"bookingLimit\": -1}"))
+            .content("{\"bookingLimit\": -1}")
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errorCode", equalTo("bad_request")));
@@ -349,5 +426,10 @@ class InterviewerControllerTest {
     return String.format(
         "{\"weekNum\": %d,\"dayOfWeek\": %d,\"timeFrom\": \"%s\",\"timeTo\": \"%s\"}",
         weekNum, dayOfWeek, from, to);
+  }
+
+  private Authentication getAuthForUser(User user) {
+    FacebookUserDetails FbUD = new FacebookUserDetails(user);
+    return new UsernamePasswordAuthenticationToken(FbUD, null, FbUD.getAuthorities());
   }
 }

@@ -181,4 +181,20 @@ public class InterviewerValidator {
       }
     }
   }
+
+  /**
+   * Validates that id of the interviewer authenticated in, matches the id of the interviewer in the
+   * request path. Throws an exception if it's not, otherwise does nothing.
+   *
+   * @param authInterviewerId id of the interviewer authenticated in
+   * @param pathInterviewerId id of the interviewer in the request path
+   * @throws ForbiddenException if the IDs are not matching (so Interviewer tries to access other
+   *                            Interviewer's data
+   */
+  public static void validateInterviewerIdMatch(Long authInterviewerId, Long pathInterviewerId) {
+    if (!pathInterviewerId.equals(authInterviewerId)) {
+      throw new ForbiddenException("Interviewer with id: " + authInterviewerId
+          + " tried to access the other interviewer (" + pathInterviewerId + ") data in request");
+    }
+  }
 }
