@@ -73,6 +73,13 @@ public class WeekService {
   }
 
   /**
+   * Method for getting the current day of week.
+   */
+  public int getCurrentDayOfWeek() {
+    return getDayOfWeekFrom(getCurrentDate());
+  }
+
+  /**
    * Method for calculating day of week of an input date.
    */
   public static int getDayOfWeekFrom(LocalDate date) {
