@@ -50,6 +50,11 @@ public class CandidateService {
     return slotRepository.findAll();
   }
 
+  /**
+   * Remove slot from database.
+
+   * @param id slot id
+   */
   @Transactional
   public void deleteSlotById(Long id) {
     CandidateSlot slot = getSlotById(id);

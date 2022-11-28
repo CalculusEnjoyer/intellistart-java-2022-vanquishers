@@ -65,6 +65,11 @@ public class InterviewerService {
     interviewerRepository.deleteById(id);
   }
 
+  /**
+   * Remove slot from database.
+
+   * @param id slot id
+   */
   @Transactional
   public void deleteSlotById(Long id) {
     InterviewerSlot slot = getSlotById(id);
