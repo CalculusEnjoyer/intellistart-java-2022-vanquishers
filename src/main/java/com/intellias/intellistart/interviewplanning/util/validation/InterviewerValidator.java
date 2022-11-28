@@ -2,9 +2,12 @@ package com.intellias.intellistart.interviewplanning.util.validation;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
+import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.ForbiddenException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewApplicationException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidWeekNumException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -37,33 +40,97 @@ public class InterviewerValidator {
   }
 
   /**
-   * Validates that the given slotWeekNum is equal to nextWeekNum.
+   * Validates all the data in the slotDto dto for slot creation by interviewer. Throws exceptions
+   * if data in the slotDto is invalid, otherwise does nothing.
    *
-   * @param slotWeekNum week number of a slot
-   * @param nextWeekNum next week number
-   * @throws InterviewApplicationException slotWeekNum and nextWeekNum doesn't match
+   * @param slotDto     slotDto to validate
+   * @param weekService weekService to get date parameters from
+   * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
+   *                                        invalid
    */
-  public static void validateSlotWeekNum(int slotWeekNum, int nextWeekNum) {
-    if (slotWeekNum != nextWeekNum) {
-      throw new InterviewApplicationException(
-          "bad_request", HttpStatus.BAD_REQUEST,
-          "Invalid weekNum: slot can be created only for next week: " + nextWeekNum);
+  public static void validateSlotCreateForDtoWithService(InterviewerSlotDto slotDto,
+      WeekService weekService) {
+    validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
+
+    int slotWeekNum = slotDto.getWeekNum();
+    validateIsNotPastWeek(slotWeekNum, weekService);
+    validateIsNotCurrentWeek(slotWeekNum, weekService);
+    validateIfNextWeekThenOnlyUntilFriday(slotWeekNum, weekService);
+  }
+
+  /**
+   * Validates all the data in the slotDto dto for slot updating by given role. Throws exceptions if
+   * data in the slotDto is invalid or given role is not allowed to update the slot, otherwise does
+   * nothing.
+   *
+   * @param slotDto     slotDto to validate
+   * @param role        role that performs the slot update
+   * @param weekService weekService to get date parameters from
+   * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
+   *                                        invalid
+   * @throws ForbiddenException             if not allowed role tried to update the slot
+   */
+
+  public static void validateSlotUpdateForDtoAndRole(InterviewerSlotDto slotDto, Role role,
+      WeekService weekService) {
+    validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
+    validateSlotDtoWeekNumIsNotNull(slotDto.getWeekNum());
+    validateSlotUpdateForWeekNumAndRole(slotDto.getWeekNum(), role, weekService);
+  }
+
+  private static void validateSlotDtoWeekNumIsNotNull(Integer weekNum) {
+    if (weekNum == null) {
+      throw new InvalidWeekNumException("Specify the weekNum for slot update.");
     }
   }
 
   /**
-   * Validates the all data in the slotDto dto. Throws exceptions if data in the slotDto is invalid,
-   * otherwise does nothing.
+   * Validates that slot with the provided {@code slotWeekNum} can be updated by user with provided
+   * {@code role}. Throws exceptions if the validation fails.
    *
-   * @param slotDto slotDto to validate
-   * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
-   *                                        invalid
+   * @param slotWeekNum slot weekNum to validate
+   * @param role        role that performs the slot update
+   * @param weekService weekService to get date parameters from
+   * @throws ForbiddenException if not allowed role tried to update the slot
    */
-  public static void validateSlotDto(InterviewerSlotDto slotDto) {
-    validateDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
+  public static void validateSlotUpdateForWeekNumAndRole(int slotWeekNum, Role role,
+      WeekService weekService) {
+    validateIsNotPastWeek(slotWeekNum, weekService);
+    switch (role) {
+      case COORDINATOR:
+        break;
+      case INTERVIEWER:
+        validateIsNotCurrentWeek(slotWeekNum, weekService);
+        validateIfNextWeekThenOnlyUntilFriday(slotWeekNum, weekService);
+        break;
+      default:
+        throw new ForbiddenException("Unexpected role for interviewer slot updating: " + role);
+    }
   }
 
-  private static void validateDuration(LocalTime from, LocalTime to) {
+  private static void validateIsNotCurrentWeek(int slotWeekNum, WeekService weekService) {
+    if (slotWeekNum == weekService.getCurrentWeekNum()) {
+      throw new InvalidWeekNumException("Cannot create or update slot for current weekNum.");
+    }
+  }
+
+  private static void validateIsNotPastWeek(int slotWeekNum, WeekService weekService) {
+    if (slotWeekNum < weekService.getCurrentWeekNum()) {
+      throw new InvalidWeekNumException("Cannot create or update slot for past weekNum.");
+    }
+  }
+
+  private static void validateIfNextWeekThenOnlyUntilFriday(int slotWeekNum,
+      WeekService weekService) {
+    if (slotWeekNum == weekService.getNextWeekNum()
+        && weekService.getCurrentDayOfWeek() > 4) {
+      throw new InvalidWeekNumException(
+          "Slot can be created or updated for next week only until Friday 00:00");
+    }
+  }
+
+
+  private static void validateSlotDuration(LocalTime from, LocalTime to) {
     if (!UtilValidator.isValidTimeBoundaries(from, to)) {
       throw new InvalidSlotBoundariesException("Invalid slot time boundaries");
     }
@@ -119,6 +186,22 @@ public class InterviewerValidator {
           interviewerSlot.getFrom(), interviewerSlot.getTo())) {
         throw new OverlappingSlotException();
       }
+    }
+  }
+
+  /**
+   * Validates that id of the interviewer authenticated in, matches the id of the interviewer in the
+   * request path. Throws an exception if it's not, otherwise does nothing.
+   *
+   * @param authInterviewerId id of the interviewer authenticated in
+   * @param pathInterviewerId id of the interviewer in the request path
+   * @throws ForbiddenException if the IDs are not matching (so Interviewer tries to access other
+   *                            Interviewer's data
+   */
+  public static void validateInterviewerIdMatch(Long authInterviewerId, Long pathInterviewerId) {
+    if (!pathInterviewerId.equals(authInterviewerId)) {
+      throw new ForbiddenException("Interviewer with id: " + authInterviewerId
+          + " tried to access the other interviewer (" + pathInterviewerId + ") data in request");
     }
   }
 }
