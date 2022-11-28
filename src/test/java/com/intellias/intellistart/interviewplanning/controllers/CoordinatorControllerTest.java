@@ -27,6 +27,7 @@ import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.SameRoleChangeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,7 +43,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -215,6 +215,36 @@ class CoordinatorControllerTest {
 
   @Test
   @Order(7)
+  void grantInterviewerRoleTest() throws Exception {
+    userService.register(new User("example100@gmail.com", Role.COORDINATOR));
+
+    mockMvc.perform(post("/users/interviewers")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\":\"example100@gmail.com\"}")
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+
+    Assertions.assertEquals(Role.INTERVIEWER,
+        userService.findUserByEmail("example100@gmail.com").getRole());
+  }
+
+  @Test
+  @Order(8)
+  void grantInterviewerRoleTest_whenAlreadyInterviewer() throws Exception {
+    User user = new User("example100@gmail.com", Role.INTERVIEWER);
+    userService.register(user);
+
+    try {
+      user.setRole(Role.INTERVIEWER);
+    } catch (SameRoleChangeException e) {
+      assertNotNull(e);
+    } catch (Exception e) {
+      fail();
+    }
+  }
+
+  @Test
+  @Order(9)
   void createBookingTestWithCorrectData() throws Exception {
     InterviewerSlot interviewerSlot = new InterviewerSlot(203951, 4, LocalTime.of(9, 0),
         LocalTime.of(21, 0)
@@ -253,7 +283,7 @@ class CoordinatorControllerTest {
   }
 
   @Test
-  @Order(8)
+  @Order(10)
   void updateBookingCorrectData() throws Exception {
     String bookingJson = "{"
         + "    \"dateFrom\": \"2039-12-22 16:30\","
@@ -275,7 +305,7 @@ class CoordinatorControllerTest {
   }
 
   @Test
-  @Order(8)
+  @Order(11)
   void updateBookingWithIncorrectTime() throws Exception {
     String bookingJson = "{"
         + "    \"dateFrom\": \"2039-12-22 17:30\","
@@ -298,7 +328,7 @@ class CoordinatorControllerTest {
   }
 
   @Test
-  @Order(9)
+  @Order(12)
   void updateBookingWhenOutOfSlot() throws Exception {
     String bookingJson = "{"
         + "    \"dateFrom\": \"2039-12-23 16:30\","
