@@ -74,7 +74,14 @@ public class InterviewerValidator {
   public static void validateSlotUpdateForDtoAndRole(InterviewerSlotDto slotDto, Role role,
       WeekService weekService) {
     validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
+    validateSlotDtoWeekNumIsNotNull(slotDto.getWeekNum());
     validateSlotUpdateForWeekNumAndRole(slotDto.getWeekNum(), role, weekService);
+  }
+
+  private static void validateSlotDtoWeekNumIsNotNull(Integer weekNum) {
+    if (weekNum == null) {
+      throw new InvalidWeekNumException("Specify the weekNum for slot update.");
+    }
   }
 
   /**
