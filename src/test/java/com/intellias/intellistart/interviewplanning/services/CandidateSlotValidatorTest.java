@@ -73,7 +73,7 @@ public class CandidateSlotValidatorTest {
 
   @Test
   @Order(1)
-  public void testValidator() {
+  void testValidator() {
 
     int errors = 0;
     int validatedSlots = 0;

@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -26,11 +24,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class InterviewerServiceTest {
 
   @Autowired
@@ -61,15 +62,19 @@ class InterviewerServiceTest {
   @Test
   @Order(0)
   void registerValidUserAndCheck() {
-    User user = new User("testemail@test.com", Role.INTERVIEWER);
+    User user = new User("testemail12@test.com", Role.INTERVIEWER);
+    int beforeUserSize = userService.findAllUsersByRole(Role.INTERVIEWER).size();
     userService.registerUser(user);
-    assertThat(userService.findAllUsersByRole(Role.INTERVIEWER).size()).isEqualTo(1);
+    int afterUserSize = userService.findAllUsersByRole(Role.INTERVIEWER).size();
 
+    int beforeIntSize = interviewerService.getAllInterviewers().size();
     Interviewer interviewer = new Interviewer(user, 100, new HashSet<>());
     interviewerService.registerInterviewer(interviewer);
-    assertThat(interviewerService.getAllInterviewers().size()).isEqualTo(1);
+    int afterIntSize = interviewerService.getAllInterviewers().size();
 
     SLOTS.forEach(e -> e.setInterviewer(interviewer));
+    assertThat(beforeUserSize + 1).isEqualTo(afterUserSize);
+    assertThat(beforeIntSize + 1).isEqualTo(afterIntSize);
   }
 
   @Test
