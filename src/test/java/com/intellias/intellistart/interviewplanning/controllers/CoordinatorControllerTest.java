@@ -208,7 +208,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(7)
   void grantInterviewerRoleTest() throws Exception {
-    userService.register(new User("example100@gmail.com", Role.COORDINATOR));
+    userService.registerUser(new User("example100@gmail.com", Role.COORDINATOR));
 
     mockMvc.perform(post("/users/interviewers")
         .contentType(MediaType.APPLICATION_JSON)
@@ -224,7 +224,7 @@ class CoordinatorControllerTest {
   @Order(8)
   void grantInterviewerRoleTest_whenAlreadyInterviewer() throws Exception {
     User user = new User("example100@gmail.com", Role.INTERVIEWER);
-    userService.register(user);
+    userService.registerUser(user);
 
     try {
       user.setRole(Role.INTERVIEWER);
