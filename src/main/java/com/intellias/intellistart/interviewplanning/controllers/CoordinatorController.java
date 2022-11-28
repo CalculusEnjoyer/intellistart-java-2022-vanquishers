@@ -45,15 +45,10 @@ public class CoordinatorController {
   public static final String MAPPING = "/";
 
   public final ModelMapper mapper;
-
   public final BookingService bookingService;
-
   public final InterviewerService interviewerService;
-
   public final CandidateService candidateService;
-
   public final UserService userService;
-
   public final WeekService weekService;
 
 
@@ -97,7 +92,7 @@ public class CoordinatorController {
         .getInterviewerById(booking.getInterviewerSlot().getInterviewer().getId());
     int bookingLimit = interviewer.getBookingLimit();
     List<Booking> bookingsByInterviewerId = bookingService
-        .findByInterviewerIdAndWeekNum(interviewer.getId(), weekService.getCurrentWeekNum());
+        .findByInterviewerIdAndWeekNum(interviewer.getId(), WeekService.getCurrentWeekNum());
 
     if (bookingsByInterviewerId.size() >= bookingLimit) {
       throw new ExcessBookingLimitException();

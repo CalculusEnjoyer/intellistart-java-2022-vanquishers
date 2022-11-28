@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +32,6 @@ public class CandidateService {
   public CandidateService(
       CandidateRepository repository,
       CandidateSlotRepository slotRepository) {
-
     this.repository = repository;
     this.slotRepository = slotRepository;
   }
@@ -52,8 +50,10 @@ public class CandidateService {
     return slotRepository.findAll();
   }
 
-  public void deleteSlot(Long id) {
-    getSlotById(id).getCandidate().getCandidateSlot().remove(getSlotById(id));
+  @Transactional
+  public void deleteSlotById(Long id) {
+    CandidateSlot slot = getSlotById(id);
+    slot.getCandidate().getCandidateSlot().remove(slot);
     slotRepository.deleteById(id);
   }
 
@@ -67,7 +67,8 @@ public class CandidateService {
     CandidateValidator.validateCandidateSlotForBoundaries(slot);
     CandidateValidator.validateCandidateSlotForOverlapping(
         getCandidateById(slot.getCandidate().getId()).getCandidateSlot().stream()
-            .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
+            .filter(s -> !Objects.equals(s.getId(), slot.getId()))
+            .collect(Collectors.toSet()),
         slot);
     return slotRepository.save(slot);
   }

@@ -82,16 +82,16 @@ class InterviewerControllerTest {
           INTERVIEWERS.get(1), null)
   );
 
-  //to minimize the chance of test failure because the tests were performed at the time
-  //of week change, the referent week nums are initialized upon test start
-  //instead of calling weekService.get[Current or Next]WeekNum() in the tests
+  // To minimize the chance of test failure because the tests were performed at the time
+  // of week change, the referent week nums are initialized upon test start
+  // instead of calling weekService.get[Current or Next]WeekNum() in the tests
   private final int CURRENT_WEEK_NUM;
   private final int NEXT_WEEK_NUM;
 
   @Autowired
-  InterviewerControllerTest(WeekService weekService) {
-    CURRENT_WEEK_NUM = weekService.getCurrentWeekNum();
-    NEXT_WEEK_NUM = weekService.getNextWeekNum();
+  private InterviewerControllerTest() {
+    CURRENT_WEEK_NUM = WeekService.getCurrentWeekNum();
+    NEXT_WEEK_NUM = WeekService.getNextWeekNum();
   }
 
   @BeforeEach

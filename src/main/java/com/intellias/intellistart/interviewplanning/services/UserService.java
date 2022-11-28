@@ -29,11 +29,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserRepository userRepository;
-
   private final InterviewerService interviewerService;
-
   private final CandidateService candidateService;
-
   private final ModelMapper modelMapper;
 
   /**

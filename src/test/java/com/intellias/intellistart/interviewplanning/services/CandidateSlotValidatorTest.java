@@ -31,6 +31,7 @@ public class CandidateSlotValidatorTest {
   @Autowired
   private CandidateService candidateService;
 
+
   private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
   private static final List<CandidateSlot> SLOTS = List.of(
       new CandidateSlot(

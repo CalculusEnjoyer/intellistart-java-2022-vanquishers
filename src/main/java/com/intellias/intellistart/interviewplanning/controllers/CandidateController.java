@@ -45,7 +45,6 @@ public class CandidateController {
   public CandidateController(
       CandidateService candidateService,
       ModelMapper mapper) {
-
     this.candidateService = candidateService;
     this.mapper = mapper;
   }

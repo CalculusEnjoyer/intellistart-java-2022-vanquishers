@@ -41,6 +41,8 @@ class CandidateServiceTest {
   @Autowired
   private ModelMapper mapper;
 
+
+
   private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
 
   private static final List<CandidateSlot> SLOTS = List.of(
@@ -69,11 +71,11 @@ class CandidateServiceTest {
   void registerValidUserAndCheck() {
     User user = new User("emailtest@test.com", Role.CANDIDATE);
     userService.registerUser(user);
-    assertThat(userService.findAllUsersByRole(Role.CANDIDATE).size()).isEqualTo(1);
+    assertThat(userService.findAllUsersByRole(Role.CANDIDATE)).hasSize(1);
 
     Candidate candidate = new Candidate(new HashSet<>(), user);
     candidateService.registerCandidate(candidate);
-    assertThat(candidateService.getAllCandidates().size()).isEqualTo(1);
+    assertThat(candidateService.getAllCandidates()).hasSize(1);
 
     SLOTS.forEach(e -> e.setCandidate(candidate));
   }
@@ -118,11 +120,11 @@ class CandidateServiceTest {
 
   @Test
   @Order(3)
-  void deleteInterviewerSlotsTest() {
+  void deleteCandidateSlotsTest() {
     int beforeDeleteSize = candidateService.getAllSlots().size();
 
     ADDED_SLOTS.forEach(slot -> {
-      candidateService.deleteSlot(slot.getId());
+      candidateService.deleteSlotById(slot.getId());
       assertThrows(CandidateSlotNotFoundException.class,
           () -> candidateService.getSlotById(slot.getId()));
     });

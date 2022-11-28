@@ -51,7 +51,7 @@ public class InterviewerController {
   public ResponseEntity<InterviewerSlotDto> addSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId) {
-    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
+    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), WeekService.getNextWeekNum());
     InterviewerValidator.validateSlotDto(slotDto);
 
     InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
@@ -71,14 +71,14 @@ public class InterviewerController {
   public ResponseEntity<InterviewerSlotDto> updateSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId, @PathVariable Long slotId) {
-    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), weekService.getNextWeekNum());
+    InterviewerValidator.validateSlotWeekNum(slotDto.getWeekNum(), WeekService.getNextWeekNum());
     InterviewerValidator.validateSlotDto(slotDto);
     //voiding the interviewer id in dto, so it will not be mapped in the slot
     slotDto.setInterviewerId(null);
 
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
     InterviewerValidator.validateHasAccessToSlot(interviewerId, slot);
-    InterviewerValidator.validateSlotWeekNum(slot.getWeekNum(), weekService.getNextWeekNum());
+    InterviewerValidator.validateSlotWeekNum(slot.getWeekNum(), WeekService.getNextWeekNum());
     mapper.map(slotDto, slot);
 
     InterviewerSlot updatedSlot = interviewerService.registerSlot(slot);
@@ -95,7 +95,7 @@ public class InterviewerController {
   public ResponseEntity<List<InterviewerSlotDto>> getCurrentWeekSlots(
       @PathVariable Long interviewerId) {
     List<InterviewerSlotDto> currentWeekSlots = interviewerService
-        .getSlotsForIdAndWeek(interviewerId, weekService.getCurrentWeekNum())
+        .getSlotsForIdAndWeek(interviewerId, WeekService.getCurrentWeekNum())
         .stream()
         .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
         .collect(Collectors.toList());
@@ -112,7 +112,7 @@ public class InterviewerController {
   public ResponseEntity<List<InterviewerSlotDto>> getNextWeekSlots(
       @PathVariable Long interviewerId) {
     List<InterviewerSlotDto> nextWeekSlots = interviewerService
-        .getSlotsForIdAndWeek(interviewerId, weekService.getNextWeekNum())
+        .getSlotsForIdAndWeek(interviewerId, WeekService.getNextWeekNum())
         .stream()
         .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
         .collect(Collectors.toList());

@@ -50,7 +50,7 @@ import org.springframework.web.context.WebApplicationContext;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class CandidateControllerTest {
+class CandidateControllerTest {
 
   @Autowired
   private MockMvc mockMvc;

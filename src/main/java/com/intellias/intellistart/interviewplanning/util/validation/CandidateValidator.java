@@ -69,7 +69,6 @@ public class CandidateValidator {
     }
   }
 
-
   /**
    * Checks if slot do not overlap with already existing Candidates's slots.
    */
@@ -82,4 +81,5 @@ public class CandidateValidator {
       }
     }
   }
+
 }

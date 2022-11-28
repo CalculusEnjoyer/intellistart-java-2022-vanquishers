@@ -5,13 +5,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
+import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InterviewerSlotNotFoundException;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -30,9 +37,12 @@ class InterviewerServiceTest {
   private InterviewerService interviewerService;
 
   @Autowired
+  private UserService userService;
+
+  @Autowired
   private ModelMapper mapper;
 
-  private static final List<InterviewerSlot> slots = List.of(
+  private static final List<InterviewerSlot> SLOTS = List.of(
       new InterviewerSlot(0, 1,
           LocalTime.of(9, 30), LocalTime.of(11, 0)),
 
@@ -46,25 +56,39 @@ class InterviewerServiceTest {
           LocalTime.of(9, 30), LocalTime.of(11, 0))
   );
 
-  private static List<InterviewerSlot> addedSlots;
+  private static final List<InterviewerSlot> ADDED_SLOTS = new ArrayList<>();
+
+  @Test
+  @Order(0)
+  void registerValidUserAndCheck() {
+    User user = new User("testemail@test.com", Role.INTERVIEWER);
+    userService.registerUser(user);
+    assertThat(userService.findAllUsersByRole(Role.INTERVIEWER).size()).isEqualTo(1);
+
+    Interviewer interviewer = new Interviewer(user, 100, new HashSet<>());
+    interviewerService.registerInterviewer(interviewer);
+    assertThat(interviewerService.getAllInterviewers().size()).isEqualTo(1);
+
+    SLOTS.forEach(e -> e.setInterviewer(interviewer));
+  }
 
   @Test
   @Order(1)
   void addInterviewerSlotsTest() {
     int initSize = interviewerService.getAllSlots().size();
 
-    addedSlots = interviewerService.registerSlots(slots);
-    int expectedDbTableSize = initSize + slots.size();
+    SLOTS.forEach(e -> ADDED_SLOTS.add(interviewerService.registerSlot(e)));
+    int expectedDbTableSize = initSize + SLOTS.size();
     int actualDbTableSize = interviewerService.getAllSlots().size();
 
-    assertThat(addedSlots).hasSameSizeAs(slots);
+    assertThat(ADDED_SLOTS).hasSameSizeAs(SLOTS);
     assertThat(actualDbTableSize).isEqualTo(expectedDbTableSize);
   }
 
   @Test
   @Order(2)
   void readInterviewerSlotsTest() {
-    List<Long> addedSlotIds = addedSlots.stream()
+    List<Long> addedSlotIds = ADDED_SLOTS.stream()
         .map(InterviewerSlot::getId)
         .collect(Collectors.toList());
 
@@ -72,7 +96,7 @@ class InterviewerServiceTest {
         .filter(slot -> addedSlotIds.contains(slot.getId()))
         .collect(Collectors.toList());
 
-    assertThat(readSlots).hasSameElementsAs(addedSlots);
+    assertThat(readSlots).hasSameElementsAs(ADDED_SLOTS);
   }
 
   @Test
@@ -81,13 +105,13 @@ class InterviewerServiceTest {
 
     int BeforeDeleteSize = interviewerService.getAllSlots().size();
 
-    addedSlots.forEach(slot -> {
+    ADDED_SLOTS.forEach(slot -> {
       interviewerService.deleteSlotById(slot.getId());
       assertThrows(InterviewerSlotNotFoundException.class,
           () -> interviewerService.getSlotById(slot.getId()));
     });
     int afterDeleteSize = interviewerService.getAllSlots().size();
-    int expectedSize = BeforeDeleteSize - addedSlots.size();
+    int expectedSize = BeforeDeleteSize - ADDED_SLOTS.size();
 
     assertThat(afterDeleteSize).isEqualTo(expectedSize);
   }

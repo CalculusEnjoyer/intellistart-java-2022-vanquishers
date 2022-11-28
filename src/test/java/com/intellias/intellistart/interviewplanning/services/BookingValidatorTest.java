@@ -28,7 +28,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BookingValidatorTest {
+class BookingValidatorTest {
 
   @Test
   @Order(1)

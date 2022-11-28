@@ -63,9 +63,6 @@ class CoordinatorControllerTest {
   private MockMvc mockMvc;
 
   @Autowired
-  private InterviewerService interviewerService;
-
-  @Autowired
   private BookingRepository bookingRepository;
 
   @Autowired
@@ -78,6 +75,9 @@ class CoordinatorControllerTest {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private InterviewerService interviewerService;
 
   @Autowired
   private WebApplicationContext webApplicationContext;
@@ -106,13 +106,13 @@ class CoordinatorControllerTest {
     Booking booking = new Booking(LocalDateTime.of(2015,
         Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
         Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
-    InterviewerSlot intslot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
+    InterviewerSlot intSlot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
         LocalTime.of(9, 30), LocalTime.of(11, 0)));
-    CandidateSlot candslot = candidateSlotRepository.save(new CandidateSlot(
+    CandidateSlot candSlot = candidateSlotRepository.save(new CandidateSlot(
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0))));
-    booking.setInterviewerSlot(intslot);
-    booking.setCandidateSlot(candslot);
+    booking.setInterviewerSlot(intSlot);
+    booking.setCandidateSlot(candSlot);
     bookingRepository.save(booking);
     booking = bookingService.getAllBookings().get(bookingService.getAllBookings().size() - 1);
 
