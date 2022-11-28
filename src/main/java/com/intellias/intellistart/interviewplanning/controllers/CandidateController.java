@@ -55,7 +55,7 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots")
-  public ResponseEntity<CandidateSlotDto> addSlot(
+  public ResponseEntity<CandidateSlotForm> addSlot(
       @RequestBody CandidateSlotDto candidateSlotDto,
       Authentication authentication) {
 
@@ -66,8 +66,8 @@ public class CandidateController {
     slot.setCandidate(candidate);
     candidateService.registerSlot(slot);
 
-    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-    return new ResponseEntity<>(dto, HttpStatus.OK);
+    CandidateSlotForm form = new CandidateSlotForm(slot);
+    return new ResponseEntity<>(form, HttpStatus.OK);
   }
 
   /**
@@ -76,7 +76,7 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots/{slotId}")
-  public ResponseEntity<CandidateSlotDto> updateSlot(
+  public ResponseEntity<CandidateSlotForm> updateSlot(
       Authentication authentication,
       @RequestBody CandidateSlotDto candidateSlotDto,
       @PathVariable Long slotId) {
@@ -93,8 +93,8 @@ public class CandidateController {
     slot.setDateTo(candidateSlotDto.getDateTo());
     candidateService.registerSlot(slot);
 
-    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-    return new ResponseEntity<>(dto, HttpStatus.OK);
+    CandidateSlotForm form = new CandidateSlotForm(slot);
+    return new ResponseEntity<>(form, HttpStatus.OK);
   }
 
   /**

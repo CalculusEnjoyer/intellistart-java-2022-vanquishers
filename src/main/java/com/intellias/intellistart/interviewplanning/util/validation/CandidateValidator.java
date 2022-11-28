@@ -2,6 +2,7 @@ package com.intellias.intellistart.interviewplanning.util.validation;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.CandidateSlotDto;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
+import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingSlotException;
 import java.time.LocalDate;
@@ -31,7 +32,8 @@ public class CandidateValidator {
     LocalDateTime fromTime = dto.getDateFrom();
     LocalDateTime toTime = dto.getDateTo();
 
-    boolean isFuture = fromTime.toLocalDate().isAfter(LocalDate.now());
+    boolean isFuture = fromTime.toLocalDate().isAfter(
+        LocalDate.now(WeekService.getZoneId()));
     boolean isValidBounds = UtilValidator.isValidTimeBoundaries(
         fromTime.toLocalTime(), toTime.toLocalTime());
     boolean isValid = isFuture && isValidBounds;

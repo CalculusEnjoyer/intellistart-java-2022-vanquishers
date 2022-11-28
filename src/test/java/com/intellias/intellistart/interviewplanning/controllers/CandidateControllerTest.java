@@ -125,7 +125,6 @@ class CandidateControllerTest {
   void addSlotTest_whenCorrectData() throws Exception {
     String url = "/candidates/current/slots";
     Authentication auth = authenticateUser(USERS.get(0));
-    Long candidateId = CANDIDATES.get(0).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         "2024-06-11 14:00", "2024-06-11 16:00");
     int slotCountBeforeAdd = candidateService.getAllSlots().size();
@@ -137,8 +136,7 @@ class CandidateControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.dateFrom", equalTo("2024-06-11 14:00")))
-        .andExpect(jsonPath("$.dateTo", equalTo("2024-06-11 16:00")))
-        .andExpect(jsonPath("$.candidateId", equalTo(candidateId.intValue())));
+        .andExpect(jsonPath("$.dateTo", equalTo("2024-06-11 16:00")));
     int slotCountAfterAdd = candidateService.getAllSlots().size();
 
     assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd + 1);
@@ -161,7 +159,8 @@ class CandidateControllerTest {
             .content(slotDtoJsonStr)
             .principal(auth))
         .andDo(print())
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode", equalTo("slot_is_overlapping")));
     int slotCountAfterAdd = candidateService.getAllSlots().size();
 
     assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);
@@ -214,18 +213,20 @@ class CandidateControllerTest {
   }
 
   /**
-   * Check user[0] GET equals to its candidate linked slots.
+   * Check users GET same to their candidate linked slots.
    */
   @Test
   @Order(3)
-  void getSlotTest_forUser0() throws Exception {
+  void getSlotTest_forUsers() throws Exception {
     String url = "/candidates/current/slots";
-    Authentication auth = authenticateUser(USERS.get(0));
+    Authentication auth0 = authenticateUser(USERS.get(0));
+    Authentication auth1 = authenticateUser(USERS.get(1));
+    List<CandidateSlot> slots;
 
-    List<CandidateSlot> slots = new ArrayList<>(
+    slots = new ArrayList<>(
         candidateService.getCandidateByUserId(USERS.get(0).getId()).getCandidateSlot());
 
-    mockMvc.perform(get(url).principal(auth))
+    mockMvc.perform(get(url).principal(auth0))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[*].id", contains(
@@ -248,21 +249,12 @@ class CandidateControllerTest {
                 .map(e -> e.replace('T', ' '))
                 .toArray()
         )));
-  }
 
-  /**
-   * Check user[1] GET equals to its candidate linked slots.
-   */
-  @Test
-  @Order(3)
-  void getSlotTest_forUser1() throws Exception {
-    String url = "/candidates/current/slots";
-    Authentication auth = authenticateUser(USERS.get(1));
 
-    List<CandidateSlot> slots = new ArrayList<>(
+    slots = new ArrayList<>(
         candidateService.getCandidateByUserId(USERS.get(1).getId()).getCandidateSlot());
 
-    mockMvc.perform(get(url).principal(auth))
+    mockMvc.perform(get(url).principal(auth1))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[*].id", contains(
@@ -295,7 +287,6 @@ class CandidateControllerTest {
   void updateSlotTest_whenCorrectData() throws Exception {
     String url = "/candidates/current/slots/1";
     Authentication auth = authenticateUser(USERS.get(0));
-    Long candidateId = CANDIDATES.get(0).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         "2024-06-11 18:00", "2024-06-11 20:00");
     int slotCountBeforeAdd = candidateService.getAllSlots().size();
@@ -307,8 +298,7 @@ class CandidateControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.dateFrom", equalTo("2024-06-11 18:00")))
-        .andExpect(jsonPath("$.dateTo", equalTo("2024-06-11 20:00")))
-        .andExpect(jsonPath("$.candidateId", equalTo(candidateId.intValue())));
+        .andExpect(jsonPath("$.dateTo", equalTo("2024-06-11 20:00")));
     int slotCountAfterAdd = candidateService.getAllSlots().size();
 
     assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);
@@ -410,18 +400,20 @@ class CandidateControllerTest {
   }
 
   /**
-   * Check user[0] GET equals to its candidate linked slots.
+   * Check users GET same to their candidate linked slots.
    */
   @Test
   @Order(6)
-  void getSlotTest_forUser0_afterUpdate() throws Exception {
+  void getSlotTest_forUsers_afterUpdate() throws Exception {
     String url = "/candidates/current/slots";
-    Authentication auth = authenticateUser(USERS.get(0));
+    Authentication auth0 = authenticateUser(USERS.get(0));
+    Authentication auth1 = authenticateUser(USERS.get(1));
+    List<CandidateSlot> slots;
 
-    List<CandidateSlot> slots = new ArrayList<>(
+     slots = new ArrayList<>(
         candidateService.getCandidateByUserId(USERS.get(0).getId()).getCandidateSlot());
 
-    mockMvc.perform(get(url).principal(auth))
+    mockMvc.perform(get(url).principal(auth0))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[*].id", contains(
@@ -444,21 +436,12 @@ class CandidateControllerTest {
                 .map(e -> e.replace('T', ' '))
                 .toArray()
         )));
-  }
 
-  /**
-   * Check user[1] GET equals to its candidate linked slots.
-   */
-  @Test
-  @Order(6)
-  void getSlotTest_forUser1_afterUpdate() throws Exception {
-    String url = "/candidates/current/slots";
-    Authentication auth = authenticateUser(USERS.get(1));
 
-    List<CandidateSlot> slots = new ArrayList<>(
+    slots = new ArrayList<>(
         candidateService.getCandidateByUserId(USERS.get(1).getId()).getCandidateSlot());
 
-    mockMvc.perform(get(url).principal(auth))
+    mockMvc.perform(get(url).principal(auth1))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[*].id", contains(

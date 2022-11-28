@@ -26,10 +26,6 @@ public class WeekService {
     return zoneId;
   }
 
-  private WeekService() {
-
-  }
-
   /**
    * Method for getting the current week number with current year (202243).
    *

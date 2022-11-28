@@ -69,6 +69,7 @@ class CoordinatorControllerTest {
 
   @Autowired
   private InterviewerSlotRepository interviewerSlotRepository;
+
   @Autowired
   private CandidateSlotRepository candidateSlotRepository;
 

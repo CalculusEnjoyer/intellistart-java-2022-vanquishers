@@ -44,8 +44,6 @@ class CandidateServiceTest {
   @Autowired
   private ModelMapper mapper;
 
-
-
   private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
 
   private static final List<CandidateSlot> SLOTS = List.of(
@@ -72,15 +70,19 @@ class CandidateServiceTest {
   @Test
   @Order(0)
   void registerValidUserAndCheck() {
-    User user = new User("emailtest@test.com", Role.CANDIDATE);
+    User user = new User("emailtest121@test.com", Role.CANDIDATE);
+    int beforeUserSize = userService.findAllUsersByRole(Role.CANDIDATE).size();
     userService.registerUser(user);
-    assertThat(userService.findAllUsersByRole(Role.CANDIDATE)).hasSize(1);
+    int afterUserSize = userService.findAllUsersByRole(Role.CANDIDATE).size();
 
+    int beforeIntSize = candidateService.getAllCandidates().size();
     Candidate candidate = new Candidate(new HashSet<>(), user);
     candidateService.registerCandidate(candidate);
-    assertThat(candidateService.getAllCandidates()).hasSize(1);
+    int afterIntSize = candidateService.getAllCandidates().size();
 
     SLOTS.forEach(e -> e.setCandidate(candidate));
+    assertThat(beforeUserSize + 1).isEqualTo(afterUserSize);
+    assertThat(beforeIntSize + 1).isEqualTo(afterIntSize);
   }
 
   @Test
