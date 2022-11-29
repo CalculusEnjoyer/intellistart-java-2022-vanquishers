@@ -13,6 +13,6 @@ public class SlotAccessException extends InterviewApplicationException {
   public SlotAccessException() {
     super("slot_access_error",
         HttpStatus.BAD_REQUEST,
-        "Slot belong to another user");
+        "This slot belongs to another user");
   }
 }

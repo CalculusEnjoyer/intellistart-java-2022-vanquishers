@@ -17,6 +17,9 @@ import java.util.Set;
  */
 public class BookingValidator {
 
+  /**
+   * Private constructor to hide the ability of instantiation of a utility class.
+   */
   private BookingValidator() {
   }
 
@@ -45,7 +48,7 @@ public class BookingValidator {
   }
 
   /**
-   * Checks for overlapping with bookins in set.
+   * Checks for overlapping with bookings in set.
    */
   public static void isOverLappingWithBookings(Set<Booking> bookings, Booking booking) {
     for (Booking bookingToCheck : bookings) {
@@ -62,7 +65,7 @@ public class BookingValidator {
   public static boolean isValidBookingTimeBoundaries(BookingDto dto) {
     LocalDateTime fromTime = dto.getDateFrom();
     LocalDateTime toTime = dto.getDateTo();
-    return dto.getDateFrom().isAfter(LocalDateTime.now(WeekService.ZONE_ID))
+    return dto.getDateFrom().isAfter(LocalDateTime.now(WeekService.getZoneId()))
         && Duration.between(fromTime, toTime).toMinutes() == 90;
   }
 
@@ -75,4 +78,5 @@ public class BookingValidator {
     }
     return dto;
   }
+
 }
