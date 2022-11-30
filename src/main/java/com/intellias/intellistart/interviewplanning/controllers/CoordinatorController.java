@@ -124,6 +124,7 @@ public class CoordinatorController {
     Booking.updateFieldsExceptId(bookingToUpdate, mapper.map(bookingDto, Booking.class));
     bookingToUpdate.setStatus(Status.CHANGED);
     bookingService.registerBooking(bookingToUpdate);
+
     return ResponseEntity.ok().body(mapper.map(bookingToUpdate, BookingForm.class));
   }
 
