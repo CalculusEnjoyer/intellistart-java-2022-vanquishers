@@ -23,6 +23,7 @@ import com.intellias.intellistart.interviewplanning.repositories.BookingReposito
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
+import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
@@ -85,7 +86,7 @@ class CoordinatorControllerTest {
   private UserService userService;
 
   @Autowired
-  private InterviewerService interviewerService;
+  private CandidateService candidateService;
 
   @Autowired
   private WebApplicationContext webApplicationContext;
