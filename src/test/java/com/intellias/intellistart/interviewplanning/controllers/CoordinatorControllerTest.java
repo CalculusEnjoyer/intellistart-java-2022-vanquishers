@@ -23,7 +23,6 @@ import com.intellias.intellistart.interviewplanning.repositories.BookingReposito
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
 import com.intellias.intellistart.interviewplanning.repositories.InterviewerSlotRepository;
 import com.intellias.intellistart.interviewplanning.services.BookingService;
-import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
@@ -75,6 +74,7 @@ class CoordinatorControllerTest {
 
   @Autowired
   private InterviewerSlotRepository interviewerSlotRepository;
+
   @Autowired
   private CandidateSlotRepository candidateSlotRepository;
 
@@ -85,7 +85,7 @@ class CoordinatorControllerTest {
   private UserService userService;
 
   @Autowired
-  private CandidateService candidateService;
+  private InterviewerService interviewerService;
 
   @Autowired
   private WebApplicationContext webApplicationContext;
@@ -110,7 +110,7 @@ class CoordinatorControllerTest {
   @BeforeEach
   public void setup() {
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    USERS.forEach(u -> userService.register(u));
+    USERS.forEach(u -> userService.registerUser(u));
     INTERVIEWERS.forEach(i -> interviewerService.registerInterviewer(i));
     CANDIDATES.forEach(i -> candidateService.registerCandidate(i));
   }
@@ -121,13 +121,13 @@ class CoordinatorControllerTest {
     Booking booking = new Booking(LocalDateTime.of(2015,
         Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
         Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
-    InterviewerSlot intslot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
+    InterviewerSlot intSlot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
         LocalTime.of(9, 30), LocalTime.of(11, 0)));
-    CandidateSlot candslot = candidateSlotRepository.save(new CandidateSlot(
+    CandidateSlot candSlot = candidateSlotRepository.save(new CandidateSlot(
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0))));
-    booking.setInterviewerSlot(intslot);
-    booking.setCandidateSlot(candslot);
+    booking.setInterviewerSlot(intSlot);
+    booking.setCandidateSlot(candSlot);
     bookingRepository.save(booking);
     booking = bookingService.getAllBookings().get(bookingService.getAllBookings().size() - 1);
 
@@ -148,7 +148,7 @@ class CoordinatorControllerTest {
   @Order(2)
   void revokeCoordinatorRoleByIdTest() throws Exception {
     User coordinator = new User("check@gmail.com", Role.COORDINATOR);
-    userService.register(coordinator);
+    userService.registerUser(coordinator);
 
     mockMvc.perform(delete("/users/coordinators/{coordinatorId}", coordinator.getId()))
         .andExpect(status().isOk());
@@ -175,7 +175,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(4)
   void grantCoordinatorRoleTest() throws Exception {
-    userService.register(new User("example34@gmail.com", Role.INTERVIEWER));
+    userService.registerUser(new User("example34@gmail.com", Role.INTERVIEWER));
 
     mockMvc.perform(post("/users/coordinators")
             .contentType(MediaType.APPLICATION_JSON)
@@ -202,7 +202,7 @@ class CoordinatorControllerTest {
   @Order(6)
   void revokeInterviewerRoleTest() throws Exception {
     User interviewerUser = new User("check@gmail.com", Role.INTERVIEWER);
-    userService.register(interviewerUser);
+    userService.registerUser(interviewerUser);
     Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
     interviewerService.registerInterviewer(interviewer);
 
@@ -216,7 +216,7 @@ class CoordinatorControllerTest {
   @Test
   @Order(7)
   void grantInterviewerRoleTest() throws Exception {
-    userService.register(new User("example100@gmail.com", Role.COORDINATOR));
+    userService.registerUser(new User("example100@gmail.com", Role.COORDINATOR));
 
     mockMvc.perform(post("/users/interviewers")
             .contentType(MediaType.APPLICATION_JSON)
@@ -232,7 +232,7 @@ class CoordinatorControllerTest {
   @Order(8)
   void grantInterviewerRoleTest_whenAlreadyInterviewer() throws Exception {
     User user = new User("example100@gmail.com", Role.INTERVIEWER);
-    userService.register(user);
+    userService.registerUser(user);
 
     try {
       user.setRole(Role.INTERVIEWER);

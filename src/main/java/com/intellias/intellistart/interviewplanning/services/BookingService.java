@@ -65,10 +65,6 @@ public class BookingService {
     repository.deleteById(id);
   }
 
-  public void deleteBookingsById(List<Long> ids) {
-    repository.deleteAllById(ids);
-  }
-
   /**
    * Method that register booking and checks if it overlaps with other bookings or slots.
    */
@@ -87,10 +83,6 @@ public class BookingService {
             .filter(b -> !Objects.equals(b.getId(), booking.getId())).collect(
                 Collectors.toSet()), booking);
     return repository.save(booking);
-  }
-
-  public List<Booking> registerBookings(List<Booking> bookings) {
-    return repository.saveAll(bookings);
   }
 
   public List<Booking> findByInterviewerIdAndWeekNum(Long interviewerId, int weekNum) {

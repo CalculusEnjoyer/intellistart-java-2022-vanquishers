@@ -5,11 +5,8 @@ import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
-import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
-import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidSlotBoundariesException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.SlotAccessException;
 import com.intellias.intellistart.interviewplanning.util.models.CandidateSlotForm;
-import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -48,7 +45,6 @@ public class CandidateController {
   public CandidateController(
       CandidateService candidateService,
       ModelMapper mapper) {
-
     this.candidateService = candidateService;
     this.mapper = mapper;
   }
@@ -59,13 +55,9 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots")
-  public ResponseEntity<Object> addSlot(
-      Authentication authentication,
-      @RequestBody CandidateSlotDto candidateSlotDto) {
-
-    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-      throw new InvalidSlotBoundariesException();
-    }
+  public ResponseEntity<CandidateSlotForm> addSlot(
+      @RequestBody CandidateSlotDto candidateSlotDto,
+      Authentication authentication) {
 
     FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
     Candidate candidate = candidateService.getCandidateByUserId(details.getUser().getId());
@@ -74,8 +66,8 @@ public class CandidateController {
     slot.setCandidate(candidate);
     candidateService.registerSlot(slot);
 
-    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-    return new ResponseEntity<>(dto, HttpStatus.OK);
+    CandidateSlotForm form = new CandidateSlotForm(slot);
+    return new ResponseEntity<>(form, HttpStatus.OK);
   }
 
   /**
@@ -84,14 +76,10 @@ public class CandidateController {
    * @return response status
    */
   @PostMapping("/current/slots/{slotId}")
-  public ResponseEntity<CandidateSlotDto> updateSlot(
+  public ResponseEntity<CandidateSlotForm> updateSlot(
       Authentication authentication,
       @RequestBody CandidateSlotDto candidateSlotDto,
       @PathVariable Long slotId) {
-
-    if (!CandidateSlotValidator.isValidCandidateSlot(candidateSlotDto)) {
-      throw new InvalidSlotBoundariesException();
-    }
 
     FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
     Candidate candidate = candidateService.getCandidateByUserId(details.getUser().getId());
@@ -105,8 +93,8 @@ public class CandidateController {
     slot.setDateTo(candidateSlotDto.getDateTo());
     candidateService.registerSlot(slot);
 
-    CandidateSlotDto dto = mapper.map(slot, CandidateSlotDto.class);
-    return new ResponseEntity<>(dto, HttpStatus.OK);
+    CandidateSlotForm form = new CandidateSlotForm(slot);
+    return new ResponseEntity<>(form, HttpStatus.OK);
   }
 
   /**
@@ -118,10 +106,10 @@ public class CandidateController {
   public List<CandidateSlotForm> getAllSlots(Authentication authentication) {
 
     FacebookUserDetails details = (FacebookUserDetails) authentication.getPrincipal();
+    Candidate candidate = candidateService.getCandidateByUserId(details.getUser().getId());
 
-    return candidateService.getAllSlots().stream()
-        .filter(e -> e.getCandidate().getUser().getId() == details.getUser().getId())
-        .map(e -> new CandidateSlotForm(e))
+    return candidate.getCandidateSlot().stream()
+        .map(CandidateSlotForm::new)
         .collect(Collectors.toList());
   }
 
