@@ -44,6 +44,9 @@ class CandidateServiceTest {
   @Autowired
   private ModelMapper mapper;
 
+  @Autowired
+  private WeekService weekService;
+
   private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
 
   private static final List<CandidateSlot> SLOTS = List.of(
@@ -164,7 +167,7 @@ class CandidateServiceTest {
     candidateService.registerSlot(candidateSlotToFind);
 
     List<CandidateSlot> slots = candidateService.getCandidateSlotsForWeek(
-        WeekService.getWeekNumFrom(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12)));
+        weekService.getWeekNumFrom(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12)));
     List<CandidateSlot> filteredSlots = slots.stream()
         .filter(slot -> Objects.equals(slot.getDateFrom(),
             LocalDateTime.of(LocalDate.of(NEXT_YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)))).collect(

@@ -32,17 +32,19 @@ public class UserService {
   private final InterviewerService interviewerService;
   private final CandidateService candidateService;
   private final ModelMapper modelMapper;
+  private final WeekService weekService;
 
   /**
    * Constructor for UserService.
    */
   @Autowired
   public UserService(UserRepository userRepository, InterviewerService interviewerService,
-      CandidateService candidateService, ModelMapper modelMapper) {
+      CandidateService candidateService, ModelMapper modelMapper, WeekService weekService) {
     this.userRepository = userRepository;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
     this.modelMapper = modelMapper;
+    this.weekService = weekService;
   }
 
   public void registerUser(User user) {
@@ -88,7 +90,7 @@ public class UserService {
     List<DashboardDayDto> resultDashBoard = new ArrayList<>();
     for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
       DashboardDayDto dashboardDayDto = new DashboardDayDto();
-      dashboardDayDto.setDay(WeekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
+      dashboardDayDto.setDay(weekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
 
       interviewerService.getSlotsForWeekAndDayOfWeek(weekNum, dayOfWeek)
           .forEach(slot -> dashboardDayDto.getInterviewerSlotFormsWithId()
@@ -107,13 +109,13 @@ public class UserService {
       int finalDayOfWeek = dayOfWeek;
       candidateService.getCandidateSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
-              booking -> WeekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
+              booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
                   == finalDayOfWeek).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
 
       interviewerService.getSlotsForWeek(weekNum)
           .forEach(slot -> slot.getBooking().stream().filter(
-              booking -> WeekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
+              booking -> weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
                   == finalDayOfWeek).forEach(booking -> dashboardDayDto.getBookings()
               .put(booking.getId(), modelMapper.map(booking, BookingDto.class))));
       resultDashBoard.add(dashboardDayDto);

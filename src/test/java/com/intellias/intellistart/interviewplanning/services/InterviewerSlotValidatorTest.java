@@ -26,6 +26,9 @@ class InterviewerSlotValidatorTest {
   @Autowired
   private InterviewerService interviewerService;
 
+  @Autowired
+  private InterviewerValidator interviewerValidator;
+
   @Test
   @Order(1)
   void validateOverLappingOfSlotsTest() {
@@ -45,16 +48,16 @@ class InterviewerSlotValidatorTest {
     interviewerService.registerInterviewer(interviewer);
 
     assertThrows(OverlappingSlotException.class,
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatOver));
     assertThrows(OverlappingSlotException.class,
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatOver1));
     assertDoesNotThrow(
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatNotOverlaps1));
     assertDoesNotThrow(
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatNotOverlaps2));
   }
 }

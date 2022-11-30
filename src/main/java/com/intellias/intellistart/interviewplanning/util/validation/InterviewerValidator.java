@@ -14,10 +14,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 /**
  * Validator for interviewers and interviewer-related data.
  */
+@Component
 public class InterviewerValidator {
 
   /**
@@ -32,7 +34,7 @@ public class InterviewerValidator {
    * @param maxBookings maximum amount of bookings.
    * @throws InterviewApplicationException if maxBookings is not valid
    */
-  public static void validateBookingLimit(Integer maxBookings) {
+  public void validateBookingLimit(Integer maxBookings) {
     if (maxBookings == null || maxBookings < 1) {
       throw new InterviewApplicationException(
           "bad_request", HttpStatus.BAD_REQUEST, "maxBookings should be a positive int");
@@ -48,7 +50,7 @@ public class InterviewerValidator {
    * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
    *                                        invalid
    */
-  public static void validateSlotCreateForDtoWithService(InterviewerSlotDto slotDto,
+  public void validateSlotCreateForDtoWithService(InterviewerSlotDto slotDto,
       WeekService weekService) {
     validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
 
@@ -71,14 +73,14 @@ public class InterviewerValidator {
    * @throws ForbiddenException             if not allowed role tried to update the slot
    */
 
-  public static void validateSlotUpdateForDtoAndRole(InterviewerSlotDto slotDto, Role role,
+  public void validateSlotUpdateForDtoAndRole(InterviewerSlotDto slotDto, Role role,
       WeekService weekService) {
     validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
     validateSlotDtoWeekNumIsNotNull(slotDto.getWeekNum());
     validateSlotUpdateForWeekNumAndRole(slotDto.getWeekNum(), role, weekService);
   }
 
-  private static void validateSlotDtoWeekNumIsNotNull(Integer weekNum) {
+  private void validateSlotDtoWeekNumIsNotNull(Integer weekNum) {
     if (weekNum == null) {
       throw new InvalidWeekNumException("Specify the weekNum for slot update.");
     }
@@ -93,7 +95,7 @@ public class InterviewerValidator {
    * @param weekService weekService to get date parameters from
    * @throws ForbiddenException if not allowed role tried to update the slot
    */
-  public static void validateSlotUpdateForWeekNumAndRole(int slotWeekNum, Role role,
+  public void validateSlotUpdateForWeekNumAndRole(int slotWeekNum, Role role,
       WeekService weekService) {
     validateIsNotPastWeek(slotWeekNum, weekService);
     switch (role) {
@@ -108,19 +110,19 @@ public class InterviewerValidator {
     }
   }
 
-  private static void validateIsNotCurrentWeek(int slotWeekNum, WeekService weekService) {
+  private void validateIsNotCurrentWeek(int slotWeekNum, WeekService weekService) {
     if (slotWeekNum == weekService.getCurrentWeekNum()) {
       throw new InvalidWeekNumException("Cannot create or update slot for current weekNum.");
     }
   }
 
-  private static void validateIsNotPastWeek(int slotWeekNum, WeekService weekService) {
+  private void validateIsNotPastWeek(int slotWeekNum, WeekService weekService) {
     if (slotWeekNum < weekService.getCurrentWeekNum()) {
       throw new InvalidWeekNumException("Cannot create or update slot for past weekNum.");
     }
   }
 
-  private static void validateIfNextWeekThenOnlyUntilFriday(int slotWeekNum,
+  private void validateIfNextWeekThenOnlyUntilFriday(int slotWeekNum,
       WeekService weekService) {
     if (slotWeekNum == weekService.getNextWeekNum()
         && weekService.getCurrentDayOfWeek() > 4) {
@@ -130,7 +132,7 @@ public class InterviewerValidator {
   }
 
 
-  private static void validateSlotDuration(LocalTime from, LocalTime to) {
+  private void validateSlotDuration(LocalTime from, LocalTime to) {
     if (!UtilValidator.isValidTimeBoundaries(from, to)) {
       throw new InvalidSlotBoundariesException("Invalid slot time boundaries");
     }
@@ -145,7 +147,7 @@ public class InterviewerValidator {
    * @throws ForbiddenException if interviewer with provided {@code interviewerId} has no access to
    *                            the provided slot
    */
-  public static void validateHasAccessToSlot(Long interviewerId, InterviewerSlot slot) {
+  public void validateHasAccessToSlot(Long interviewerId, InterviewerSlot slot) {
     Long interviewerIdFromSlot = slot.getInterviewer().getId();
     if (!Objects.equals(interviewerId, interviewerIdFromSlot)) {
       throw new ForbiddenException("Interviewer with id " + interviewerId
@@ -156,7 +158,7 @@ public class InterviewerValidator {
   /**
    * Checks if slot do not overlap with already existing Interviewer's slots.
    */
-  public static void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
+  public void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
       InterviewerSlotDto interviewerSlotDto) {
 
     Set<InterviewerSlot> sameDayInterviewerSlots = interviewerSlots.stream().filter(
@@ -174,7 +176,7 @@ public class InterviewerValidator {
   /**
    * Checks if slot do not overlap with already existing Interviewer's slots.
    */
-  public static void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
+  public void validateOverLappingOfSlots(Set<InterviewerSlot> interviewerSlots,
       InterviewerSlot interviewerSlot) {
 
     Set<InterviewerSlot> sameDayInterviewerSlots = interviewerSlots.stream().filter(
@@ -198,10 +200,11 @@ public class InterviewerValidator {
    * @throws ForbiddenException if the IDs are not matching (so Interviewer tries to access other
    *                            Interviewer's data
    */
-  public static void validateInterviewerIdMatch(Long authInterviewerId, Long pathInterviewerId) {
+  public void validateInterviewerIdMatch(Long authInterviewerId, Long pathInterviewerId) {
     if (!pathInterviewerId.equals(authInterviewerId)) {
       throw new ForbiddenException("Interviewer with id: " + authInterviewerId
           + " tried to access the other interviewer (" + pathInterviewerId + ") data in request");
     }
   }
+
 }

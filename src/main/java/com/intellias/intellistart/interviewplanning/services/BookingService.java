@@ -22,16 +22,18 @@ public class BookingService {
   private final BookingRepository repository;
   private final InterviewerService interviewerService;
   private final CandidateService candidateService;
+  private final BookingValidator bookingValidator;
 
   /**
    * BookingService constructor.
    */
   @Autowired
   public BookingService(BookingRepository repository, InterviewerService interviewerService,
-      CandidateService candidateService) {
+      CandidateService candidateService, BookingValidator bookingValidator) {
     this.repository = repository;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
+    this.bookingValidator = bookingValidator;
   }
 
   /**
@@ -69,16 +71,16 @@ public class BookingService {
    * Method that register booking and checks if it overlaps with other bookings or slots.
    */
   public Booking registerBooking(Booking booking) {
-    BookingValidator.isInSlotRange(
+    bookingValidator.isInSlotRange(
         candidateService.getSlotById(booking.getCandidateSlot().getId()), booking);
-    BookingValidator.isInSlotRange(
+    bookingValidator.isInSlotRange(
         interviewerService.getSlotById(booking.getInterviewerSlot().getId()), booking);
-    BookingValidator.isOverLappingWithBookings(
+    bookingValidator.isOverLappingWithBookings(
         interviewerService.getSlotById(booking.getInterviewerSlot().getId()).getBooking().stream()
             .filter(b -> !Objects.equals(
                 b.getId(), booking.getId())).collect(
                 Collectors.toSet()), booking);
-    BookingValidator.isOverLappingWithBookings(
+    bookingValidator.isOverLappingWithBookings(
         candidateService.getSlotById(booking.getCandidateSlot().getId()).getBooking().stream()
             .filter(b -> !Objects.equals(b.getId(), booking.getId())).collect(
                 Collectors.toSet()), booking);

@@ -24,6 +24,9 @@ public class CandidateService {
 
   private final CandidateRepository repository;
   private final CandidateSlotRepository slotRepository;
+  private final WeekService weekService;
+
+  private final CandidateValidator candidateValidator;
 
   /**
    * CandidateService constructor.
@@ -31,9 +34,12 @@ public class CandidateService {
   @Autowired
   public CandidateService(
       CandidateRepository repository,
-      CandidateSlotRepository slotRepository) {
+      CandidateSlotRepository slotRepository, WeekService weekService,
+      CandidateValidator candidateValidator) {
     this.repository = repository;
     this.slotRepository = slotRepository;
+    this.weekService = weekService;
+    this.candidateValidator = candidateValidator;
   }
 
   /**
@@ -69,8 +75,8 @@ public class CandidateService {
     if (slot.getCandidate() == null) {
       throw new CandidateNotFoundException();
     }
-    CandidateValidator.validateCandidateSlotForBoundaries(slot);
-    CandidateValidator.validateCandidateSlotForOverlapping(
+    candidateValidator.validateCandidateSlotForBoundaries(slot);
+    candidateValidator.validateCandidateSlotForOverlapping(
         getCandidateById(slot.getCandidate().getId()).getCandidateSlot().stream()
             .filter(s -> !Objects.equals(s.getId(), slot.getId()))
             .collect(Collectors.toSet()),
@@ -105,8 +111,8 @@ public class CandidateService {
    */
   public List<CandidateSlot> getCandidateSlotsForWeek(int weekNum) {
     return slotRepository.findAll().stream()
-        .filter(slot -> WeekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
-            || WeekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum)
+        .filter(slot -> weekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
+            || weekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum)
         .collect(Collectors.toList());
   }
 
@@ -124,13 +130,13 @@ public class CandidateService {
    * Gets week number of candidate slot.
    */
   public int getWeekNumOfCandidateSlot(CandidateSlot candidateSlot) {
-    return WeekService.getWeekNumFrom(candidateSlot.getDateFrom().toLocalDate());
+    return weekService.getWeekNumFrom(candidateSlot.getDateFrom().toLocalDate());
   }
 
   /**
    * Gets day of week number of candidate slot.
    */
   public int getDayOfWeekOfCandidateSlot(CandidateSlot candidateSlot) {
-    return WeekService.getDayOfWeekFrom(candidateSlot.getDateFrom().toLocalDate());
+    return weekService.getDayOfWeekFrom(candidateSlot.getDateFrom().toLocalDate());
   }
 }
