@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class InterviewerValidator {
 
-  /**
-   * Private constructor to hide the ability of instantiation of a utility class.
-   */
-  private InterviewerValidator() {
+  private final WeekService weekService;
+
+  @Autowired
+  private InterviewerValidator(WeekService weekService) {
+    this.weekService = weekService;
   }
 
   /**
@@ -45,19 +47,17 @@ public class InterviewerValidator {
    * Validates all the data in the slotDto dto for slot creation by interviewer. Throws exceptions
    * if data in the slotDto is invalid, otherwise does nothing.
    *
-   * @param slotDto     slotDto to validate
-   * @param weekService weekService to get date parameters from
+   * @param slotDto slotDto to validate
    * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
    *                                        invalid
    */
-  public void validateSlotCreateForDtoWithService(InterviewerSlotDto slotDto,
-      WeekService weekService) {
+  public void validateSlotCreateForDto(InterviewerSlotDto slotDto) {
     validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
 
     int slotWeekNum = slotDto.getWeekNum();
-    validateIsNotPastWeek(slotWeekNum, weekService);
-    validateIsNotCurrentWeek(slotWeekNum, weekService);
-    validateIfNextWeekThenOnlyUntilFriday(slotWeekNum, weekService);
+    validateIsNotPastWeek(slotWeekNum);
+    validateIsNotCurrentWeek(slotWeekNum);
+    validateIfNextWeekThenOnlyUntilFriday(slotWeekNum);
   }
 
   /**
@@ -65,19 +65,17 @@ public class InterviewerValidator {
    * data in the slotDto is invalid or given role is not allowed to update the slot, otherwise does
    * nothing.
    *
-   * @param slotDto     slotDto to validate
-   * @param role        role that performs the slot update
-   * @param weekService weekService to get date parameters from
+   * @param slotDto slotDto to validate
+   * @param role    role that performs the slot update
    * @throws InvalidSlotBoundariesException if the time boundaries of the provided slotDto are
    *                                        invalid
    * @throws ForbiddenException             if not allowed role tried to update the slot
    */
 
-  public void validateSlotUpdateForDtoAndRole(InterviewerSlotDto slotDto, Role role,
-      WeekService weekService) {
+  public void validateSlotUpdateForDtoAndRole(InterviewerSlotDto slotDto, Role role) {
     validateSlotDuration(slotDto.getTimeFrom(), slotDto.getTimeTo());
     validateSlotDtoWeekNumIsNotNull(slotDto.getWeekNum());
-    validateSlotUpdateForWeekNumAndRole(slotDto.getWeekNum(), role, weekService);
+    validateSlotUpdateForWeekNumAndRole(slotDto.getWeekNum(), role);
   }
 
   private void validateSlotDtoWeekNumIsNotNull(Integer weekNum) {
@@ -92,38 +90,35 @@ public class InterviewerValidator {
    *
    * @param slotWeekNum slot weekNum to validate
    * @param role        role that performs the slot update
-   * @param weekService weekService to get date parameters from
    * @throws ForbiddenException if not allowed role tried to update the slot
    */
-  public void validateSlotUpdateForWeekNumAndRole(int slotWeekNum, Role role,
-      WeekService weekService) {
-    validateIsNotPastWeek(slotWeekNum, weekService);
+  public void validateSlotUpdateForWeekNumAndRole(int slotWeekNum, Role role) {
+    validateIsNotPastWeek(slotWeekNum);
     switch (role) {
       case COORDINATOR:
         break;
       case INTERVIEWER:
-        validateIsNotCurrentWeek(slotWeekNum, weekService);
-        validateIfNextWeekThenOnlyUntilFriday(slotWeekNum, weekService);
+        validateIsNotCurrentWeek(slotWeekNum);
+        validateIfNextWeekThenOnlyUntilFriday(slotWeekNum);
         break;
       default:
         throw new ForbiddenException("Unexpected role for interviewer slot updating: " + role);
     }
   }
 
-  private void validateIsNotCurrentWeek(int slotWeekNum, WeekService weekService) {
+  private void validateIsNotCurrentWeek(int slotWeekNum) {
     if (slotWeekNum == weekService.getCurrentWeekNum()) {
       throw new InvalidWeekNumException("Cannot create or update slot for current weekNum.");
     }
   }
 
-  private void validateIsNotPastWeek(int slotWeekNum, WeekService weekService) {
+  private void validateIsNotPastWeek(int slotWeekNum) {
     if (slotWeekNum < weekService.getCurrentWeekNum()) {
       throw new InvalidWeekNumException("Cannot create or update slot for past weekNum.");
     }
   }
 
-  private void validateIfNextWeekThenOnlyUntilFriday(int slotWeekNum,
-      WeekService weekService) {
+  private void validateIfNextWeekThenOnlyUntilFriday(int slotWeekNum) {
     if (slotWeekNum == weekService.getNextWeekNum()
         && weekService.getCurrentDayOfWeek() > 4) {
       throw new InvalidWeekNumException(
@@ -192,18 +187,18 @@ public class InterviewerValidator {
   }
 
   /**
-   * Validates that id of the interviewer authenticated in, matches the id of the interviewer in the
-   * request path. Throws an exception if it's not, otherwise does nothing.
+   * Validates that user id of the interviewer authenticated in, matches the user id of the
+   * interviewer in the request path. Throws an exception if it's not, otherwise does nothing.
    *
-   * @param authInterviewerId id of the interviewer authenticated in
-   * @param pathInterviewerId id of the interviewer in the request path
+   * @param authUserId id of the interviewer authenticated in
+   * @param pathUserId id of the interviewer in the request path
    * @throws ForbiddenException if the IDs are not matching (so Interviewer tries to access other
    *                            Interviewer's data
    */
-  public void validateInterviewerIdMatch(Long authInterviewerId, Long pathInterviewerId) {
-    if (!pathInterviewerId.equals(authInterviewerId)) {
-      throw new ForbiddenException("Interviewer with id: " + authInterviewerId
-          + " tried to access the other interviewer (" + pathInterviewerId + ") data in request");
+  public void validateUserIdMatch(Long authUserId, Long pathUserId) {
+    if (!pathUserId.equals(authUserId)) {
+      throw new ForbiddenException("Interviewer with user id: " + authUserId
+          + " tried to access the other user (" + pathUserId + ") data in request");
     }
   }
 

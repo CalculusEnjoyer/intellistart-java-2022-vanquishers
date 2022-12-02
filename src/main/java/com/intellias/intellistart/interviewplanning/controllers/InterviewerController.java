@@ -50,8 +50,9 @@ public class InterviewerController {
   }
 
   /**
-   * Endpoint for adding a new interviewer time slot using interviewer id from request. Slot can be
-   * created only for next week (until Friday 00:00), or for weeks after the next week.
+   * Endpoint for adding a new interviewer time slot using the interviewer userId in {interviewerId}
+   * from request. Slot can be created only for next week (until Friday 00:00), or for weeks after
+   * the next week.
    *
    * @return added slot as DTO
    */
@@ -61,28 +62,26 @@ public class InterviewerController {
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId,
       Authentication authentication) {
-    User authUser = ((FacebookUserDetails) authentication.getPrincipal()).getUser();
-    Interviewer authInterviewer = interviewerService.getInterviewerByUserId(authUser.getId());
-    interviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
+    Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
+    interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
 
     if (slotDto.getWeekNum() == null) {
       slotDto.setWeekNum(weekService.getNextWeekNum());
     }
-    interviewerValidator.validateSlotCreateForDtoWithService(slotDto, weekService);
+    interviewerValidator.validateSlotCreateForDto(slotDto);
 
     InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
-    slot.setInterviewer(interviewerService.getInterviewerById(interviewerId));
+    slot.setInterviewer(interviewerService.getInterviewerByUserId(authUserId));
 
     InterviewerSlot registeredSlot = interviewerService.registerSlot(slot);
-    InterviewerSlotDto registeredSlotDto = mapper.map(registeredSlot, InterviewerSlotDto.class);
-    return ResponseEntity.ok(registeredSlotDto);
+    return ResponseEntity.ok(mapper.map(registeredSlot, InterviewerSlotDto.class));
   }
 
   /**
-   * Endpoint for updating Interviewer slot using id from request. Slot can be updated by the
-   * Coordinator (any slot registered at current week or next weeks), or by the Interviewer (only
-   * their own slots for next week until Friday 00:00 of current week, or for weeks after the next
-   * week, at any time).
+   * Endpoint for updating Interviewer slot using interviewer's user id from request. Slot can be
+   * updated by the Coordinator (any slot registered at current week or next weeks), or by the
+   * Interviewer (only their own slots for next week until Friday 00:00 of current week, or for
+   * weeks after the next week, at any time).
    *
    * @return response status
    */
@@ -95,34 +94,39 @@ public class InterviewerController {
     User authUser = ((FacebookUserDetails) authentication.getPrincipal()).getUser();
 
     if (authUser.getRole().equals(Role.INTERVIEWER)) {
-      Interviewer authInterviewer = interviewerService.getInterviewerByUserId(authUser.getId());
-      interviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
+      interviewerValidator.validateUserIdMatch(authUser.getId(), interviewerId);
     }
 
-    interviewerValidator.validateSlotUpdateForDtoAndRole(slotDto, authUser.getRole(), weekService);
+    interviewerValidator.validateSlotUpdateForDtoAndRole(slotDto, authUser.getRole());
     //voiding the interviewer id in dto, so it will not be mapped in the slot
     slotDto.setInterviewerId(null);
 
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
-    interviewerValidator.validateHasAccessToSlot(interviewerId, slot);
+
+    Long pathInterviewerId = interviewerService.getInterviewerByUserId(interviewerId).getId();
+    interviewerValidator.validateHasAccessToSlot(pathInterviewerId, slot);
     interviewerValidator.validateSlotUpdateForWeekNumAndRole(
-        slot.getWeekNum(), authUser.getRole(), weekService);
+        slot.getWeekNum(), authUser.getRole());
     mapper.map(slotDto, slot);
 
     InterviewerSlot updatedSlot = interviewerService.registerSlot(slot);
-    InterviewerSlotDto updatedSlotDto = mapper.map(updatedSlot, InterviewerSlotDto.class);
-    return ResponseEntity.ok(updatedSlotDto);
+    return ResponseEntity.ok(mapper.map(updatedSlot, InterviewerSlotDto.class));
   }
 
   /**
-   * Endpoint for getting current week Interviewer slots.
+   * Endpoint for getting current week Interviewer slots for Interviewer with userId provided in
+   * {interviewerId} in the path.
    *
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/current-week")
   @RolesAllowed("ROLE_INTERVIEWER")
   public ResponseEntity<List<InterviewerSlotDto>> getCurrentWeekSlots(
-      @PathVariable Long interviewerId) {
+      @PathVariable Long interviewerId,
+      Authentication authentication) {
+    Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
+    interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
+
     List<InterviewerSlotDto> currentWeekSlots = interviewerService
         .getSlotsForIdAndWeek(interviewerId, weekService.getCurrentWeekNum())
         .stream()
@@ -133,14 +137,19 @@ public class InterviewerController {
   }
 
   /**
-   * Endpoint for getting next week Interviewer slots.
+   * Endpoint for getting next week Interviewer slots for Interviewer with userId provided in
+   * {interviewerId} in the path.
    *
    * @return response status
    */
   @GetMapping("/{interviewerId}/slots/next-week")
   @RolesAllowed("ROLE_INTERVIEWER")
   public ResponseEntity<List<InterviewerSlotDto>> getNextWeekSlots(
-      @PathVariable Long interviewerId) {
+      @PathVariable Long interviewerId,
+      Authentication authentication) {
+    Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
+    interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
+
     List<InterviewerSlotDto> nextWeekSlots = interviewerService
         .getSlotsForIdAndWeek(interviewerId, weekService.getNextWeekNum())
         .stream()
@@ -151,7 +160,8 @@ public class InterviewerController {
   }
 
   /**
-   * Endpoint for setting the maximum number of bookings for next week.
+   * Endpoint for setting the maximum number of bookings for next week for the Interviewer with
+   * userId provided in {interviewerId} in the path. .
    *
    * @return response status
    */
@@ -161,14 +171,13 @@ public class InterviewerController {
       @RequestBody Map<String, Integer> bookingLimitMap,
       @PathVariable Long interviewerId,
       Authentication authentication) {
-    User authUser = ((FacebookUserDetails) authentication.getPrincipal()).getUser();
-    Interviewer authInterviewer = interviewerService.getInterviewerByUserId(authUser.getId());
-    interviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
+    Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
+    interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
 
     Integer bookingLimit = bookingLimitMap.get("bookingLimit");
     interviewerValidator.validateBookingLimit(bookingLimit);
 
-    Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
+    Interviewer interviewer = interviewerService.getInterviewerByUserId(interviewerId);
     interviewer.setBookingLimit(bookingLimit);
     Interviewer registeredInterviewer = interviewerService.registerInterviewer(interviewer);
     return ResponseEntity.ok(Map.of("bookingLimit", registeredInterviewer.getBookingLimit()));
