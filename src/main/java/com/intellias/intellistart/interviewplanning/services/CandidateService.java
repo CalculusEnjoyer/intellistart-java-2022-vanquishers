@@ -4,9 +4,10 @@ import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateRepository;
 import com.intellias.intellistart.interviewplanning.repositories.CandidateSlotRepository;
+import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.CandidateSlotNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
-import com.intellias.intellistart.interviewplanning.util.validation.CandidateSlotValidator;
+import com.intellias.intellistart.interviewplanning.util.validation.CandidateValidator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -24,18 +25,15 @@ public class CandidateService {
   private final CandidateRepository repository;
   private final CandidateSlotRepository slotRepository;
 
-  private final WeekService weekService;
-
   /**
    * CandidateService constructor.
    */
   @Autowired
   public CandidateService(
       CandidateRepository repository,
-      CandidateSlotRepository slotRepository, WeekService weekService) {
+      CandidateSlotRepository slotRepository) {
     this.repository = repository;
     this.slotRepository = slotRepository;
-    this.weekService = weekService;
   }
 
   /**
@@ -52,27 +50,32 @@ public class CandidateService {
     return slotRepository.findAll();
   }
 
-  public void deleteSlot(Long id) {
+  /**
+   * Remove slot from database.
+
+   * @param id slot id
+   */
+  @Transactional
+  public void deleteSlotById(Long id) {
+    CandidateSlot slot = getSlotById(id);
+    slot.getCandidate().getCandidateSlot().remove(slot);
     slotRepository.deleteById(id);
   }
 
-  public void deleteSlotsById(List<Long> ids) {
-    slotRepository.deleteAllById(ids);
-  }
-
   /**
-   * Register slot and checks if it overlaps with other slots and bookings.
+   * Register slot and checks its overlapping with other slots and bookings.
    */
   public CandidateSlot registerSlot(CandidateSlot slot) {
-    CandidateSlotValidator.validateCandidateSlotForOverlapping(
+    if (slot.getCandidate() == null) {
+      throw new CandidateNotFoundException();
+    }
+    CandidateValidator.validateCandidateSlotForBoundaries(slot);
+    CandidateValidator.validateCandidateSlotForOverlapping(
         getCandidateById(slot.getCandidate().getId()).getCandidateSlot().stream()
-            .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
+            .filter(s -> !Objects.equals(s.getId(), slot.getId()))
+            .collect(Collectors.toSet()),
         slot);
     return slotRepository.save(slot);
-  }
-
-  public List<CandidateSlot> registerSlots(List<CandidateSlot> slots) {
-    return slotRepository.saveAll(slots);
   }
 
   /**
@@ -93,20 +96,8 @@ public class CandidateService {
     return repository.findAll();
   }
 
-  public void deleteCandidate(Long id) {
-    repository.deleteById(id);
-  }
-
-  public void deleteCandidatesById(List<Long> ids) {
-    repository.deleteAllById(ids);
-  }
-
   public Candidate registerCandidate(Candidate candidate) {
     return repository.save(candidate);
-  }
-
-  public List<Candidate> registerCandidates(List<Candidate> candidates) {
-    return repository.saveAll(candidates);
   }
 
   /**
@@ -114,8 +105,8 @@ public class CandidateService {
    */
   public List<CandidateSlot> getCandidateSlotsForWeek(int weekNum) {
     return slotRepository.findAll().stream()
-        .filter(slot -> weekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
-            || weekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum)
+        .filter(slot -> WeekService.getWeekNumFrom(slot.getDateFrom().toLocalDate()) == weekNum
+            || WeekService.getWeekNumFrom(slot.getDateTo().toLocalDate()) == weekNum)
         .collect(Collectors.toList());
   }
 
@@ -133,13 +124,13 @@ public class CandidateService {
    * Gets week number of candidate slot.
    */
   public int getWeekNumOfCandidateSlot(CandidateSlot candidateSlot) {
-    return weekService.getWeekNumFrom(candidateSlot.getDateFrom().toLocalDate());
+    return WeekService.getWeekNumFrom(candidateSlot.getDateFrom().toLocalDate());
   }
 
   /**
    * Gets day of week number of candidate slot.
    */
   public int getDayOfWeekOfCandidateSlot(CandidateSlot candidateSlot) {
-    return weekService.getDayOfWeekFrom(candidateSlot.getDateFrom().toLocalDate());
+    return WeekService.getDayOfWeekFrom(candidateSlot.getDateFrom().toLocalDate());
   }
 }

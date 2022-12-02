@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.intellias.intellistart.interviewplanning.models.Booking;
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.CandidateSlot;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
@@ -31,9 +32,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -41,14 +43,18 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -61,6 +67,7 @@ import org.springframework.web.context.WebApplicationContext;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@WithMockUser(roles={"COORDINATOR"})
 class CoordinatorControllerTest {
 
   @Autowired
@@ -70,13 +77,11 @@ class CoordinatorControllerTest {
   private InterviewerService interviewerService;
 
   @Autowired
-  private ModelMapper mapper;
-
-  @Autowired
   private BookingRepository bookingRepository;
 
   @Autowired
   private InterviewerSlotRepository interviewerSlotRepository;
+
   @Autowired
   private CandidateSlotRepository candidateSlotRepository;
 
@@ -101,18 +106,20 @@ class CoordinatorControllerTest {
       new User("email6@gmail.com", Role.CANDIDATE));
 
   private static final List<Interviewer> INTERVIEWERS = List.of(
-      new Interviewer(USERS.get(0), 5,
-          Set.of(new InterviewerSlot(202246, 2, LocalTime.of(10, 00), LocalTime.of(12, 00)),
-              new InterviewerSlot(202246, 3, LocalTime.of(10, 00), LocalTime.of(12, 00)))),
-      new Interviewer(USERS.get(1), 2,
-          Set.of(new InterviewerSlot(202247, 2, LocalTime.of(10, 00), LocalTime.of(12, 00)),
-              new InterviewerSlot(202247, 3, LocalTime.of(10, 00), LocalTime.of(12, 00)))));
+      new Interviewer(USERS.get(0), 5, new HashSet<>()),
+      new Interviewer(USERS.get(1), 2, new HashSet<>()));
+
+  private static final List<Candidate> CANDIDATES = List.of(
+      new Candidate(new HashSet<>(), USERS.get(4)),
+      new Candidate(new HashSet<>(), USERS.get(5)));
+
 
   @BeforeEach
   public void setup() {
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    USERS.forEach(u -> userService.register(u));
+    USERS.forEach(u -> userService.registerUser(u));
     INTERVIEWERS.forEach(i -> interviewerService.registerInterviewer(i));
+    CANDIDATES.forEach(i -> candidateService.registerCandidate(i));
   }
 
   @Test
@@ -121,13 +128,13 @@ class CoordinatorControllerTest {
     Booking booking = new Booking(LocalDateTime.of(2015,
         Month.JULY, 29, 19, 30), LocalDateTime.of(2015,
         Month.JULY, 29, 21, 30), "check", "check", Status.BOOKED);
-    InterviewerSlot intslot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
+    InterviewerSlot intSlot = interviewerSlotRepository.save(new InterviewerSlot(0, 1,
         LocalTime.of(9, 30), LocalTime.of(11, 0)));
-    CandidateSlot candslot = candidateSlotRepository.save(new CandidateSlot(
+    CandidateSlot candSlot = candidateSlotRepository.save(new CandidateSlot(
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(9, 30)),
         LocalDateTime.of(LocalDate.of(YEAR, Month.DECEMBER, 12), LocalTime.of(18, 0))));
-    booking.setInterviewerSlot(intslot);
-    booking.setCandidateSlot(candslot);
+    booking.setInterviewerSlot(intSlot);
+    booking.setCandidateSlot(candSlot);
     bookingRepository.save(booking);
     booking = bookingService.getAllBookings().get(bookingService.getAllBookings().size() - 1);
 
@@ -148,7 +155,7 @@ class CoordinatorControllerTest {
   @Order(2)
   void revokeCoordinatorRoleByIdTest() throws Exception {
     User coordinator = new User("check@gmail.com", Role.COORDINATOR);
-    userService.register(coordinator);
+    userService.registerUser(coordinator);
 
     mockMvc.perform(delete("/users/coordinators/{coordinatorId}", coordinator.getId()))
         .andExpect(status().isOk());
@@ -164,7 +171,7 @@ class CoordinatorControllerTest {
         .collect(Collectors.toList());
 
     mockMvc.perform(
-        MockMvcRequestBuilders.get("/users/coordinators").contentType(MediaType.APPLICATION_JSON))
+            MockMvcRequestBuilders.get("/users/coordinators").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(userService.findAllUsersByRole(Role.COORDINATOR).size())))
         .andExpect(jsonPath("$[0].role", equalTo("COORDINATOR")))
@@ -175,12 +182,12 @@ class CoordinatorControllerTest {
   @Test
   @Order(4)
   void grantCoordinatorRoleTest() throws Exception {
-    userService.register(new User("example34@gmail.com", Role.INTERVIEWER));
+    userService.registerUser(new User("example34@gmail.com", Role.INTERVIEWER));
 
     mockMvc.perform(post("/users/coordinators")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"email\":\"example34@gmail.com\"}")
-        .accept(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\":\"example34@gmail.com\"}")
+            .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
 
     Assertions.assertEquals(Role.COORDINATOR,
@@ -191,7 +198,7 @@ class CoordinatorControllerTest {
   @Order(5)
   void getAllInterviewersTest() throws Exception {
     mockMvc.perform(
-        MockMvcRequestBuilders.get("/users/interviewers").contentType(MediaType.APPLICATION_JSON))
+            MockMvcRequestBuilders.get("/users/interviewers").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(interviewerService.getAllInterviewers().size())))
         .andExpect(jsonPath("$[0].bookingLimit", equalTo(INTERVIEWERS.get(0).getBookingLimit())))
@@ -202,7 +209,7 @@ class CoordinatorControllerTest {
   @Order(6)
   void revokeInterviewerRoleTest() throws Exception {
     User interviewerUser = new User("check@gmail.com", Role.INTERVIEWER);
-    userService.register(interviewerUser);
+    userService.registerUser(interviewerUser);
     Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
     interviewerService.registerInterviewer(interviewer);
 
@@ -216,12 +223,12 @@ class CoordinatorControllerTest {
   @Test
   @Order(7)
   void grantInterviewerRoleTest() throws Exception {
-    userService.register(new User("example100@gmail.com", Role.COORDINATOR));
+    userService.registerUser(new User("example100@gmail.com", Role.COORDINATOR));
 
     mockMvc.perform(post("/users/interviewers")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"email\":\"example100@gmail.com\"}")
-        .accept(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\":\"example100@gmail.com\"}")
+            .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
 
     Assertions.assertEquals(Role.INTERVIEWER,
@@ -232,7 +239,7 @@ class CoordinatorControllerTest {
   @Order(8)
   void grantInterviewerRoleTest_whenAlreadyInterviewer() throws Exception {
     User user = new User("example100@gmail.com", Role.INTERVIEWER);
-    userService.register(user);
+    userService.registerUser(user);
 
     try {
       user.setRole(Role.INTERVIEWER);
@@ -242,4 +249,113 @@ class CoordinatorControllerTest {
       fail();
     }
   }
+
+  @Test
+  @Order(9)
+  void createBookingTestWithCorrectData() throws Exception {
+    InterviewerSlot interviewerSlot = new InterviewerSlot(203951, 4, LocalTime.of(9, 0),
+        LocalTime.of(21, 0)
+    );
+    interviewerSlot.setInterviewer(INTERVIEWERS.get(0));
+
+    CandidateSlot candidateSlot = new CandidateSlot(
+        LocalDateTime.of(LocalDate.of(2039, Month.DECEMBER, 22), LocalTime.of(9, 30)),
+        LocalDateTime.of(LocalDate.of(2039, Month.DECEMBER, 22), LocalTime.of(21, 0))
+    );
+    candidateSlot.setCandidate(CANDIDATES.get(0));
+
+    interviewerService.registerSlot(interviewerSlot);
+    candidateService.registerSlot(candidateSlot);
+
+    String bookingJson = "{"
+        + "    \"dateFrom\": \"2039-12-22 14:30\","
+        + "    \"dateTo\": \"2039-12-22 16:00\","
+        + "    \"subject\": \"subject\","
+        + "    \"description\": \"test description\","
+        + "    \"status\": 0,"
+        + "    \"candidateSlotId\": " + candidateSlot.getId() + ","
+        + "    \"interviewerSlotId\": " + interviewerSlot.getId()
+        + "}";
+
+    String bookingJsonResponse = mockMvc.perform(post("/bookings")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(bookingJson)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
+
+    JSONObject jsonObject = new JSONObject(bookingJsonResponse);
+    Assertions.assertDoesNotThrow(() -> bookingService.getBookingById(jsonObject.getLong("id")));
+    Assertions.assertEquals("test description", jsonObject.getString("description"));
+  }
+
+  @Test
+  @Order(10)
+  void updateBookingCorrectData() throws Exception {
+    String bookingJson = "{"
+        + "    \"dateFrom\": \"2039-12-22 16:30\","
+        + "    \"dateTo\": \"2039-12-22 18:00\","
+        + "    \"subject\": \"subject\","
+        + "    \"description\": \"test description\","
+        + "    \"status\": 0,"
+        + "    \"candidateSlotId\": 2,"
+        + "    \"interviewerSlotId\": 2"
+        + "}";
+
+    mockMvc.perform(post("/bookings/2")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(bookingJson)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.dateFrom", equalTo("2039-12-22 16:30")))
+        .andExpect(jsonPath("$.dateTo", equalTo("2039-12-22 18:00")));
+  }
+
+  @Test
+  @Order(11)
+  void updateBookingWithIncorrectTime() throws Exception {
+    String bookingJson = "{"
+        + "    \"dateFrom\": \"2039-12-22 17:30\","
+        + "    \"dateTo\": \"2039-12-22 18:00\","
+        + "    \"subject\": \"subject\","
+        + "    \"description\": \"test description\","
+        + "    \"status\": 0,"
+        + "    \"candidateSlotId\": 2,"
+        + "    \"interviewerSlotId\": 2"
+        + "}";
+
+    mockMvc.perform(post("/bookings/2")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(bookingJson)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(jsonPath("$.errorCode", equalTo("invalid_booking_boundaries")))
+        .andExpect(jsonPath("$.errorMessage", equalTo(
+            "Booking duration have to be 1.5 hours and it have to be registered in future.")));
+  }
+
+  @Test
+  @Order(12)
+  void updateBookingWhenOutOfSlot() throws Exception {
+    String bookingJson = "{"
+        + "    \"dateFrom\": \"2039-12-23 16:30\","
+        + "    \"dateTo\": \"2039-12-23 18:00\","
+        + "    \"subject\": \"subject\","
+        + "    \"description\": \"test description\","
+        + "    \"status\": 0,"
+        + "    \"candidateSlotId\": 2,"
+        + "    \"interviewerSlotId\": 2"
+        + "}";
+
+    mockMvc.perform(post("/bookings/2")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(bookingJson)
+            .accept(MediaType.APPLICATION_JSON))
+        .andExpect(status().is4xxClientError())
+        .andExpect(jsonPath("$.errorCode", equalTo("booking_out_of_slot")))
+        .andExpect(jsonPath("$.errorMessage", equalTo(
+            "This booking is out of slot boundaries.")));
+  }
 }
+
+

@@ -24,7 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 class InterviewerSlotValidatorTest {
 
   @Autowired
-  InterviewerService interviewerService;
+  private InterviewerService interviewerService;
 
   @Test
   @Order(1)

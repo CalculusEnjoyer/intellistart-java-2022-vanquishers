@@ -15,14 +15,15 @@ import org.springframework.stereotype.Service;
 @Component
 public class WeekService {
 
-  @Value("${current.timezone}")
-  public String zone;
-
-  public static ZoneId ZONE_ID;
+  private static ZoneId zoneId;
 
   @Value("${current.timezone}")
-  public void setZoneStatic(String zone) {
-    WeekService.ZONE_ID = ZoneId.of(zone);
+  public void setZoneFromConfig(String zone) {
+    zoneId = ZoneId.of(zone);
+  }
+
+  public static ZoneId getZoneId() {
+    return zoneId;
   }
 
   /**
@@ -30,7 +31,7 @@ public class WeekService {
    *
    * @return formatted current week number
    */
-  public int getCurrentWeekNum() {
+  public static int getCurrentWeekNum() {
     return getWeekNumFrom(getCurrentDate());
   }
 
@@ -39,7 +40,7 @@ public class WeekService {
    *
    * @return formatted next week number
    */
-  public int getNextWeekNum() {
+  public static int getNextWeekNum() {
     return getWeekNumFrom(getCurrentDate().plusDays(7));
   }
 
@@ -87,7 +88,8 @@ public class WeekService {
    * @return LocalDate instance with current date for ZONE_ID timezone
    */
   private static LocalDate getCurrentDate() {
-    return LocalDate.now(ZONE_ID);
+    return LocalDate.now(zoneId);
   }
+
 }
 
