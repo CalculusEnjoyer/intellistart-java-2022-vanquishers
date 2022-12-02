@@ -206,7 +206,8 @@ class CandidateControllerTest {
             .content(slotDtoJsonStr)
             .principal(auth))
         .andDo(print())
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errorCode", equalTo("invalid_boundaries")));
     int slotCountAfterAdd = candidateService.getAllSlots().size();
 
     assertThat(slotCountAfterAdd).isEqualTo(slotCountBeforeAdd);

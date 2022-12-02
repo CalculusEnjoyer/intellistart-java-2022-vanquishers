@@ -22,6 +22,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -29,6 +30,9 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BookingValidatorTest {
+
+  @Autowired
+  private BookingValidator bookingValidator;
 
   @Test
   @Order(1)
@@ -48,11 +52,11 @@ class BookingValidatorTest {
             Month.OCTOBER, 12, 12, 0), "check", "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInSlotRange(
+        () -> bookingValidator.isInSlotRange(
             candidateSlot,
             outOfBoundaries));
     assertDoesNotThrow(
-        () -> BookingValidator.isInSlotRange(
+        () -> bookingValidator.isInSlotRange(
             candidateSlot,
             notOutOfBoundaries));
   }
@@ -74,11 +78,11 @@ class BookingValidatorTest {
         "check", Status.BOOKED);
 
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInSlotRange(
+        () -> bookingValidator.isInSlotRange(
             interviewerSlot,
             outOfBoundaries1));
     assertThrows(BookingOutOfSlotException.class,
-        () -> BookingValidator.isInSlotRange(
+        () -> bookingValidator.isInSlotRange(
             interviewerSlot,
             outOfBoundaries2));
   }
@@ -123,12 +127,12 @@ class BookingValidatorTest {
         "check", Status.BOOKED);
 
     assertThrows(OverlappingBookingException.class,
-        () -> BookingValidator.isOverLappingWithBookings(bookings, overLapping));
+        () -> bookingValidator.isOverLappingWithBookings(bookings, overLapping));
     assertThrows(OverlappingBookingException.class,
-        () -> BookingValidator.isOverLappingWithBookings(bookings, overLapping1));
-    assertDoesNotThrow(() -> BookingValidator.isOverLappingWithBookings(bookings, notOverlap));
-    assertDoesNotThrow(() -> BookingValidator.isOverLappingWithBookings(bookings, notOverlap1));
-    assertDoesNotThrow(() -> BookingValidator.isOverLappingWithBookings(bookings, notOverlap2));
+        () -> bookingValidator.isOverLappingWithBookings(bookings, overLapping1));
+    assertDoesNotThrow(() -> bookingValidator.isOverLappingWithBookings(bookings, notOverlap));
+    assertDoesNotThrow(() -> bookingValidator.isOverLappingWithBookings(bookings, notOverlap1));
+    assertDoesNotThrow(() -> bookingValidator.isOverLappingWithBookings(bookings, notOverlap2));
   }
 
   @Test
@@ -152,10 +156,10 @@ class BookingValidatorTest {
             Month.OCTOBER, 12, 13, 0), "check", "check", Status.BOOKED, 1L, 1L);
 
     assertThrows(InvalidBookingBoundariesException.class,
-        () -> BookingValidator.validDtoBoundariesOrError(bookingDtoInValid1));
+        () -> bookingValidator.validDtoBoundariesOrError(bookingDtoInValid1));
     assertThrows(InvalidBookingBoundariesException.class,
-        () -> BookingValidator.validDtoBoundariesOrError(bookingDtoInValid2));
-    assertDoesNotThrow(() -> BookingValidator.validDtoBoundariesOrError(bookingDtoValid1));
-    assertDoesNotThrow(() -> BookingValidator.validDtoBoundariesOrError(bookingDtoValid2));
+        () -> bookingValidator.validDtoBoundariesOrError(bookingDtoInValid2));
+    assertDoesNotThrow(() -> bookingValidator.validDtoBoundariesOrError(bookingDtoValid1));
+    assertDoesNotThrow(() -> bookingValidator.validDtoBoundariesOrError(bookingDtoValid2));
   }
 }

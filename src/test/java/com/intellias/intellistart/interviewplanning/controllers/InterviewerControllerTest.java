@@ -116,9 +116,9 @@ class InterviewerControllerTest {
   private final int NEXT_WEEK_NUM;
 
   @Autowired
-  private InterviewerControllerTest() {
-    CURRENT_WEEK_NUM = WeekService.getCurrentWeekNum();
-    NEXT_WEEK_NUM = WeekService.getNextWeekNum();
+  private InterviewerControllerTest(WeekService weekService) {
+    CURRENT_WEEK_NUM = weekService.getCurrentWeekNum();
+    NEXT_WEEK_NUM = weekService.getNextWeekNum();
   }
 
   @BeforeEach

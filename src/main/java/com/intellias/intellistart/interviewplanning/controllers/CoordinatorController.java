@@ -58,6 +58,7 @@ public class CoordinatorController {
   public final UserService userService;
 
   public final WeekService weekService;
+  public final BookingValidator bookingValidator;
 
 
   /**
@@ -66,13 +67,14 @@ public class CoordinatorController {
   @Autowired
   public CoordinatorController(ModelMapper mapper, BookingService bookingService,
       InterviewerService interviewerService, CandidateService candidateService,
-      UserService userService, WeekService weekService) {
+      UserService userService, WeekService weekService, BookingValidator bookingValidator) {
     this.mapper = mapper;
     this.bookingService = bookingService;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
     this.userService = userService;
     this.weekService = weekService;
+    this.bookingValidator = bookingValidator;
   }
 
   /**
@@ -94,13 +96,13 @@ public class CoordinatorController {
    */
   @PostMapping("/bookings")
   public ResponseEntity<BookingForm> createBooking(@RequestBody BookingDto bookingDto) {
-    BookingValidator.validDtoBoundariesOrError(bookingDto);
+    bookingValidator.validDtoBoundariesOrError(bookingDto);
     Booking booking = mapper.map(bookingDto, Booking.class);
     Interviewer interviewer = interviewerService.getSlotById(
         bookingDto.getInterviewerSlotId()).getInterviewer();
     int bookingLimit = interviewer.getBookingLimit();
     List<Booking> bookingsByInterviewerId = bookingService
-        .findByInterviewerIdAndWeekNum(interviewer.getId(), WeekService.getCurrentWeekNum());
+        .findByInterviewerIdAndWeekNum(interviewer.getId(), weekService.getCurrentWeekNum());
 
     if (bookingsByInterviewerId.size() >= bookingLimit) {
       throw new ExcessBookingLimitException();
@@ -121,7 +123,7 @@ public class CoordinatorController {
   @PostMapping("/bookings/{bookingId}")
   public ResponseEntity<BookingForm> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
-    BookingValidator.validDtoBoundariesOrError(bookingDto);
+    bookingValidator.validDtoBoundariesOrError(bookingDto);
     Booking bookingToUpdate = bookingService.getBookingById(bookingId);
     Booking.updateFieldsExceptId(bookingToUpdate, mapper.map(bookingDto, Booking.class));
     bookingToUpdate.setStatus(Status.CHANGED);

@@ -35,16 +35,18 @@ public class InterviewerController {
   private final InterviewerService interviewerService;
   private final WeekService weekService;
   private final ModelMapper mapper;
+  private final InterviewerValidator interviewerValidator;
 
   /**
    * Constructor for CoordinatorController.
    */
   @Autowired
   public InterviewerController(InterviewerService interviewerService,
-      ModelMapper mapper, WeekService weekService) {
+      ModelMapper mapper, WeekService weekService, InterviewerValidator interviewerValidator) {
     this.interviewerService = interviewerService;
     this.weekService = weekService;
     this.mapper = mapper;
+    this.interviewerValidator = interviewerValidator;
   }
 
   /**
@@ -61,12 +63,12 @@ public class InterviewerController {
       Authentication authentication) {
     User authUser = ((FacebookUserDetails) authentication.getPrincipal()).getUser();
     Interviewer authInterviewer = interviewerService.getInterviewerByUserId(authUser.getId());
-    InterviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
+    interviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
 
     if (slotDto.getWeekNum() == null) {
       slotDto.setWeekNum(weekService.getNextWeekNum());
     }
-    InterviewerValidator.validateSlotCreateForDtoWithService(slotDto, weekService);
+    interviewerValidator.validateSlotCreateForDtoWithService(slotDto, weekService);
 
     InterviewerSlot slot = mapper.map(slotDto, InterviewerSlot.class);
     slot.setInterviewer(interviewerService.getInterviewerById(interviewerId));
@@ -94,16 +96,16 @@ public class InterviewerController {
 
     if (authUser.getRole().equals(Role.INTERVIEWER)) {
       Interviewer authInterviewer = interviewerService.getInterviewerByUserId(authUser.getId());
-      InterviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
+      interviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
     }
 
-    InterviewerValidator.validateSlotUpdateForDtoAndRole(slotDto, authUser.getRole(), weekService);
+    interviewerValidator.validateSlotUpdateForDtoAndRole(slotDto, authUser.getRole(), weekService);
     //voiding the interviewer id in dto, so it will not be mapped in the slot
     slotDto.setInterviewerId(null);
 
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
-    InterviewerValidator.validateHasAccessToSlot(interviewerId, slot);
-    InterviewerValidator.validateSlotUpdateForWeekNumAndRole(
+    interviewerValidator.validateHasAccessToSlot(interviewerId, slot);
+    interviewerValidator.validateSlotUpdateForWeekNumAndRole(
         slot.getWeekNum(), authUser.getRole(), weekService);
     mapper.map(slotDto, slot);
 
@@ -161,14 +163,15 @@ public class InterviewerController {
       Authentication authentication) {
     User authUser = ((FacebookUserDetails) authentication.getPrincipal()).getUser();
     Interviewer authInterviewer = interviewerService.getInterviewerByUserId(authUser.getId());
-    InterviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
+    interviewerValidator.validateInterviewerIdMatch(authInterviewer.getId(), interviewerId);
 
     Integer bookingLimit = bookingLimitMap.get("bookingLimit");
-    InterviewerValidator.validateBookingLimit(bookingLimit);
+    interviewerValidator.validateBookingLimit(bookingLimit);
 
     Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
     interviewer.setBookingLimit(bookingLimit);
     Interviewer registeredInterviewer = interviewerService.registerInterviewer(interviewer);
     return ResponseEntity.ok(Map.of("bookingLimit", registeredInterviewer.getBookingLimit()));
   }
+
 }

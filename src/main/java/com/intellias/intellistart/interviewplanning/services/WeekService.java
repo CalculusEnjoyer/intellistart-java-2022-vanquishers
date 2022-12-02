@@ -15,14 +15,14 @@ import org.springframework.stereotype.Service;
 @Component
 public class WeekService {
 
-  private static ZoneId zoneId;
+  private ZoneId zoneId;
 
   @Value("${current.timezone}")
   public void setZoneFromConfig(String zone) {
     zoneId = ZoneId.of(zone);
   }
 
-  public static ZoneId getZoneId() {
+  public ZoneId getZoneId() {
     return zoneId;
   }
 
@@ -31,7 +31,7 @@ public class WeekService {
    *
    * @return formatted current week number
    */
-  public static int getCurrentWeekNum() {
+  public int getCurrentWeekNum() {
     return getWeekNumFrom(getCurrentDate());
   }
 
@@ -40,7 +40,7 @@ public class WeekService {
    *
    * @return formatted next week number
    */
-  public static int getNextWeekNum() {
+  public int getNextWeekNum() {
     return getWeekNumFrom(getCurrentDate().plusDays(7));
   }
 
@@ -49,7 +49,7 @@ public class WeekService {
    *
    * @return formatted week number for a given date
    */
-  public static int getWeekNumFrom(LocalDate date) {
+  public int getWeekNumFrom(LocalDate date) {
     int year = date.get(IsoFields.WEEK_BASED_YEAR);
     int week = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     return Integer.parseInt(year + String.format("%02d", week));
@@ -58,7 +58,7 @@ public class WeekService {
   /**
    * Converts from weekNum + dayOfWeek format to LocalDate.
    */
-  public static LocalDate getDateFromWeekAndDay(int weekNum, int dayOfWeek) {
+  public LocalDate getDateFromWeekAndDay(int weekNum, int dayOfWeek) {
     String weekNumInString = String.valueOf(weekNum);
     int year = Integer.parseInt(weekNumInString.substring(0, 4));
     int weekNumWithoutYear = Integer.parseInt(weekNumInString.substring(4));
@@ -78,7 +78,7 @@ public class WeekService {
   /**
    * Method for calculating day of week of an input date.
    */
-  public static int getDayOfWeekFrom(LocalDate date) {
+  public int getDayOfWeekFrom(LocalDate date) {
     return date.getDayOfWeek().getValue();
   }
 
@@ -87,7 +87,7 @@ public class WeekService {
    *
    * @return LocalDate instance with current date for ZONE_ID timezone
    */
-  private static LocalDate getCurrentDate() {
+  private LocalDate getCurrentDate() {
     return LocalDate.now(zoneId);
   }
 
