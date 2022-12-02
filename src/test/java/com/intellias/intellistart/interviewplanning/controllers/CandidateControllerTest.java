@@ -36,6 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
@@ -50,6 +51,7 @@ import org.springframework.web.context.WebApplicationContext;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+@WithMockUser(roles={"CANDIDATE"})
 class CandidateControllerTest {
 
   @Autowired
