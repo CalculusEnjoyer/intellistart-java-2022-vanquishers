@@ -9,6 +9,7 @@ import com.intellias.intellistart.interviewplanning.util.exceptions.SlotAccessEx
 import com.intellias.intellistart.interviewplanning.util.models.CandidateSlotForm;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,7 @@ public class CandidateController {
    *
    * @return response status
    */
+  @RolesAllowed("ROLE_CANDIDATE")
   @PostMapping("/current/slots")
   public ResponseEntity<CandidateSlotForm> addSlot(
       @RequestBody CandidateSlotDto candidateSlotDto,
@@ -75,6 +77,7 @@ public class CandidateController {
    *
    * @return response status
    */
+  @RolesAllowed("ROLE_CANDIDATE")
   @PostMapping("/current/slots/{slotId}")
   public ResponseEntity<CandidateSlotForm> updateSlot(
       Authentication authentication,
@@ -102,6 +105,7 @@ public class CandidateController {
    *
    * @return list of candidate time slots
    */
+  @RolesAllowed("ROLE_CANDIDATE")
   @GetMapping("/current/slots")
   public List<CandidateSlotForm> getAllSlots(Authentication authentication) {
 
