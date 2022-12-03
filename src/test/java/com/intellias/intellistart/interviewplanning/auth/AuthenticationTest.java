@@ -13,7 +13,6 @@ import com.intellias.intellistart.interviewplanning.models.security.FacebookUser
 import com.intellias.intellistart.interviewplanning.services.FacebookClient;
 import com.intellias.intellistart.interviewplanning.services.FacebookService;
 import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
-import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTokenException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -26,15 +25,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
 
 @SpringBootTest
 class AuthenticationTest {
   @Autowired
   private FacebookClient facebookClient;
-
-  @Autowired
-  private UserService userService;
 
   @Autowired
   FacebookService facebookService;
@@ -68,6 +65,8 @@ class AuthenticationTest {
 
   @Mock
   JwtConfig jwtConfig;
+  @Mock
+  ApplicationContext applicationContext;
   @Mock
   JwtTokenProvider tokenProvider;
 
