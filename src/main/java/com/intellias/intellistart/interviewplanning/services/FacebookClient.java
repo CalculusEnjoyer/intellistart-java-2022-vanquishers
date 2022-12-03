@@ -18,12 +18,9 @@ public class FacebookClient extends RestTemplate {
 
   private final RestTemplate restTemplate;
 
-  private final ApplicationContext applicationContext;
-
   @Autowired
-  public FacebookClient(RestTemplate restTemplate, ApplicationContext applicationContext) {
+  public FacebookClient(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
-    this.applicationContext = applicationContext;
   }
 
   /**

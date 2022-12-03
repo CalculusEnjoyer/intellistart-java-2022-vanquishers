@@ -10,11 +10,13 @@ import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTo
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 
 @SpringBootTest
 @WebAppConfiguration
+@ContextConfiguration
 class AuthenticationTest {
   @Autowired
   private FacebookClient facebookClient;
@@ -30,7 +32,9 @@ class AuthenticationTest {
 
   @Test
   void getUserTest() {
-    FacebookUser facebookUser = facebookClient.getUser(jwtToken);
+    FacebookUser facebookUser =
+        facebookClient.getUser(jwtToken);
+    System.out.println("USER_FACEBOOK_1" + facebookUser);
     assertThat(facebookUser.getId(), facebookUser.getId().equals("103318825907086"));
     assertThat(facebookUser.getEmail(), facebookUser.getEmail().equals("grata.salve@gmail.com"));
     assertThat(facebookUser.getFirst_name(), facebookUser.getFirst_name().equals("Влад"));
