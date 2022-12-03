@@ -6,6 +6,7 @@ import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTo
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,9 +18,12 @@ public class FacebookClient extends RestTemplate {
 
   private final RestTemplate restTemplate;
 
+  private final ApplicationContext applicationContext;
+
   @Autowired
-  public FacebookClient(RestTemplate restTemplate) {
+  public FacebookClient(RestTemplate restTemplate, ApplicationContext applicationContext) {
     this.restTemplate = restTemplate;
+    this.applicationContext = applicationContext;
   }
 
   /**
