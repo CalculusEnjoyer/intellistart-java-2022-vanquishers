@@ -79,8 +79,8 @@ public class CoordinatorController {
 
   /**
    * Method for getting all the candidates and interviewers slots grouped by days, each day:
-   * contains all interviewers slots with bookings's IDs inside contains all candidates slots with
-   * bookings's IDs inside contains map of bookings as map bookingId => bookingData.
+   * contains all interviewers slots with bookings IDs inside contains all candidates slots with
+   * bookings IDs inside contains map of bookings as map bookingId => bookingData.
    *
    * @return list
    */
@@ -193,10 +193,10 @@ public class CoordinatorController {
   @DeleteMapping("/users/interviewers/{interviewerId}")
   public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
     User userToDowngrade = userService.findUserById(interviewerId);
-    Interviewer interviewerToDelete = interviewerService.getInterviewerByUserId(
-        userToDowngrade.getId());
     userToDowngrade.setRole(Role.CANDIDATE);
     userService.registerUser(userToDowngrade);
+    Interviewer interviewerToDelete = interviewerService.getInterviewerByUserId(
+        userToDowngrade.getId());
     Interviewer interviewer = interviewerService.getInterviewerByUserId(userToDowngrade.getId());
     if (interviewer.getInterviewerSlot().isEmpty()) {
       interviewerService.deleteInterviewerById(interviewer.getId());
