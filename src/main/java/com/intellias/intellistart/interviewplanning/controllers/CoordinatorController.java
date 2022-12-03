@@ -192,8 +192,9 @@ public class CoordinatorController {
    */
   @DeleteMapping("/users/interviewers/{interviewerId}")
   public ResponseEntity<InterviewerDto> revokeInterviewerRole(@PathVariable Long interviewerId) {
-    Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
-    User userToDowngrade = interviewerToDelete.getUser();
+    User userToDowngrade = userService.findUserById(interviewerId);
+    Interviewer interviewerToDelete = interviewerService.getInterviewerByUserId(
+        userToDowngrade.getId());
     userToDowngrade.setRole(Role.CANDIDATE);
     userService.registerUser(userToDowngrade);
     Interviewer interviewer = interviewerService.getInterviewerByUserId(userToDowngrade.getId());
