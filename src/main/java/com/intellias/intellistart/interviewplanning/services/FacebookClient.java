@@ -47,7 +47,7 @@ public class FacebookClient extends RestTemplate {
           errorInfo.indexOf("message") + 10,
           errorInfo.indexOf("type") - 3));
     }
-    if ((facebookUser != null ? facebookUser.getEmail() : null) == null) {
+    if (facebookUser == null || facebookUser.getEmail() == null) {
       throw new EmptyFacebookEmailException();
     }
     return facebookUser;

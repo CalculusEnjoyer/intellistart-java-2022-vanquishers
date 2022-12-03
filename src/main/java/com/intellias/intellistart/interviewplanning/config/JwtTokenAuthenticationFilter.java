@@ -39,7 +39,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
   }
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
+  public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
       @NonNull FilterChain chain) throws ServletException, IOException {
 
     // 1. get the authentication header.
@@ -60,6 +60,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     // then he won't be authenticated and an exception will be thrown.
 
     // 3. Get the token
+    System.out.println("here");
     String token = header.replace(jwtConfig.getPrefix(), "");
 
     if (tokenProvider.validateToken(token)) {
