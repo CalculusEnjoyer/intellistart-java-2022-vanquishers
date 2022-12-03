@@ -43,7 +43,7 @@ public class FacebookService {
     var facebookUser = facebookClient.getUser(fbAccessToken);
     Authentication authentication = Optional.ofNullable(
             userService.findUserByEmail(facebookUser.getEmail()))
-        .or(() -> Optional.ofNullable(userService.register(convertTo(facebookUser))))
+        .or(() -> Optional.ofNullable(userService.registerUser(convertTo(facebookUser))))
         .map(FacebookUserDetails::new)
         .map(userDetails -> new UsernamePasswordAuthenticationToken(facebookUser,
             null, userDetails.getAuthorities())).orElseThrow();
