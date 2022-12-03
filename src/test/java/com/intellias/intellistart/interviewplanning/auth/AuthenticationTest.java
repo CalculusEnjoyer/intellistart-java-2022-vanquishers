@@ -8,14 +8,13 @@ import com.intellias.intellistart.interviewplanning.services.FacebookClient;
 import com.intellias.intellistart.interviewplanning.services.FacebookService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTokenException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 
-@SpringBootTest(classes = AuthenticationTest.class)
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@WebAppConfiguration
 class AuthenticationTest {
   @Autowired
   private FacebookClient facebookClient;
