@@ -20,15 +20,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 
 
-@SpringBootTest
+@SpringBootTest(classes = AuthenticationTest.class)
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AuthenticationTest {
   @Autowired
   private FacebookClient facebookClient;
@@ -65,7 +70,7 @@ class AuthenticationTest {
 
   @Mock
   JwtConfig jwtConfig;
-  @Mock
+  @InjectMocks
   ApplicationContext applicationContext;
   @Mock
   JwtTokenProvider tokenProvider;
