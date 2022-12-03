@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Interviewer entity service.
@@ -21,14 +22,18 @@ import org.springframework.stereotype.Service;
 public class InterviewerService {
 
   private final InterviewerSlotRepository slotRepository;
-
   private final InterviewerRepository interviewerRepository;
+  private final InterviewerValidator interviewerValidator;
 
+  /**
+   * Interviewer service constructor.
+   */
   @Autowired
   public InterviewerService(InterviewerSlotRepository slotRepository,
-      InterviewerRepository interviewerRepository) {
+      InterviewerRepository interviewerRepository, InterviewerValidator interviewerValidator) {
     this.slotRepository = slotRepository;
     this.interviewerRepository = interviewerRepository;
+    this.interviewerValidator = interviewerValidator;
   }
 
   public List<Interviewer> getAllInterviewers() {
@@ -62,12 +67,16 @@ public class InterviewerService {
     interviewerRepository.deleteById(id);
   }
 
-  public void deleteSlotById(Long id) {
-    slotRepository.deleteById(id);
-  }
+  /**
+   * Remove slot from database.
 
-  public void deleteSlotsById(List<Long> ids) {
-    slotRepository.deleteAllById(ids);
+   * @param id slot id
+   */
+  @Transactional
+  public void deleteSlotById(Long id) {
+    InterviewerSlot slot = getSlotById(id);
+    slot.getInterviewer().getInterviewerSlot().remove(slot);
+    slotRepository.deleteById(id);
   }
 
   public Interviewer getInterviewerByUserId(Long userId) {
@@ -78,15 +87,14 @@ public class InterviewerService {
    * Register slot and checks if it overlaps with other slots.
    */
   public InterviewerSlot registerSlot(InterviewerSlot slot) {
-    InterviewerValidator.validateOverLappingOfSlots(
+    if (slot.getInterviewer() == null) {
+      throw new InterviewerNotFoundException();
+    }
+    interviewerValidator.validateOverLappingOfSlots(
         getInterviewerById(slot.getInterviewer().getId()).getInterviewerSlot().stream()
             .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
         slot);
     return slotRepository.save(slot);
-  }
-
-  public List<InterviewerSlot> registerSlots(List<InterviewerSlot> slots) {
-    return slotRepository.saveAll(slots);
   }
 
   public List<InterviewerSlot> getSlotsForIdAndWeek(Long interviewerId, int weekNum) {

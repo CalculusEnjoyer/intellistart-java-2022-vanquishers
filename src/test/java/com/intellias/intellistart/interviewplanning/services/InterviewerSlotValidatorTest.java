@@ -24,7 +24,10 @@ import org.springframework.test.context.ActiveProfiles;
 class InterviewerSlotValidatorTest {
 
   @Autowired
-  InterviewerService interviewerService;
+  private InterviewerService interviewerService;
+
+  @Autowired
+  private InterviewerValidator interviewerValidator;
 
   @Test
   @Order(1)
@@ -45,16 +48,16 @@ class InterviewerSlotValidatorTest {
     interviewerService.registerInterviewer(interviewer);
 
     assertThrows(OverlappingSlotException.class,
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatOver));
     assertThrows(OverlappingSlotException.class,
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatOver1));
     assertDoesNotThrow(
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatNotOverlaps1));
     assertDoesNotThrow(
-        () -> InterviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
+        () -> interviewerValidator.validateOverLappingOfSlots(interviewer.getInterviewerSlot(),
             interviewerSlotThatNotOverlaps2));
   }
 }

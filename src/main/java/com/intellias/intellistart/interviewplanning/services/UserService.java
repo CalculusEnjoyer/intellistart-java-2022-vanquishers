@@ -31,27 +31,40 @@ public class UserService {
   private final UserRepository userRepository;
   private final InterviewerService interviewerService;
   private final CandidateService candidateService;
-  private final BookingService bookingService;
-  private final WeekService weekService;
-
   private final ModelMapper modelMapper;
+  private final WeekService weekService;
 
   /**
    * Constructor for UserService.
    */
   @Autowired
   public UserService(UserRepository userRepository, InterviewerService interviewerService,
-      CandidateService candidateService, BookingService bookingService, WeekService weekService,
-      ModelMapper modelMapper) {
+      CandidateService candidateService, ModelMapper modelMapper, WeekService weekService) {
     this.userRepository = userRepository;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
-    this.bookingService = bookingService;
-    this.weekService = weekService;
     this.modelMapper = modelMapper;
+    this.weekService = weekService;
   }
 
-  public User register(User user) {
+  public void registerUser(User user) {
+    userRepository.save(user);
+  }
+
+  /**
+   * Method to register new User and add him to table
+   * Interviewer/Coordinator if necessary.
+   *
+   * @param role used to set a Role and add User to right table if necessary
+   * @return created User
+   */
+  public User registerUser(User user, Role role) {
+    if (role == Role.CANDIDATE) {
+      candidateService.registerCandidate(new Candidate(null, user));
+    } else if (role == Role.INTERVIEWER) {
+      interviewerService.registerInterviewer(new Interviewer(user, 0, null));
+    }
+    user.setRole(role);
     return userRepository.save(user);
   }
 
@@ -61,10 +74,6 @@ public class UserService {
 
   public List<User> findAllUsersByRole(Role role) {
     return userRepository.findAllByRole(role);
-  }
-
-  public void deleteUserById(Long id) {
-    userRepository.deleteById(id);
   }
 
   public User findUserById(Long id) {
@@ -81,7 +90,7 @@ public class UserService {
     List<DashboardDayDto> resultDashBoard = new ArrayList<>();
     for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
       DashboardDayDto dashboardDayDto = new DashboardDayDto();
-      dashboardDayDto.setDay(WeekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
+      dashboardDayDto.setDay(weekService.getDateFromWeekAndDay(weekNum, dayOfWeek));
 
       interviewerService.getSlotsForWeekAndDayOfWeek(weekNum, dayOfWeek)
           .forEach(slot -> dashboardDayDto.getInterviewerSlotFormsWithId()

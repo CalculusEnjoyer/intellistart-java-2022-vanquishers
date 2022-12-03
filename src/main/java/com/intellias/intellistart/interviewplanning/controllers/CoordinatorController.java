@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Coordinator controller.
  */
+@RolesAllowed("ROLE_COORDINATOR")
 @RestController
 @RequestMapping(CoordinatorController.MAPPING)
 public class CoordinatorController {
@@ -56,6 +58,7 @@ public class CoordinatorController {
   public final UserService userService;
 
   public final WeekService weekService;
+  public final BookingValidator bookingValidator;
 
 
   /**
@@ -64,13 +67,14 @@ public class CoordinatorController {
   @Autowired
   public CoordinatorController(ModelMapper mapper, BookingService bookingService,
       InterviewerService interviewerService, CandidateService candidateService,
-      UserService userService, WeekService weekService) {
+      UserService userService, WeekService weekService, BookingValidator bookingValidator) {
     this.mapper = mapper;
     this.bookingService = bookingService;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
     this.userService = userService;
     this.weekService = weekService;
+    this.bookingValidator = bookingValidator;
   }
 
   /**
@@ -92,7 +96,7 @@ public class CoordinatorController {
    */
   @PostMapping("/bookings")
   public ResponseEntity<BookingForm> createBooking(@RequestBody BookingDto bookingDto) {
-    BookingValidator.validDtoBoundariesOrError(bookingDto);
+    bookingValidator.validDtoBoundariesOrError(bookingDto);
     Booking booking = mapper.map(bookingDto, Booking.class);
     Interviewer interviewer = interviewerService.getSlotById(
         bookingDto.getInterviewerSlotId()).getInterviewer();
@@ -119,11 +123,12 @@ public class CoordinatorController {
   @PostMapping("/bookings/{bookingId}")
   public ResponseEntity<BookingForm> updateBooking(@PathVariable Long bookingId,
       @RequestBody BookingDto bookingDto) {
-    BookingValidator.validDtoBoundariesOrError(bookingDto);
+    bookingValidator.validDtoBoundariesOrError(bookingDto);
     Booking bookingToUpdate = bookingService.getBookingById(bookingId);
     Booking.updateFieldsExceptId(bookingToUpdate, mapper.map(bookingDto, Booking.class));
     bookingToUpdate.setStatus(Status.CHANGED);
     bookingService.registerBooking(bookingToUpdate);
+
     return ResponseEntity.ok().body(mapper.map(bookingToUpdate, BookingForm.class));
   }
 
@@ -152,7 +157,7 @@ public class CoordinatorController {
       throw new SameRoleChangeException();
     }
     userToGrand.setRole(Role.INTERVIEWER);
-    userService.register(userToGrand);
+    userService.registerUser(userToGrand);
     Interviewer interviewer;
     try {
       interviewer = interviewerService.getInterviewerByUserId(userToGrand.getId());
@@ -190,7 +195,7 @@ public class CoordinatorController {
     Interviewer interviewerToDelete = interviewerService.getInterviewerById(interviewerId);
     User userToDowngrade = interviewerToDelete.getUser();
     userToDowngrade.setRole(Role.CANDIDATE);
-    userService.register(userToDowngrade);
+    userService.registerUser(userToDowngrade);
     Interviewer interviewer = interviewerService.getInterviewerByUserId(userToDowngrade.getId());
     if (interviewer.getInterviewerSlot().isEmpty()) {
       interviewerService.deleteInterviewerById(interviewer.getId());
@@ -207,7 +212,7 @@ public class CoordinatorController {
   public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
     User userToGrand = userService.findUserByEmail(email.get("email"));
     userToGrand.setRole(Role.COORDINATOR);
-    userService.register(userToGrand);
+    userService.registerUser(userToGrand);
     return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
   }
 
@@ -235,7 +240,7 @@ public class CoordinatorController {
       throw new UserNotFoundException();
     }
     user.setRole(Role.CANDIDATE);
-    userService.register(user);
+    userService.registerUser(user);
     Candidate candidate;
     try {
       candidate = candidateService.getCandidateByUserId(user.getId());

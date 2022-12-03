@@ -15,14 +15,15 @@ import org.springframework.stereotype.Service;
 @Component
 public class WeekService {
 
-  @Value("${current.timezone}")
-  public String zone;
-
-  public static ZoneId ZONE_ID;
+  private ZoneId zoneId;
 
   @Value("${current.timezone}")
-  public void setZoneStatic(String zone) {
-    WeekService.ZONE_ID = ZoneId.of(zone);
+  public void setZoneFromConfig(String zone) {
+    zoneId = ZoneId.of(zone);
+  }
+
+  public ZoneId getZoneId() {
+    return zoneId;
   }
 
   /**
@@ -48,7 +49,7 @@ public class WeekService {
    *
    * @return formatted week number for a given date
    */
-  public static int getWeekNumFrom(LocalDate date) {
+  public int getWeekNumFrom(LocalDate date) {
     int year = date.get(IsoFields.WEEK_BASED_YEAR);
     int week = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
     return Integer.parseInt(year + String.format("%02d", week));
@@ -57,7 +58,7 @@ public class WeekService {
   /**
    * Converts from weekNum + dayOfWeek format to LocalDate.
    */
-  public static LocalDate getDateFromWeekAndDay(int weekNum, int dayOfWeek) {
+  public LocalDate getDateFromWeekAndDay(int weekNum, int dayOfWeek) {
     String weekNumInString = String.valueOf(weekNum);
     int year = Integer.parseInt(weekNumInString.substring(0, 4));
     int weekNumWithoutYear = Integer.parseInt(weekNumInString.substring(4));
@@ -68,9 +69,16 @@ public class WeekService {
   }
 
   /**
+   * Method for getting the current day of week.
+   */
+  public int getCurrentDayOfWeek() {
+    return getDayOfWeekFrom(getCurrentDate());
+  }
+
+  /**
    * Method for calculating day of week of an input date.
    */
-  public static int getDayOfWeekFrom(LocalDate date) {
+  public int getDayOfWeekFrom(LocalDate date) {
     return date.getDayOfWeek().getValue();
   }
 
@@ -79,8 +87,9 @@ public class WeekService {
    *
    * @return LocalDate instance with current date for ZONE_ID timezone
    */
-  private static LocalDate getCurrentDate() {
-    return LocalDate.now(ZONE_ID);
+  private LocalDate getCurrentDate() {
+    return LocalDate.now(zoneId);
   }
+
 }
 

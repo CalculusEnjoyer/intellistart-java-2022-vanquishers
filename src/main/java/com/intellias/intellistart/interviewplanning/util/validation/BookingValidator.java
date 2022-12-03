@@ -11,19 +11,29 @@ import com.intellias.intellistart.interviewplanning.util.exceptions.OverlappingB
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Validator for Bookings.
  */
+@Component
 public class BookingValidator {
 
-  private BookingValidator() {
+  private final WeekService weekService;
+
+  /**
+   * Private constructor to hide the ability of instantiation of a utility class.
+   */
+  @Autowired
+  private BookingValidator(WeekService weekService) {
+    this.weekService = weekService;
   }
 
   /**
    * Validates that Booking lays in CandidateSlot range.
    */
-  public static void isInSlotRange(CandidateSlot slot, Booking booking) {
+  public void isInSlotRange(CandidateSlot slot, Booking booking) {
     if (slot.getDateFrom().compareTo(booking.getFrom()) > 0
         || slot.getDateTo().compareTo(booking.getTo()) < 0) {
       throw new BookingOutOfSlotException();
@@ -33,11 +43,11 @@ public class BookingValidator {
   /**
    * Validates that BookingDto lays in InterviewerSlot range.
    */
-  public static void isInSlotRange(InterviewerSlot slot, Booking booking) {
-    if (slot.getWeekNum() != WeekService.getWeekNumFrom(booking.getFrom().toLocalDate())
-        || slot.getDayOfWeek() != WeekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
-        || slot.getWeekNum() != WeekService.getWeekNumFrom(booking.getTo().toLocalDate())
-        || slot.getDayOfWeek() != WeekService.getDayOfWeekFrom(booking.getTo().toLocalDate())
+  public void isInSlotRange(InterviewerSlot slot, Booking booking) {
+    if (slot.getWeekNum() != weekService.getWeekNumFrom(booking.getFrom().toLocalDate())
+        || slot.getDayOfWeek() != weekService.getDayOfWeekFrom(booking.getFrom().toLocalDate())
+        || slot.getWeekNum() != weekService.getWeekNumFrom(booking.getTo().toLocalDate())
+        || slot.getDayOfWeek() != weekService.getDayOfWeekFrom(booking.getTo().toLocalDate())
         || slot.getFrom().compareTo(booking.getFrom().toLocalTime()) > 0
         || slot.getTo().compareTo(booking.getTo().toLocalTime()) < 0) {
       throw new BookingOutOfSlotException();
@@ -45,9 +55,9 @@ public class BookingValidator {
   }
 
   /**
-   * Checks for overlapping with bookins in set.
+   * Checks for overlapping with bookings in set.
    */
-  public static void isOverLappingWithBookings(Set<Booking> bookings, Booking booking) {
+  public void isOverLappingWithBookings(Set<Booking> bookings, Booking booking) {
     for (Booking bookingToCheck : bookings) {
       if (UtilValidator.areIntervalsOverLapping(bookingToCheck.getFrom(), bookingToCheck.getTo(),
           booking.getFrom(), booking.getTo())) {
@@ -59,20 +69,21 @@ public class BookingValidator {
   /**
    * Method for validating booking boundaries.
    */
-  public static boolean isValidBookingTimeBoundaries(BookingDto dto) {
+  public boolean isValidBookingTimeBoundaries(BookingDto dto) {
     LocalDateTime fromTime = dto.getDateFrom();
     LocalDateTime toTime = dto.getDateTo();
-    return dto.getDateFrom().isAfter(LocalDateTime.now(WeekService.ZONE_ID))
+    return dto.getDateFrom().isAfter(LocalDateTime.now(weekService.getZoneId()))
         && Duration.between(fromTime, toTime).toMinutes() == 90;
   }
 
   /**
    * Method that throws exception if booking has invalid boundaries.
    */
-  public static BookingDto validDtoBoundariesOrError(BookingDto dto) {
+  public BookingDto validDtoBoundariesOrError(BookingDto dto) {
     if (!isValidBookingTimeBoundaries(dto)) {
       throw new InvalidBookingBoundariesException();
     }
     return dto;
   }
+
 }
