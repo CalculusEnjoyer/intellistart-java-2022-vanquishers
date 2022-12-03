@@ -5,11 +5,11 @@ import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
-import com.intellias.intellistart.interviewplanning.util.exceptions.InternalServerException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,30 +37,23 @@ public class FacebookService {
   /**
    * Method to get User from database or add if not registered yet.
    *
-   * @return User
+   * @return Jwt token.
    */
   public String loginUser(String fbAccessToken) {
     var facebookUser = facebookClient.getUser(fbAccessToken);
-
-    try {
-      return Optional.ofNullable(userService.findUserByEmail(facebookUser.getEmail()))
-          .or(() -> Optional.ofNullable(userService.registerUser(convertTo(facebookUser),
-              Role.CANDIDATE)))
-          .map(FacebookUserDetails::new)
-          .map(userDetails -> new UsernamePasswordAuthenticationToken(facebookUser, null,
-              userDetails.getAuthorities()))
-          .map(tokenProvider::generateToken)
-          .orElseThrow(() ->
-              new InternalServerException(
-                  "unable to login facebook user email " + facebookUser.getEmail()));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    Authentication authentication = Optional.ofNullable(
+            userService.findUserByEmail(facebookUser.getEmail()))
+        .or(() -> Optional.ofNullable(userService.registerUser(convertTo(facebookUser))))
+        .map(FacebookUserDetails::new)
+        .map(userDetails -> new UsernamePasswordAuthenticationToken(facebookUser,
+            null, userDetails.getAuthorities())).orElseThrow();
+    return tokenProvider.generateToken(authentication, facebookUser);
   }
 
   private User convertTo(FacebookUser facebookUser) {
     User user = new User();
     user.setEmail(facebookUser.getEmail());
+    user.setRole(Role.CANDIDATE);
     return user;
   }
 }

@@ -47,24 +47,7 @@ public class UserService {
     this.weekService = weekService;
   }
 
-  public void registerUser(User user) {
-    userRepository.save(user);
-  }
-
-  /**
-   * Method to register new User and add him to table
-   * Interviewer/Coordinator if necessary.
-   *
-   * @param role used to set a Role and add User to right table if necessary
-   * @return created User
-   */
-  public User registerUser(User user, Role role) {
-    if (role == Role.CANDIDATE) {
-      candidateService.registerCandidate(new Candidate(null, user));
-    } else if (role == Role.INTERVIEWER) {
-      interviewerService.registerInterviewer(new Interviewer(user, 0, null));
-    }
-    user.setRole(role);
+  public User registerUser(User user) {
     return userRepository.save(user);
   }
 
