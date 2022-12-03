@@ -7,17 +7,17 @@ import com.intellias.intellistart.interviewplanning.models.security.FacebookUser
 import com.intellias.intellistart.interviewplanning.services.FacebookClient;
 import com.intellias.intellistart.interviewplanning.services.FacebookService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTokenException;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 
-@SpringBootTest(classes = AuthenticationTest.class)
-@ActiveProfiles("test")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class AuthenticationTest {
   @Autowired
   private FacebookClient facebookClient;
