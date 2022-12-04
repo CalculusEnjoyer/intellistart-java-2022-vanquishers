@@ -30,17 +30,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthenticationTest {
-  @Autowired
+  @Mock
   private FacebookClient facebookClient;
 
-  @Autowired
+  @Mock
   private FacebookService facebookService;
 
-  @Autowired
+  @Mock
+  RestTemplate restTemplate;
+
+  @Mock
   Environment env;
 
   private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
