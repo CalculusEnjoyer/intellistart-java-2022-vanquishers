@@ -92,7 +92,6 @@ class InterviewerControllerTest {
       new Interviewer(USERS.get(0), 5, null),
       new Interviewer(USERS.get(1), 7, null)
   );
-  private static final Interviewer DEFAULT_INTERVIEWER = INTERVIEWERS.get(0);
 
   private static final List<InterviewerSlot> SLOTS = List.of(
       new InterviewerSlot(null, 0, 1,
@@ -116,9 +115,9 @@ class InterviewerControllerTest {
   private final int NEXT_WEEK_NUM;
 
   @Autowired
-  private InterviewerControllerTest() {
-    CURRENT_WEEK_NUM = WeekService.getCurrentWeekNum();
-    NEXT_WEEK_NUM = WeekService.getNextWeekNum();
+  private InterviewerControllerTest(WeekService weekService) {
+    CURRENT_WEEK_NUM = weekService.getCurrentWeekNum();
+    NEXT_WEEK_NUM = weekService.getNextWeekNum();
   }
 
   @BeforeEach
@@ -149,7 +148,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenCorrectDataWithWeekNum() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 5, "10:00", "15:30");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
@@ -178,7 +177,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenCorrectDataWithoutWeekNum() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
@@ -205,7 +204,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 5, "06:00", "15:49");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
@@ -229,7 +228,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenWeekNumIsPast() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         197015, 5, "09:00", "18:00");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
@@ -253,7 +252,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void addSlotTest_whenWeekNumIsCurrent() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         CURRENT_WEEK_NUM, 5, "09:00", "18:00");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
@@ -277,7 +276,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void updateSlotTest_whenCorrectData() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     Long slotId = SLOTS.get(1).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 3, "08:00", "17:30");
@@ -302,7 +301,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void updateSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     Long slotId = SLOTS.get(1).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 5, "05:00", "15:19");
@@ -328,7 +327,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void updateSlotTest_whenInterviewerUpdatesCurrWeekSlot() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
-    Long interviewerId = INTERVIEWERS.get(1).getId();
+    Long interviewerId = USERS.get(1).getId();
     Long slotId = SLOTS.get(3).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         CURRENT_WEEK_NUM, 4, "09:00", "18:30");
@@ -354,7 +353,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"COORDINATOR"})
   void updateSlotTest_whenCoordinatorUpdatesCurrWeekSlot() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
-    Long interviewerId = INTERVIEWERS.get(1).getId();
+    Long interviewerId = USERS.get(1).getId();
     Long slotId = SLOTS.get(3).getId();
     String slotDtoJsonStr = constructSlotDtoAsString(
         CURRENT_WEEK_NUM, 2, "11:00", "15:30");
@@ -379,11 +378,12 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void getCurrentWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/current-week";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     int expectedSize = interviewerService
         .getSlotsForIdAndWeek(interviewerId, CURRENT_WEEK_NUM).size();
 
-    mockMvc.perform(get(url, interviewerId))
+    mockMvc.perform(get(url, interviewerId)
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(jsonPath("$", hasSize(expectedSize)))
         .andExpect(jsonPath("$[0].weekNum", equalTo(CURRENT_WEEK_NUM)));
@@ -394,11 +394,12 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void getNextWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/next-week";
-    Long interviewerId = INTERVIEWERS.get(0).getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     int expectedSize = interviewerService
         .getSlotsForIdAndWeek(interviewerId, NEXT_WEEK_NUM).size();
 
-    mockMvc.perform(get(url, interviewerId))
+    mockMvc.perform(get(url, interviewerId)
+            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(jsonPath("$", hasSize(expectedSize)))
         .andExpect(jsonPath("$[0].weekNum", equalTo(NEXT_WEEK_NUM)));
@@ -409,7 +410,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void setBookingLimitTest_whenCorrectBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     int bookingLimitExpected = 99;
 
     mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
@@ -430,7 +431,7 @@ class InterviewerControllerTest {
   @WithMockUser(roles={"INTERVIEWER"})
   void setBookingLimitTest_whenInvalidBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
-    Long interviewerId = DEFAULT_INTERVIEWER.getId();
+    Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
 
     int bookingLimitBeforeCall = interviewerService
         .getInterviewerById(interviewerId).getBookingLimit();

@@ -1,10 +1,12 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
+import com.intellias.intellistart.interviewplanning.util.exceptions.EmptyFacebookEmailException;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTokenException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,7 +18,6 @@ public class FacebookClient extends RestTemplate {
 
   private final RestTemplate restTemplate;
 
-  @Lazy
   @Autowired
   public FacebookClient(RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
@@ -36,7 +37,20 @@ public class FacebookClient extends RestTemplate {
     variables.put("redirect", "false");
     variables.put("access_token", accessToken);
     String facebookGraphApiBase = "https://graph.facebook.com";
-    return restTemplate
-        .getForObject(facebookGraphApiBase + path, FacebookUser.class, variables);
+
+    FacebookUser facebookUser;
+    try {
+      facebookUser = restTemplate
+          .getForObject(facebookGraphApiBase + path, FacebookUser.class, variables);
+    } catch (Exception exception) {
+      String errorInfo = exception.getMessage();
+      throw new InvalidJwtTokenException(errorInfo.substring(
+          errorInfo.indexOf("message") + 10,
+          errorInfo.indexOf("type") - 3));
+    }
+    if (facebookUser == null || facebookUser.getEmail() == null) {
+      throw new EmptyFacebookEmailException();
+    }
+    return facebookUser;
   }
 }

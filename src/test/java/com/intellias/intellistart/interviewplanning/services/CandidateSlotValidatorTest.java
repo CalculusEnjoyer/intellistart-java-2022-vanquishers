@@ -26,10 +26,13 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CandidateSlotValidatorTest {
+class CandidateSlotValidatorTest {
 
   @Autowired
   private CandidateService candidateService;
+
+  @Autowired
+  private CandidateValidator candidateValidator;
 
 
   private static final int NEXT_YEAR = LocalDate.now().getYear() + 1;
@@ -80,8 +83,8 @@ public class CandidateSlotValidatorTest {
 
     for (CandidateSlot slot : SLOTS) {
       try {
-        CandidateValidator.validateCandidateSlotForBoundaries(slot);
-        CandidateValidator.validateCandidateSlotForOverlapping(
+        candidateValidator.validateCandidateSlotForBoundaries(slot);
+        candidateValidator.validateCandidateSlotForOverlapping(
             new HashSet<>(candidateService.getAllSlots()), slot);
         validatedSlots++;
       } catch (Exception e) {
@@ -120,19 +123,19 @@ public class CandidateSlotValidatorTest {
     candidate.setCandidateSlot(new HashSet<>(SLOTS));
 
     assertThrows(OverlappingSlotException.class,
-        () -> CandidateValidator.validateCandidateSlotForOverlapping(
+        () -> candidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             overlapping));
     assertThrows(OverlappingSlotException.class,
-        () -> CandidateValidator.validateCandidateSlotForOverlapping(
+        () -> candidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             overlapping1));
     assertDoesNotThrow(
-        () -> CandidateValidator.validateCandidateSlotForOverlapping(
+        () -> candidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             notOverlapping));
     assertDoesNotThrow(
-        () -> CandidateValidator.validateCandidateSlotForOverlapping(
+        () -> candidateValidator.validateCandidateSlotForOverlapping(
             candidate.getCandidateSlot(),
             notOverlapping1));
   }

@@ -23,15 +23,17 @@ public class InterviewerService {
 
   private final InterviewerSlotRepository slotRepository;
   private final InterviewerRepository interviewerRepository;
+  private final InterviewerValidator interviewerValidator;
 
   /**
    * Interviewer service constructor.
    */
   @Autowired
   public InterviewerService(InterviewerSlotRepository slotRepository,
-      InterviewerRepository interviewerRepository) {
+      InterviewerRepository interviewerRepository, InterviewerValidator interviewerValidator) {
     this.slotRepository = slotRepository;
     this.interviewerRepository = interviewerRepository;
+    this.interviewerValidator = interviewerValidator;
   }
 
   public List<Interviewer> getAllInterviewers() {
@@ -88,7 +90,7 @@ public class InterviewerService {
     if (slot.getInterviewer() == null) {
       throw new InterviewerNotFoundException();
     }
-    InterviewerValidator.validateOverLappingOfSlots(
+    interviewerValidator.validateOverLappingOfSlots(
         getInterviewerById(slot.getInterviewer().getId()).getInterviewerSlot().stream()
             .filter(s -> !Objects.equals(s.getId(), slot.getId())).collect(Collectors.toSet()),
         slot);

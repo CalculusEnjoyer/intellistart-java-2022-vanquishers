@@ -7,7 +7,8 @@ and run the following:
 
 # Interview planning application 
 
-This back-end application is made for coordinating the interviewer's and candidate's assignments. It was created using Spring with Hibernate framework. PostgresSQL was used as a database because of its reliability and excellent performance. Facebook API and Spring Security OAuth2 were used for authentication through Facebook account. Additionally, stress-testing was conducted using Apache Jmeter.<br />
+This back-end application is made for coordinating the interviewer's and candidate's assignments. It was created using Spring with Hibernate framework. PostgresSQL was used as a database because of its reliability and excellent performance. Facebook API and Spring Security OAuth2 were used for authentication through Facebook account. Additionally, stress-testing was conducted using Apache JMeter.<br />
+
 <br />
 Main functional requirements described [here.](https://github.com/gavluk-intellias/intellistart-java-project/blob/main/docs/REQUIREMENTS.md)
 # Deployment
@@ -66,8 +67,13 @@ Load-testing was performed using Apache Jmeter with the following test plan: <br
 * Each user (thread) adds booking, requests dashboard and delete created booking. Every request performs with a random delay in the range of 0.5 seconds.
 * Load testing was performed for 10 minutes straight.<br />
 <br />
-After conducting test plan, 17411 requests were made without any errors. ![Summary report](./jmeter.testing/Test-summary.png)<br />
+After conducting test plan, 17411 requests were made without any errors. <br />
 <br />
-Average latency was under 15 ms, and all requests latency was under 500 ms (as was mentioned in requirements) . ![Latency graph](./jmeter.testing/Latency_graph.png)<br />
+<img src="https://github.com/CalculusEnjoyer/intellistart-java-2022-vanquishers/blob/main/jmeter.testing/Test-summary.png">
+<br />
+
+Average latency was under 15 ms, and all requests latency was under 500 ms (as was mentioned in requirements) .<br />
+<br />
+<img src="https://github.com/CalculusEnjoyer/intellistart-java-2022-vanquishers/blob/main/jmeter.testing/Latency_graph.png">
 <br />
 To conclude, those performance results totally satisfies the requirements.
