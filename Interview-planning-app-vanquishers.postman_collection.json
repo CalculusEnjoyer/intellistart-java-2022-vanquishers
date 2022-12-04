@@ -1,0 +1,3442 @@
+{
+	"info": {
+		"_postman_id": "dc4e20c3-4df6-459c-a8b9-90ecb99afa62",
+		"name": "Interview-planning-app-vanquishers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24092081"
+	},
+	"item": [
+		{
+			"name": "InterviewerController",
+			"item": [
+				{
+					"name": "Create time slot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"dayOfWeek\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"interviewers",
+								"{{INTERVIEWER_ID}}",
+								"slots",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct slot creation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 08:09:16 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"interviewerId\": 1\n}"
+						},
+						{
+							"name": "Correct slot creation (no weekNum)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"dayOfWeek\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 09:17:44 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 1,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"interviewerId\": 1\n}"
+						},
+						{
+							"name": "Time overlapping exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 08:09:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"slot_is_overlapping\",\n    \"errorMessage\": \"This slot can not match with already existing slots.\"\n}"
+						},
+						{
+							"name": "Invalid dayOfWeek exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": -3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 08:14:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"bad_request\",\n    \"errorMessage\": \"Invalid fields: {dayOfWeek=must be between 1 and 7}\"\n}"
+						},
+						{
+							"name": "Invalid time boundaries exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"03:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 08:15:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"invalid_boundaries\",\n    \"errorMessage\": \"Invalid slot time boundaries\"\n}"
+						},
+						{
+							"name": "Next week after Friday exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 08:51:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"invalid_weeknum\",\n    \"errorMessage\": \"Slot can be created or updated for next week only until Friday 00:00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update time slot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202251,\n    \"dayOfWeek\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/{{INTV_SLOT_ID}}",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"interviewers",
+								"{{INTERVIEWER_ID}}",
+								"slots",
+								"{{INTV_SLOT_ID}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct slot update",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 11:35:39 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"interviewerId\": 1\n}"
+						},
+						{
+							"name": "Time overlapping exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202251,\n    \"dayOfWeek\": 4\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"5"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:04:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"This slot can not match with already existing slots.\",\n    \"errorCode\": \"slot_is_overlapping\"\n}"
+						},
+						{
+							"name": "Invalid dayOfWeek exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202251,\n    \"dayOfWeek\": -1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"5"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:05:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Invalid fields: {dayOfWeek=must be between 1 and 7}\",\n    \"errorCode\": \"bad_request\"\n}"
+						},
+						{
+							"name": "Invalid time boundaries exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"03:44\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202251,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"5"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:05:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Invalid slot time boundaries\",\n    \"errorCode\": \"invalid_boundaries\"\n}"
+						},
+						{
+							"name": "Next week after Friday exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"5"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:08:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Slot can be created or updated for next week only until Friday 00:00\",\n    \"errorCode\": \"invalid_weeknum\"\n}"
+						},
+						{
+							"name": "No such slot with ID exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202251,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/6",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"6"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:09:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"There is no interviewer slot with such id in the database\",\n    \"errorCode\": \"interviewer_slot_not_found\"\n}"
+						},
+						{
+							"name": "No access to non-own slots for Interviewer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202253,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/slots/2",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"slots",
+										"2"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:11:44 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Interviewer with id 1 has no access to slot with id 2\",\n    \"errorCode\": \"forbidden\"\n}"
+						},
+						{
+							"name": "No access to other interviewer data via path",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"weekNum\": 202253,\n    \"dayOfWeek\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/2/slots/2",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"2",
+										"slots",
+										"2"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 28 Nov 2022 12:18:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Interviewer with id: 1 tried to access the other interviewer (2) data in request\",\n    \"errorCode\": \"forbidden\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update booking limit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookingLimit\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/interviewers/1/bookings/booking-limit",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"interviewers",
+								"1",
+								"bookings",
+								"booking-limit"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct booking limit update",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bookingLimit\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/bookings/booking-limit",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"bookings",
+										"booking-limit"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 10:24:17 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"bookingLimit\": 5\n}"
+						},
+						{
+							"name": "Wrong booking limit passed exception",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"bookingLimit\": -2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/1/bookings/booking-limit",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"1",
+										"bookings",
+										"booking-limit"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 10:30:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"maxBookings should be a positive int\",\n    \"errorCode\": \"bad_request\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get current week slots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/current-week",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"interviewers",
+								"{{INTERVIEWER_ID}}",
+								"slots",
+								"current-week"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get current week slots (week 202248)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/current-week",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"{{INTERVIEWER_ID}}",
+										"slots",
+										"current-week"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 10:35:32 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"weekNum\": 202248,\n        \"dayOfWeek\": 6,\n        \"timeFrom\": \"10:00\",\n        \"timeTo\": \"16:30\",\n        \"interviewerId\": 1\n    },\n    {\n        \"weekNum\": 202248,\n        \"dayOfWeek\": 5,\n        \"timeFrom\": \"09:00\",\n        \"timeTo\": \"21:00\",\n        \"interviewerId\": 1\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get next week slots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/next-week",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"interviewers",
+								"{{INTERVIEWER_ID}}",
+								"slots",
+								"next-week"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get next week slots (week 202249)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/next-week",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"interviewers",
+										"{{INTERVIEWER_ID}}",
+										"slots",
+										"next-week"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 10:36:03 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"weekNum\": 202249,\n        \"dayOfWeek\": 1,\n        \"timeFrom\": \"09:00\",\n        \"timeTo\": \"21:00\",\n        \"interviewerId\": 1\n    },\n    {\n        \"weekNum\": 202249,\n        \"dayOfWeek\": 4,\n        \"timeFrom\": \"09:00\",\n        \"timeTo\": \"18:00\",\n        \"interviewerId\": 1\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "CoordinatorController",
+			"item": [
+				{
+					"name": "Get dashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/weeks/202251/dashboard",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"weeks",
+								"202251",
+								"dashboard"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get dashboard example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/weeks/202251/dashboard",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"weeks",
+										"202251",
+										"dashboard"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 10:43:40 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"day\": \"2022-12-19\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-20\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-21\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-22\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 4,\n                    \"timeFrom\": \"08:00\",\n                    \"timeTo\": \"19:30\",\n                    \"interviewerId\": 2\n                },\n                \"bookingsId\": [\n                    2\n                ]\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-22 09:00\",\n                    \"dateTo\": \"2022-12-22 17:00\",\n                    \"candidateId\": 1\n                },\n                \"bookingsId\": [\n                    2,\n                    1\n                ]\n            }\n        ],\n        \"bookings\": {\n            \"1\": {\n                \"dateFrom\": \"2022-12-22 09:00\",\n                \"dateTo\": \"2022-12-22 10:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 1,\n                \"interviewerSlotId\": 1\n            },\n            \"2\": {\n                \"dateFrom\": \"2022-12-22 11:00\",\n                \"dateTo\": \"2022-12-22 12:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 1,\n                \"interviewerSlotId\": 2\n            }\n        }\n    },\n    {\n        \"day\": \"2022-12-23\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 5,\n                    \"timeFrom\": \"08:00\",\n                    \"timeTo\": \"19:30\",\n                    \"interviewerId\": 2\n                },\n                \"bookingsId\": [\n                    3\n                ]\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-23 09:00\",\n                    \"dateTo\": \"2022-12-23 20:00\",\n                    \"candidateId\": 2\n                },\n                \"bookingsId\": [\n                    3\n                ]\n            }\n        ],\n        \"bookings\": {\n            \"3\": {\n                \"dateFrom\": \"2022-12-23 11:00\",\n                \"dateTo\": \"2022-12-23 12:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 2,\n                \"interviewerSlotId\": 3\n            }\n        }\n    },\n    {\n        \"day\": \"2022-12-24\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-25\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-25 09:00\",\n                    \"dateTo\": \"2022-12-25 21:00\",\n                    \"candidateId\": 2\n                },\n                \"bookingsId\": []\n            }\n        ],\n        \"bookings\": {}\n    }\n]"
+						},
+						{
+							"name": "Get dashboard",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/weeks/202251/dashboard",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"weeks",
+										"202251",
+										"dashboard"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 12:41:22 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"day\": \"2022-12-19\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-20\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-21\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-22\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 4,\n                    \"timeFrom\": \"09:00\",\n                    \"timeTo\": \"18:00\",\n                    \"interviewerId\": 1\n                },\n                \"bookingsId\": [\n                    1\n                ]\n            },\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 4,\n                    \"timeFrom\": \"08:00\",\n                    \"timeTo\": \"19:30\",\n                    \"interviewerId\": 2\n                },\n                \"bookingsId\": [\n                    2\n                ]\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-22 09:00\",\n                    \"dateTo\": \"2022-12-22 17:00\",\n                    \"candidateId\": 1\n                },\n                \"bookingsId\": [\n                    2,\n                    1\n                ]\n            }\n        ],\n        \"bookings\": {\n            \"1\": {\n                \"dateFrom\": \"2022-12-22 09:00\",\n                \"dateTo\": \"2022-12-22 10:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 1,\n                \"interviewerSlotId\": 1\n            },\n            \"2\": {\n                \"dateFrom\": \"2022-12-22 11:00\",\n                \"dateTo\": \"2022-12-22 12:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 1,\n                \"interviewerSlotId\": 2\n            }\n        }\n    },\n    {\n        \"day\": \"2022-12-23\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 5,\n                    \"timeFrom\": \"08:00\",\n                    \"timeTo\": \"19:30\",\n                    \"interviewerId\": 2\n                },\n                \"bookingsId\": [\n                    3\n                ]\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-23 09:00\",\n                    \"dateTo\": \"2022-12-23 20:00\",\n                    \"candidateId\": 2\n                },\n                \"bookingsId\": [\n                    3\n                ]\n            }\n        ],\n        \"bookings\": {\n            \"3\": {\n                \"dateFrom\": \"2022-12-23 11:00\",\n                \"dateTo\": \"2022-12-23 12:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 2,\n                \"interviewerSlotId\": 3\n            }\n        }\n    },\n    {\n        \"day\": \"2022-12-24\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 6,\n                    \"timeFrom\": \"10:00\",\n                    \"timeTo\": \"16:30\",\n                    \"interviewerId\": 1\n                },\n                \"bookingsId\": []\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-25\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 7,\n                    \"timeFrom\": \"09:00\",\n                    \"timeTo\": \"21:00\",\n                    \"interviewerId\": 1\n                },\n                \"bookingsId\": []\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-25 09:00\",\n                    \"dateTo\": \"2022-12-25 21:00\",\n                    \"candidateId\": 2\n                },\n                \"bookingsId\": []\n            }\n        ],\n        \"bookings\": {}\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmF2Y2h1azg4M0BnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQvtCy0LAiLCJsYXN0X25hbWUiOiLQmtGA0LDQstGH0YPQuiIsImF1dGhvcml0aWVzIjpbIlJPTEVfQ09PUkRJTkFUT1IiXSwiaWF0IjoxNjY5MDQwNzA4LCJleHAiOjE2NjkxMjcxMDh9.rnMQ3LKzGWUPO4nkV2296sek0x00-H14CuSXn1a38SkhdOtWntDaEPzsYkijegxOCGJq28UdSsw_P4cPIUStiw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dateFrom\": \"2022-12-22 14:30\",\n    \"dateTo\": \"2022-12-22 16:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/bookings",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update booking",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dateFrom\": \"2022-12-22 12:30\",\n    \"dateTo\": \"2022-12-22 14:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/bookings/4",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"bookings",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete booking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/bookings/1",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"bookings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Interviewers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/users/interviewers",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"interviewers"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get all Interviewers example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/users/interviewers",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"interviewers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:31:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"user\": {\n            \"email\": \"example2@gmail.com\",\n            \"role\": \"INTERVIEWER\"\n        },\n        \"bookingLimit\": 5\n    },\n    {\n        \"user\": {\n            \"email\": \"example4@gmail.com\",\n            \"role\": \"INTERVIEWER\"\n        },\n        \"bookingLimit\": 3\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Grant Interviewer Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example3@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/users/interviewers",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"interviewers"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct role granting",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"example3@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/interviewers",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"interviewers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:34:57 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"example3@gmail.com\",\n    \"role\": \"INTERVIEWER\"\n}"
+						},
+						{
+							"name": "Attempt to grant the same role",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"example3@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/interviewers",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"interviewers"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:35:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"same_role\",\n    \"errorMessage\": \"Can not revoke or grand to the role that has been already set.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Revoke Interviewer Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/users/interviewers/{{INTERVIEWER_ID}}",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"interviewers",
+								"{{INTERVIEWER_ID}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct role revoking",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/interviewers/3",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"interviewers",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:45:33 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"email\": \"example3@gmail.com\",\n        \"role\": \"CANDIDATE\"\n    },\n    \"bookingLimit\": 0\n}"
+						},
+						{
+							"name": "No such interviewer",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/interviewers/3",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"interviewers",
+										"3"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:46:34 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"interviewer_not_found\",\n    \"errorMessage\": \"There is no interviewer with such id in the database\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all coordinators",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/users/coordinators",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"coordinators"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get all coordinators example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/users/coordinators",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"coordinators"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:04:17 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"email\": \"example5@gmail.com\",\n        \"role\": \"COORDINATOR\"\n    },\n    {\n        \"email\": \"example6@gmail.com\",\n        \"role\": \"COORDINATOR\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Grant coordinator Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example1@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/users/coordinators",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"coordinators"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct role granting",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"example1@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/coordinators",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"coordinators"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:06:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"example1@gmail.com\",\n    \"role\": \"COORDINATOR\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Revoke coordinator Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example2@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/users/coordinators/{{COORDINATOR_USER_ID}}",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"users",
+								"coordinators",
+								"{{COORDINATOR_USER_ID}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct role revoking",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"example2@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/coordinators/1",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"coordinators",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:13:27 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"example1@gmail.com\",\n    \"role\": \"CANDIDATE\"\n}"
+						},
+						{
+							"name": "No such user or user is not coordinator",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"example2@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/users/coordinators/{{COORDINATOR_USER_ID}}",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"users",
+										"coordinators",
+										"{{COORDINATOR_USER_ID}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 29 Nov 2022 11:16:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"user_not_found\",\n    \"errorMessage\": \"There is no such user in the database.\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "CandidateController",
+			"item": [
+				{
+					"name": "Create time slot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dateFrom\": \"2022-11-15 12:00\",\r\n    \"dateTo\": \"2016-11-15 17:00\",\r\n    \"candidateId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/candidates/current/slots",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"candidates",
+								"current",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update time slot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dateFrom\": \"2022-11-13 09:00\",\r\n    \"dateTo\": \"2022-11-13 17:00\",\r\n    \"candidateId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/candidates/current/slots/2",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"candidates",
+								"current",
+								"slots",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all slots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/candidates/current/slots",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"candidates",
+								"current",
+								"slots"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Correct auth request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABAJSvOD65xHN0KvJKP8aajEkxQ0YsgZCgDusyM1tm2QJSswX1aMBGELmTUnNevhzUxUZBBsrPgnfIq5Q4YTrU8lnjoizr0YZCfu4zsb9yPsldevkmxsjXUwFBD3tWpW6g6ZCddtsMfqPiOIuVHRgdOZCeMbSlrguPI2IAHZATY4NBtZCBhcQ3IsXzfbLc0ZAqZAqOPDyR07XafIRIXQqwTc4ijyGWUeZAIm7nprFxc4GSA7ZBATYYuwngecZD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/facebook/signin",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"facebook",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth request without email",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABAOde5sebYZBzOxSeKe8l2tSZCVtL6xemkSaFQxFYPw1dNStRNTRMfz3h69ZBtzp7WuiqrPRwtX90ezNJtX2qaHBfB4UFy9P4XKdlH8W8K0sMgwAYK2OEH6q2nSdGeNKP7fEZBECrM4VdHMmgbMkJpDa8FSUzo9gZBdaRaQmpKs6BuuUyIgbVsz5BBOzUPYaDXaCJnJHSOMhO2ydIOFJyO4yjxMBEeAHSHYCunlN8ZCTnVY3an3AOQZD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/facebook/signin",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"facebook",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expired auth request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABADizVFOaaL6qMZBO0YnaSad2qEd5Bkxp8eimqyjeEbvDiyiWc2ywjydsfpZCauLzOgHwXlfVyoobCOIM8H0S0JYnpO6mWcf1T6bzBAXttWCVnRE4ZA8TvIVlWZAH1cF2bxMiTX9pH0TbZCFr1ZCfZB0rxIo1ukye4YYGIAs6D6klGlTTZAM2l6HiTk9Li8tZBK515pPe8EM6ocUP0vPkHYe6tIeHKzsJQ0Vxrl29r3kqRUAnvOTbumpEZD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/facebook/signin",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"facebook",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Malformed auth request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accessToken\": \"EqMZBO0YnaSad2qEd5Bkxp8eimqyjeEbvDiyiWc2ywjydsfpZCauLzOgHwXlfVyoobCOIM8H0S0JYnpO6mWcf1T6bzBAXttWCVnRE4ZA8TvIVlWZAH1cF2bxMiTX9pH0TbZCFr1ZCfZB0rxIo1ukye4YYGIAs6D6klGlTTZAM2l6HiTk9Li8tZBK515pPe8EM6ocUP0vPkHYe6tIeHKzsJQ0Vxrl29r3kqRUAnvOTbumpEZD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_BASE}}/facebook/signin",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"facebook",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CommonController",
+			"item": [
+				{
+					"name": "Endpoint Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmF0YS5zYWx2ZUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQu9Cw0LQiLCJsYXN0X25hbWUiOiLQn9GA0L7QutC-0L_QtdC90LrQviIsImF1dGhvcml0aWVzIjpbIlJPTEVfQ0FORElEQVRFIl0sImlhdCI6MTY2ODQyOTEzMiwiZXhwIjoxNjY4NTE1NTMyfQ.oLtf3hIKfWt1KuNqcazZvT5NE0ZDvL8yXFPNbJjjiPGWMe3-QXFzc-iDgbbefv5MiTdMMtWulZTXxmmzvRmybQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/me",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get current weekNum",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/weeks/current",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"weeks",
+								"current"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get current weekNum",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/weeks/current",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"weeks",
+										"current"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 23 Nov 2022 11:50:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "202247"
+						}
+					]
+				},
+				{
+					"name": "Get next weekNum",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/weeks/next",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"weeks",
+								"next"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get next weekNum",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/weeks/next",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"weeks",
+										"next"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 23 Nov 2022 12:19:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "202248"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL_BASE",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "INTERVIEWER_ID",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "INTV_SLOT_ID",
+			"value": "5",
+			"type": "string"
+		},
+		{
+			"key": "COORDINATOR_USER_ID",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
