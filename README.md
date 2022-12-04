@@ -8,9 +8,9 @@ and run the following:
 # Interview planning application 
 
 This back-end application is made for coordinating the interviewer's and candidate's assignments. It was created using Spring with Hibernate framework. PostgresSQL was used as a database because of its reliability and excellent performance. Facebook API and Spring Security OAuth2 were used for authentication through Facebook account. Additionally, stress-testing was conducted using Apache JMeter.<br />
-
 <br />
-Main functional requirements described [here.](https://github.com/gavluk-intellias/intellistart-java-project/blob/main/docs/REQUIREMENTS.md)
+Main functional requirements described <a href="https://github.com/gavluk-intellias/intellistart-java-project/blob/main/docs/REQUIREMENTS.md">here.</a>
+
 # Deployment
 
 ## Running in Docker :rocket:
