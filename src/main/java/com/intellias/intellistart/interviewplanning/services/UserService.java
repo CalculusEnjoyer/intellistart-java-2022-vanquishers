@@ -8,9 +8,9 @@ import com.intellias.intellistart.interviewplanning.controllers.dto.DashboardDay
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
 import com.intellias.intellistart.interviewplanning.models.Booking;
 import com.intellias.intellistart.interviewplanning.models.Candidate;
-import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
+import com.intellias.intellistart.interviewplanning.repositories.CandidateRepository;
 import com.intellias.intellistart.interviewplanning.repositories.UserRepository;
 import com.intellias.intellistart.interviewplanning.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
   private final UserRepository userRepository;
+  private final CandidateRepository candidateRepository;
   private final InterviewerService interviewerService;
   private final CandidateService candidateService;
   private final ModelMapper modelMapper;
@@ -38,16 +39,23 @@ public class UserService {
    * Constructor for UserService.
    */
   @Autowired
-  public UserService(UserRepository userRepository, InterviewerService interviewerService,
+  public UserService(UserRepository userRepository, CandidateRepository candidateRepository,
+      InterviewerService interviewerService,
       CandidateService candidateService, ModelMapper modelMapper, WeekService weekService) {
     this.userRepository = userRepository;
+    this.candidateRepository = candidateRepository;
     this.interviewerService = interviewerService;
     this.candidateService = candidateService;
     this.modelMapper = modelMapper;
     this.weekService = weekService;
   }
 
-  public User registerUser(User user) {
+  public void registerUser(User user) {
+    userRepository.save(user);
+  }
+
+  public User registerCandidate(User user) {
+    candidateRepository.save(new Candidate(null, user));
     return userRepository.save(user);
   }
 

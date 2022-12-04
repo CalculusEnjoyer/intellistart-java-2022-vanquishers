@@ -3,6 +3,7 @@ package com.intellias.intellistart.interviewplanning.config;
 
 import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
 import com.intellias.intellistart.interviewplanning.services.UserService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.JwtAuthenticationEntryPoint;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -34,18 +36,20 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
   private final JwtConfig jwtConfig;
   private final JwtTokenProvider tokenProvider;
   private final UserService userService;
+  private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
   /**
    * SecurityCredentialsConfig class constructor.
    */
   @Autowired
-  @Lazy
   public SecurityCredentialsConfig(UserDetailsService userDetailsService, JwtConfig jwtConfig,
-      JwtTokenProvider tokenProvider, UserService userService) {
+      JwtTokenProvider tokenProvider, UserService userService,
+      JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
     this.userDetailsService = userDetailsService;
     this.jwtConfig = jwtConfig;
     this.tokenProvider = tokenProvider;
     this.userService = userService;
+    this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
   }
 
 
@@ -56,8 +60,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
         .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .exceptionHandling().authenticationEntryPoint(
-            (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+        .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
         .and()
         .addFilterBefore(
             new JwtTokenAuthenticationFilter(jwtConfig, tokenProvider, userService),

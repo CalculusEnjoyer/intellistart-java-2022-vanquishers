@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 
+import com.intellias.intellistart.interviewplanning.models.Candidate;
 import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
@@ -43,7 +44,7 @@ public class FacebookService {
     var facebookUser = facebookClient.getUser(fbAccessToken);
     Authentication authentication = Optional.ofNullable(
             userService.findUserByEmail(facebookUser.getEmail()))
-        .or(() -> Optional.ofNullable(userService.registerUser(convertTo(facebookUser))))
+        .or(() -> Optional.ofNullable(userService.registerCandidate(convertTo(facebookUser))))
         .map(FacebookUserDetails::new)
         .map(userDetails -> new UsernamePasswordAuthenticationToken(facebookUser,
             null, userDetails.getAuthorities())).orElseThrow();

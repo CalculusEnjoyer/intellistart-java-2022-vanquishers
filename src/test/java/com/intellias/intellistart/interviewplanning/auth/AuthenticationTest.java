@@ -9,7 +9,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import com.intellias.intellistart.interviewplanning.config.JwtConfig;
 import com.intellias.intellistart.interviewplanning.config.JwtTokenAuthenticationFilter;
+import com.intellias.intellistart.interviewplanning.models.User;
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
+import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.FacebookClient;
 import com.intellias.intellistart.interviewplanning.services.FacebookService;
 import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
@@ -27,11 +29,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootTest
@@ -44,12 +46,6 @@ class AuthenticationTest {
 
   @Autowired
   private FacebookService facebookService;
-
-  @Autowired
-  RestTemplate restTemplate;
-
-  @Autowired
-  Environment env;
 
   private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
       + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
@@ -73,7 +69,6 @@ class AuthenticationTest {
 
   @Test
   void loginUserTest() {
-    System.out.println(System.getProperty("online"));
     String token = facebookService.loginUser(jwtToken);
     assertThat(token, token.length() > 0);
   }
@@ -112,6 +107,11 @@ class AuthenticationTest {
     when(request.getHeader(AUTHORIZATION)).thenReturn("123");
     jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
     verify(chain).doFilter(request, response);
+  }
+
+  private Authentication authenticateUser(User user) {
+    FacebookUserDetails fbUD = new FacebookUserDetails(user);
+    return new UsernamePasswordAuthenticationToken(fbUD, null, fbUD.getAuthorities());
   }
 
 }
