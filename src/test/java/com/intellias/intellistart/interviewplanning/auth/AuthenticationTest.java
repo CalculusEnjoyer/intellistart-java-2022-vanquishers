@@ -1,14 +1,41 @@
 package com.intellias.intellistart.interviewplanning.auth;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+import com.intellias.intellistart.interviewplanning.utils.OnlineTest;
+import com.intellias.intellistart.interviewplanning.config.JwtConfig;
+import com.intellias.intellistart.interviewplanning.config.JwtTokenAuthenticationFilter;
+import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
+import com.intellias.intellistart.interviewplanning.services.FacebookClient;
+import com.intellias.intellistart.interviewplanning.services.FacebookService;
+import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
+import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTokenException;
+import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.RestTemplate;
 
 //@SpringBootTest
 //@AutoConfigureMockMvc
@@ -17,33 +44,31 @@ import org.springframework.test.context.ActiveProfiles;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class AuthenticationTest {
-//  @Autowired
-//  private FacebookClient facebookClient;
+  @Autowired
+  private FacebookClient facebookClient;
 
-//  @Autowired
-//  private FacebookService facebookService;
+  @Autowired
+  private FacebookService facebookService;
 
-//  @Autowired
-//  RestTemplate restTemplate;
-//
-//  @Autowired
-//  Environment env;
-//
-//  private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
-//      + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
-//      + "ZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5";
-//
-//  private final String invalidJwtToken = "EAALXaskmJ0ABAF8B3obWu";
-  int a = 1;
+  @Autowired
+  RestTemplate restTemplate;
+
+  @Autowired
+  Environment env;
+
+  private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
+      + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
+      + "ZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5";
+
+  private final String invalidJwtToken = "EAALXaskmJ0ABAF8B3obWu";
 
   @Test
   void getUserTest() {
-    assertEquals(a, 1);
-//    FacebookUser facebookUser = facebookClient.getUser(jwtToken);
-//    assertThat(facebookUser.getId(), facebookUser.getId().equals("103318825907086"));
-//    assertThat(facebookUser.getEmail(), facebookUser.getEmail().equals("grata.salve@gmail.com"));
-//    assertThat(facebookUser.getFirst_name(), facebookUser.getFirst_name().equals("Влад"));
-//    assertThat(facebookUser.getLast_name(), facebookUser.getLast_name().equals("Прокопенко"));
+    FacebookUser facebookUser = facebookClient.getUser(jwtToken);
+    assertThat(facebookUser.getId(), facebookUser.getId().equals("103318825907086"));
+    assertThat(facebookUser.getEmail(), facebookUser.getEmail().equals("grata.salve@gmail.com"));
+    assertThat(facebookUser.getFirst_name(), facebookUser.getFirst_name().equals("Влад"));
+    assertThat(facebookUser.getLast_name(), facebookUser.getLast_name().equals("Прокопенко"));
   }
 //
 //  @Test
