@@ -35,8 +35,8 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthenticationTest {
-  @Autowired
-  private FacebookClient facebookClient;
+//  @Autowired
+//  private FacebookClient facebookClient;
 
 //  @Autowired
 //  private FacebookService facebookService;
@@ -78,27 +78,27 @@ class AuthenticationTest {
 //    assertThat(token, token.length() > 0);
 //  }
 
-  @Mock
-  JwtConfig jwtConfig;
-
-  @Mock
-  JwtTokenProvider tokenProvider;
-
-  @InjectMocks
-  JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
-
-  HttpServletRequest request;
-  HttpServletResponse response;
-  FilterChain chain;
-
-  @BeforeEach
-  public void before() {
-    request = mock(HttpServletRequest.class);
-    response = mock(HttpServletResponse.class);
-    chain = mock(FilterChain.class);
-    jwtConfig = mock(JwtConfig.class);
-    tokenProvider = mock(JwtTokenProvider.class);
-  }
+//  @Mock
+//  JwtConfig jwtConfig;
+//
+//  @Mock
+//  JwtTokenProvider tokenProvider;
+//
+//  @InjectMocks
+//  JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
+//
+//  HttpServletRequest request;
+//  HttpServletResponse response;
+//  FilterChain chain;
+//
+//  @BeforeEach
+//  public void before() {
+//    request = mock(HttpServletRequest.class);
+//    response = mock(HttpServletResponse.class);
+//    chain = mock(FilterChain.class);
+//    jwtConfig = mock(JwtConfig.class);
+//    tokenProvider = mock(JwtTokenProvider.class);
+//  }
 //
 //  @Test
 //  public void doFilterInternalNullToken() throws IOException, ServletException {
