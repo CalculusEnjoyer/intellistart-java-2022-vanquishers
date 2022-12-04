@@ -33,30 +33,29 @@ import org.springframework.core.env.Environment;
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthenticationTest {
-//  @Autowired
-//  private FacebookClient facebookClient;
-//
-//  @Autowired
-//  private FacebookService facebookService;
-//
-//  @Autowired
-//  Environment env;
-//
-//  private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
-//      + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
-//      + "ZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5";
-//
-//  private final String invalidJwtToken = "EAALXaskmJ0ABAF8B3obWu";
-//
-//  @Test
-//  @OnlineTest
-//  void getUserTest() {
-//    FacebookUser facebookUser = facebookClient.getUser(jwtToken);
-//    assertThat(facebookUser.getId(), facebookUser.getId().equals("103318825907086"));
-//    assertThat(facebookUser.getEmail(), facebookUser.getEmail().equals("grata.salve@gmail.com"));
-//    assertThat(facebookUser.getFirst_name(), facebookUser.getFirst_name().equals("Влад"));
-//    assertThat(facebookUser.getLast_name(), facebookUser.getLast_name().equals("Прокопенко"));
-//  }
+  @Autowired
+  private FacebookClient facebookClient;
+
+  @Autowired
+  private FacebookService facebookService;
+
+  @Autowired
+  Environment env;
+
+  private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
+      + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
+      + "ZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5";
+
+  private final String invalidJwtToken = "EAALXaskmJ0ABAF8B3obWu";
+
+  @Test
+  void getUserTest() {
+    FacebookUser facebookUser = facebookClient.getUser(jwtToken);
+    assertThat(facebookUser.getId(), facebookUser.getId().equals("103318825907086"));
+    assertThat(facebookUser.getEmail(), facebookUser.getEmail().equals("grata.salve@gmail.com"));
+    assertThat(facebookUser.getFirst_name(), facebookUser.getFirst_name().equals("Влад"));
+    assertThat(facebookUser.getLast_name(), facebookUser.getLast_name().equals("Прокопенко"));
+  }
 //
 //  @Test
 //  @OnlineTest
@@ -93,14 +92,13 @@ class AuthenticationTest {
     jwtConfig = mock(JwtConfig.class);
     tokenProvider = mock(JwtTokenProvider.class);
   }
-
-  @Test
-  @Disabled
-  public void doFilterInternalNullToken() throws IOException, ServletException {
-    when(request.getHeader(AUTHORIZATION)).thenReturn(null);
-    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
-    verify(chain).doFilter(request, response);
-  }
+//
+//  @Test
+//  public void doFilterInternalNullToken() throws IOException, ServletException {
+//    when(request.getHeader(AUTHORIZATION)).thenReturn(null);
+//    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
+//    verify(chain).doFilter(request, response);
+//  }
 //
 //  @Test
 //  @OnlineTest
