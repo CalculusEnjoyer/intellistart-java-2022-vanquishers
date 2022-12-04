@@ -1,36 +1,9 @@
 package com.intellias.intellistart.interviewplanning.auth;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-import com.intellias.intellistart.interviewplanning.utils.OnlineTest;
-import com.intellias.intellistart.interviewplanning.config.JwtConfig;
-import com.intellias.intellistart.interviewplanning.config.JwtTokenAuthenticationFilter;
-import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
-import com.intellias.intellistart.interviewplanning.services.FacebookClient;
-import com.intellias.intellistart.interviewplanning.services.FacebookService;
-import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
-import com.intellias.intellistart.interviewplanning.util.exceptions.InvalidJwtTokenException;
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
-import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
 //@AutoConfigureMockMvc
