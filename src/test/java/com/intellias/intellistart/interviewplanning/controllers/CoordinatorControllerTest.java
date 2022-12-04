@@ -44,17 +44,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -67,7 +63,7 @@ import org.springframework.web.context.WebApplicationContext;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc(addFilters = false)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-@WithMockUser(roles={"COORDINATOR"})
+@WithMockUser(roles = {"COORDINATOR"})
 class CoordinatorControllerTest {
 
   @Autowired
@@ -213,7 +209,7 @@ class CoordinatorControllerTest {
     Interviewer interviewer = new Interviewer(interviewerUser, 3, null);
     interviewerService.registerInterviewer(interviewer);
 
-    mockMvc.perform(delete("/users/interviewers/{interviewerId}", interviewer.getId()))
+    mockMvc.perform(delete("/users/interviewers/{interviewerId}", interviewerUser.getId()))
         .andExpect(status().isOk());
 
     Assertions.assertEquals(Role.CANDIDATE,
