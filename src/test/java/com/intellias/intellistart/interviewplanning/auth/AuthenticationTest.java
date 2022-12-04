@@ -33,7 +33,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+//@AutoConfigureMockMvc
 class AuthenticationTest {
 //  @Autowired
 //  private FacebookClient facebookClient;
@@ -41,17 +41,17 @@ class AuthenticationTest {
 //  @Autowired
 //  private FacebookService facebookService;
 
-  @Autowired
-  RestTemplate restTemplate;
-
-  @Autowired
-  Environment env;
-
-  private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
-      + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
-      + "ZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5";
-
-  private final String invalidJwtToken = "EAALXaskmJ0ABAF8B3obWu";
+//  @Autowired
+//  RestTemplate restTemplate;
+//
+//  @Autowired
+//  Environment env;
+//
+//  private final String jwtToken = "EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclgg"
+//      + "ZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6E"
+//      + "ZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5";
+//
+//  private final String invalidJwtToken = "EAALXaskmJ0ABAF8B3obWu";
   int a = 1;
 
   @Test
