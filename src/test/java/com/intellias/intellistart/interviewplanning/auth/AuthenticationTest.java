@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -93,13 +94,13 @@ class AuthenticationTest {
     tokenProvider = mock(JwtTokenProvider.class);
   }
 
-//  @Test
-//  @OnlineTest
-//  public void doFilterInternalNullToken() throws IOException, ServletException {
-//    when(request.getHeader(AUTHORIZATION)).thenReturn(null);
-//    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
-//    verify(chain).doFilter(request, response);
-//  }
+  @Test
+  @Disabled
+  public void doFilterInternalNullToken() throws IOException, ServletException {
+    when(request.getHeader(AUTHORIZATION)).thenReturn(null);
+    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
+    verify(chain).doFilter(request, response);
+  }
 //
 //  @Test
 //  @OnlineTest
