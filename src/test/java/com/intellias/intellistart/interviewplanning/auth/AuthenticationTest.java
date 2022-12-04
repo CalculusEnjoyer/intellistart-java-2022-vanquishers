@@ -2,11 +2,20 @@ package com.intellias.intellistart.interviewplanning.auth;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
+//@SpringBootTest
 //@AutoConfigureMockMvc
+@SpringBootTest
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 class AuthenticationTest {
 //  @Autowired
 //  private FacebookClient facebookClient;
