@@ -3,7 +3,7 @@
 		"_postman_id": "dc4e20c3-4df6-459c-a8b9-90ecb99afa62",
 		"name": "Interview-planning-app-vanquishers",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24092081"
+		"_exporter_id": "24438292"
 	},
 	"item": [
 		{
@@ -1749,87 +1749,6 @@
 					},
 					"response": [
 						{
-							"name": "Get dashboard example",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL_BASE}}/weeks/202251/dashboard",
-									"host": [
-										"{{URL_BASE}}"
-									],
-									"path": [
-										"weeks",
-										"202251",
-										"dashboard"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Method"
-								},
-								{
-									"key": "Vary",
-									"value": "Access-Control-Request-Headers"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "1; mode=block"
-								},
-								{
-									"key": "Cache-Control",
-									"value": "no-cache, no-store, max-age=0, must-revalidate"
-								},
-								{
-									"key": "Pragma",
-									"value": "no-cache"
-								},
-								{
-									"key": "Expires",
-									"value": "0"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
-								},
-								{
-									"key": "Date",
-									"value": "Tue, 29 Nov 2022 10:43:40 GMT"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=60"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								}
-							],
-							"cookie": [],
-							"body": "[\n    {\n        \"day\": \"2022-12-19\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-20\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-21\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-22\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 4,\n                    \"timeFrom\": \"08:00\",\n                    \"timeTo\": \"19:30\",\n                    \"interviewerId\": 2\n                },\n                \"bookingsId\": [\n                    2\n                ]\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-22 09:00\",\n                    \"dateTo\": \"2022-12-22 17:00\",\n                    \"candidateId\": 1\n                },\n                \"bookingsId\": [\n                    2,\n                    1\n                ]\n            }\n        ],\n        \"bookings\": {\n            \"1\": {\n                \"dateFrom\": \"2022-12-22 09:00\",\n                \"dateTo\": \"2022-12-22 10:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 1,\n                \"interviewerSlotId\": 1\n            },\n            \"2\": {\n                \"dateFrom\": \"2022-12-22 11:00\",\n                \"dateTo\": \"2022-12-22 12:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 1,\n                \"interviewerSlotId\": 2\n            }\n        }\n    },\n    {\n        \"day\": \"2022-12-23\",\n        \"interviewerSlotFormsWithId\": [\n            {\n                \"interviewerSlotDto\": {\n                    \"weekNum\": 202251,\n                    \"dayOfWeek\": 5,\n                    \"timeFrom\": \"08:00\",\n                    \"timeTo\": \"19:30\",\n                    \"interviewerId\": 2\n                },\n                \"bookingsId\": [\n                    3\n                ]\n            }\n        ],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-23 09:00\",\n                    \"dateTo\": \"2022-12-23 20:00\",\n                    \"candidateId\": 2\n                },\n                \"bookingsId\": [\n                    3\n                ]\n            }\n        ],\n        \"bookings\": {\n            \"3\": {\n                \"dateFrom\": \"2022-12-23 11:00\",\n                \"dateTo\": \"2022-12-23 12:30\",\n                \"subject\": \"subject\",\n                \"description\": \"description\",\n                \"status\": \"CHANGED\",\n                \"candidateSlotId\": 2,\n                \"interviewerSlotId\": 3\n            }\n        }\n    },\n    {\n        \"day\": \"2022-12-24\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [],\n        \"bookings\": {}\n    },\n    {\n        \"day\": \"2022-12-25\",\n        \"interviewerSlotFormsWithId\": [],\n        \"candidateSlotsFormsWithId\": [\n            {\n                \"candidateSlotDto\": {\n                    \"dateFrom\": \"2022-12-25 09:00\",\n                    \"dateTo\": \"2022-12-25 21:00\",\n                    \"candidateId\": 2\n                },\n                \"bookingsId\": []\n            }\n        ],\n        \"bookings\": {}\n    }\n]"
-						},
-						{
 							"name": "Get dashboard",
 							"originalRequest": {
 								"method": "GET",
@@ -1915,16 +1834,6 @@
 				{
 					"name": "Create booking",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrcmF2Y2h1azg4M0BnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQvtCy0LAiLCJsYXN0X25hbWUiOiLQmtGA0LDQstGH0YPQuiIsImF1dGhvcml0aWVzIjpbIlJPTEVfQ09PUkRJTkFUT1IiXSwiaWF0IjoxNjY5MDQwNzA4LCJleHAiOjE2NjkxMjcxMDh9.rnMQ3LKzGWUPO4nkV2296sek0x00-H14CuSXn1a38SkhdOtWntDaEPzsYkijegxOCGJq28UdSsw_P4cPIUStiw",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1946,7 +1855,162 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create booking with correct data",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-22 14:30\",\n    \"dateTo\": \"2022-12-22 16:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"dateFrom\": \"2022-12-22 14:30\",\n    \"dateTo\": \"2022-12-22 16:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}"
+						},
+						{
+							"name": "Create booking that overlaps with previous booking",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-22 11:30\",\n    \"dateTo\": \"2022-12-22 13:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"This booking can not match with already existing bookings.\",\n    \"errorCode\": \"booking_is_overlapping\"\n}"
+						},
+						{
+							"name": "Create booking that is out of slot",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-23 14:30\",\n    \"dateTo\": \"2022-12-23 16:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"This booking is out of slot boundaries.\",\n    \"errorCode\": \"booking_out_of_slot\"\n}"
+						},
+						{
+							"name": "Create booking with wrong duration",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-22 14:40\",\n    \"dateTo\": \"2022-12-22 16:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Booking duration have to be 1.5 hours and it have to be registered in future.\",\n    \"errorCode\": \"invalid_booking_boundaries\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Update booking",
@@ -1973,7 +2037,160 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Updading with correct data",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-22 15:30\",\n    \"dateTo\": \"2022-12-22 17:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings/4",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"dateFrom\": \"2022-12-22 15:30\",\n    \"dateTo\": \"2022-12-22 17:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": \"CHANGED\",\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}"
+						},
+						{
+							"name": "Updading with time that is out of slot boundaries",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-23 15:30\",\n    \"dateTo\": \"2022-12-23 17:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings/4",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings",
+										"4"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"This booking is out of slot boundaries.\",\n    \"errorCode\": \"booking_out_of_slot\"\n}"
+						},
+						{
+							"name": "Updating with incorrect booking boundaries",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-22 12:40\",\n    \"dateTo\": \"2022-12-22 14:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings/4",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings",
+										"4"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"Booking duration have to be 1.5 hours and it have to be registered in future.\",\n    \"errorCode\": \"invalid_booking_boundaries\"\n}"
+						},
+						{
+							"name": "Updating when overlapping with existing booking",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dateFrom\": \"2022-12-22 11:30\",\n    \"dateTo\": \"2022-12-22 13:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": 0,\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/bookings/4",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings",
+										"4"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"errorMessage\": \"This booking can not match with already existing bookings.\",\r\n    \"errorCode\": \"booking_is_overlapping\"\r\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete booking",
@@ -1981,17 +2198,76 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/bookings/1",
+							"raw": "{{URL_BASE}}/bookings/4",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"bookings",
-								"1"
+								"4"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Delete with correct data",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/bookings/4",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings",
+										"4"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"dateFrom\": \"2022-12-22 15:30\",\n    \"dateTo\": \"2022-12-22 17:00\",\n    \"subject\": \"subject\",\n    \"description\": \"description\",\n    \"status\": \"CHANGED\",\n    \"candidateSlotId\": 1,\n    \"interviewerSlotId\": 1\n}"
+						},
+						{
+							"name": "Delete the same booking twice",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/bookings/4",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"bookings",
+										"4"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorMessage\": \"There is no such bookings in the database\",\n    \"errorCode\": \"booking_not_found\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Get all Interviewers",
@@ -3044,7 +3320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABAJSvOD65xHN0KvJKP8aajEkxQ0YsgZCgDusyM1tm2QJSswX1aMBGELmTUnNevhzUxUZBBsrPgnfIq5Q4YTrU8lnjoizr0YZCfu4zsb9yPsldevkmxsjXUwFBD3tWpW6g6ZCddtsMfqPiOIuVHRgdOZCeMbSlrguPI2IAHZATY4NBtZCBhcQ3IsXzfbLc0ZAqZAqOPDyR07XafIRIXQqwTc4ijyGWUeZAIm7nprFxc4GSA7ZBATYYuwngecZD\"\r\n}",
+							"raw": "{\r\n    \"accessToken\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3162,16 +3438,6 @@
 				{
 					"name": "Endpoint Me",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmF0YS5zYWx2ZUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQu9Cw0LQiLCJsYXN0X25hbWUiOiLQn9GA0L7QutC-0L_QtdC90LrQviIsImF1dGhvcml0aWVzIjpbIlJPTEVfQ0FORElEQVRFIl0sImlhdCI6MTY2ODQyOTEzMiwiZXhwIjoxNjY4NTE1NTMyfQ.oLtf3hIKfWt1KuNqcazZvT5NE0ZDvL8yXFPNbJjjiPGWMe3-QXFzc-iDgbbefv5MiTdMMtWulZTXxmmzvRmybQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -3392,7 +3658,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "",
+				"value": "{{BEARER_TOKEN}}",
 				"type": "string"
 			}
 		]
@@ -3425,7 +3691,7 @@
 		},
 		{
 			"key": "INTERVIEWER_ID",
-			"value": "1",
+			"value": "3",
 			"type": "string"
 		},
 		{
@@ -3436,6 +3702,11 @@
 		{
 			"key": "COORDINATOR_USER_ID",
 			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "BEARER_TOKEN",
+			"value": "",
 			"type": "string"
 		}
 	]
