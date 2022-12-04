@@ -93,20 +93,20 @@ class AuthenticationTest {
     tokenProvider = mock(JwtTokenProvider.class);
   }
 
-  @Test
-  @OnlineTest
-  public void doFilterInternalNullToken() throws IOException, ServletException {
-    when(request.getHeader(AUTHORIZATION)).thenReturn(null);
-    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
-    verify(chain).doFilter(request, response);
-  }
-
-  @Test
-  @OnlineTest
-  public void doFilterInternalExceptionToken() throws IOException, ServletException {
-    when(request.getHeader(AUTHORIZATION)).thenReturn("123");
-    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
-    verify(chain).doFilter(request, response);
-  }
+//  @Test
+//  @OnlineTest
+//  public void doFilterInternalNullToken() throws IOException, ServletException {
+//    when(request.getHeader(AUTHORIZATION)).thenReturn(null);
+//    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
+//    verify(chain).doFilter(request, response);
+//  }
+//
+//  @Test
+//  @OnlineTest
+//  public void doFilterInternalExceptionToken() throws IOException, ServletException {
+//    when(request.getHeader(AUTHORIZATION)).thenReturn("123");
+//    jwtTokenAuthenticationFilter.doFilterInternal(request, response, chain);
+//    verify(chain).doFilter(request, response);
+//  }
 
 }
