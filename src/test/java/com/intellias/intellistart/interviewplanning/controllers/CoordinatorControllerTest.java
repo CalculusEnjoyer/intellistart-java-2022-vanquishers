@@ -35,6 +35,7 @@ import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -351,6 +352,38 @@ class CoordinatorControllerTest {
         .andExpect(jsonPath("$.errorCode", equalTo("booking_out_of_slot")))
         .andExpect(jsonPath("$.errorMessage", equalTo(
             "This booking is out of slot boundaries.")));
+  }
+
+  @SneakyThrows
+  @Test
+  @Order(13)
+  void getDashboardTest() {
+    InterviewerSlot interviewerSlot = new InterviewerSlot(203951, 6, LocalTime.of(9, 0),
+        LocalTime.of(21, 0)
+    );
+    interviewerSlot.setInterviewer(INTERVIEWERS.get(0));
+
+    CandidateSlot candidateSlot = new CandidateSlot(
+        LocalDateTime.of(LocalDate.of(2039, Month.DECEMBER, 24), LocalTime.of(9, 30)),
+        LocalDateTime.of(LocalDate.of(2039, Month.DECEMBER, 24), LocalTime.of(21, 0))
+    );
+    candidateSlot.setCandidate(CANDIDATES.get(0));
+
+    interviewerService.registerSlot(interviewerSlot);
+    candidateService.registerSlot(candidateSlot);
+
+    mockMvc.perform(
+            MockMvcRequestBuilders.get("/weeks/203951/dashboard")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[3].day", equalTo("2039-12-22")))
+        .andExpect(jsonPath("$[5].day", equalTo("2039-12-24")))
+        .andExpect(jsonPath("$[5].interviewerSlotFormsWithId.[0].interviewerSlotDto.timeFrom",
+            equalTo("09:00")))
+        .andExpect(jsonPath("$[5].interviewerSlotFormsWithId.[0].interviewerSlotDto.dayOfWeek",
+            equalTo(6)))
+        .andExpect(jsonPath("$[5].candidateSlotsFormsWithId.[0].candidateSlotDto.dateFrom",
+            equalTo("2039-12-24 09:30")));
   }
 }
 
