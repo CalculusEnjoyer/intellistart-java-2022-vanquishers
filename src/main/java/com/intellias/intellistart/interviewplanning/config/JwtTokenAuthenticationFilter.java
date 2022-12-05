@@ -38,12 +38,21 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     this.userService = userService;
   }
 
+  /**
+   *  Tokens are supposed to be passed in the authentication header, so we will pass stage 1.
+   *  In stage 2 we validate the header and check the prefix.
+   *  Stage 3 logic:
+   *  If the token is not provided and therefore the user will not be authenticated.
+   *  It's OK. The user may be accessing a public path or requesting a token.
+   *  All secure paths that need a token are already defined and secured in the configuration class.
+   *  And if the user tried to access without an access token,
+   *  then it will not be authenticated and an exception will be thrown.
+   */
   @Override
   public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
       @NonNull FilterChain chain) throws ServletException, IOException {
 
     // 1. get the authentication header.
-    // Tokens are supposed to be passed in the authentication header
     String header = request.getHeader(jwtConfig.getHeader());
 
     // 2. validate the header and check the prefix
@@ -51,13 +60,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
       chain.doFilter(request, response);      // If not valid, go to the next filter.
       return;
     }
-
-    // If there is no token provided and hence the user won't be authenticated.
-    // It's Ok. Maybe the user accessing a public path or asking for a token.
-    //
-    // All secured paths that needs a token are already defined and secured in config class.
-    // And If user tried to access without access token,
-    // then he won't be authenticated and an exception will be thrown.
 
     // 3. Get the token
     String token = header.replace(jwtConfig.getPrefix(), "");

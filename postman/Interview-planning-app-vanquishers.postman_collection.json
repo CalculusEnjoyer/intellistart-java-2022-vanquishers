@@ -3,7 +3,7 @@
 		"_postman_id": "dc4e20c3-4df6-459c-a8b9-90ecb99afa62",
 		"name": "Interview-planning-app-vanquishers",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24438292"
+		"_exporter_id": "22292990"
 	},
 	"item": [
 		{
@@ -3311,7 +3311,7 @@
 			"name": "Authentication",
 			"item": [
 				{
-					"name": "Correct auth request",
+					"name": "Auth request",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -3320,7 +3320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"accessToken\": \"\"\r\n}",
+							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABANz4FzNHRF0cslJ01Sk2OZCXz3Jma2mXoamJx1JMrkb0yy6YKVO54EzvSvXOa0jvLdSKZCZAPTwYz3Ggz4YqMvrJMsJMZCUuGHUBlXA6cJ1uedwTW3E3eqfkdq98C8ULh56KDksaWjdG2BeGCTqN4M3ypxBMnvyPh26tkTah\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3338,120 +3338,459 @@
 							]
 						}
 					},
-					"response": []
-				},
-				{
-					"name": "Auth request without email",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABAOde5sebYZBzOxSeKe8l2tSZCVtL6xemkSaFQxFYPw1dNStRNTRMfz3h69ZBtzp7WuiqrPRwtX90ezNJtX2qaHBfB4UFy9P4XKdlH8W8K0sMgwAYK2OEH6q2nSdGeNKP7fEZBECrM4VdHMmgbMkJpDa8FSUzo9gZBdaRaQmpKs6BuuUyIgbVsz5BBOzUPYaDXaCJnJHSOMhO2ydIOFJyO4yjxMBEeAHSHYCunlN8ZCTnVY3an3AOQZD\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"response": [
+						{
+							"name": "Correct auth request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclggZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6EZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/facebook/signin",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"facebook",
+										"signin"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "{{URL_BASE}}/facebook/signin",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"facebook",
-								"signin"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expired auth request",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABADizVFOaaL6qMZBO0YnaSad2qEd5Bkxp8eimqyjeEbvDiyiWc2ywjydsfpZCauLzOgHwXlfVyoobCOIM8H0S0JYnpO6mWcf1T6bzBAXttWCVnRE4ZA8TvIVlWZAH1cF2bxMiTX9pH0TbZCFr1ZCfZB0rxIo1ukye4YYGIAs6D6klGlTTZAM2l6HiTk9Li8tZBK515pPe8EM6ocUP0vPkHYe6tIeHKzsJQ0Vxrl29r3kqRUAnvOTbumpEZD\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:10:13 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
 								}
-							}
-						},
-						"url": {
-							"raw": "{{URL_BASE}}/facebook/signin",
-							"host": [
-								"{{URL_BASE}}"
 							],
-							"path": [
-								"facebook",
-								"signin"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Malformed auth request",
-					"request": {
-						"auth": {
-							"type": "noauth"
+							"cookie": [],
+							"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmF0YS5zYWx2ZUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQu9Cw0LQiLCJsYXN0X25hbWUiOiLQn9GA0L7QutC-0L_QtdC90LrQviIsImF1dGhvcml0aWVzIjpbIlJPTEVfQ0FORElEQVRFIl0sImlhdCI6MTY3MDIzMTQxMiwiZXhwIjoxNjcwMzE3ODEyfQ.EK35yc1BSyJNYEl1QNqRqDZ9hNQtuMyhJ2kAjFCIZEL2akMqFea_zMUWAbfy89XxzjFJ9Xv470rJ-6x48YuwzA\",\n    \"tokenType\": \"Bearer\"\n}"
 						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"accessToken\": \"EqMZBO0YnaSad2qEd5Bkxp8eimqyjeEbvDiyiWc2ywjydsfpZCauLzOgHwXlfVyoobCOIM8H0S0JYnpO6mWcf1T6bzBAXttWCVnRE4ZA8TvIVlWZAH1cF2bxMiTX9pH0TbZCFr1ZCfZB0rxIo1ukye4YYGIAs6D6klGlTTZAM2l6HiTk9Li8tZBK515pPe8EM6ocUP0vPkHYe6tIeHKzsJQ0Vxrl29r3kqRUAnvOTbumpEZD\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "Expired Fb token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABADizVFOaaL6qMZBO0YnaSad2qEd5Bkxp8eimqyjeEbvDiyiWc2ywjydsfpZCauLzOgHwXlfVyoobCOIM8H0S0JYnpO6mWcf1T6bzBAXttWCVnRE4ZA8TvIVlWZAH1cF2bxMiTX9pH0TbZCFr1ZCfZB0rxIo1ukye4YYGIAs6D6klGlTTZAM2l6HiTk9Li8tZBK515pPe8EM6ocUP0vPkHYe6tIeHKzsJQ0Vxrl29r3kqRUAnvOTbumpEZD\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/facebook/signin",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"facebook",
+										"signin"
+									]
 								}
-							}
-						},
-						"url": {
-							"raw": "{{URL_BASE}}/facebook/signin",
-							"host": [
-								"{{URL_BASE}}"
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:11:16 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
 							],
-							"path": [
-								"facebook",
-								"signin"
-							]
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"invalid_jwt_token_exception\",\n    \"errorMessage\": \"Error validating access token: Session has expired on Tuesday, 22-Nov-22 13:00:00 PST. The current time is Monday, 05-Dec-22 01:11:14 PST.\"\n}"
+						},
+						{
+							"name": "Malformed Fb token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": \"EqMZBO0YnaSad2qEd5Bkxp8eimqyjeEbvDiyiWc2ywjydsfpZCauLzOgHwXlfVyoobCOIM8H0S0JYnpO6mWcf1T6bzBAXttWCVnRE4ZA8TvIVlWZAH1cF2bxMiTX9pH0TbZCFr1ZCfZB0rxIo1ukye4YYGIAs6D6klGlTTZAM2l6HiTk9Li8tZBK515pPe8EM6ocUP0vPkHYe6tIeHKzsJQ0Vxrl29r3kqRUAnvOTbumpEZD\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/facebook/signin",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"facebook",
+										"signin"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:12:05 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"invalid_jwt_token_exception\",\n    \"errorMessage\": \"Malformed access token\"\n}"
+						},
+						{
+							"name": "Request with empty email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclggZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXsh6qRlzEf47ZBTFqPhwnTLQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6EZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/facebook/signin",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"facebook",
+										"signin"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:17:33 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"empty_email_exception\",\n    \"errorMessage\": \"Empty Email field, can not register User\"\n}"
+						},
+						{
+							"name": "Token couldn't be decrypted",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"accessToken\": \"EAALXaskmJ0ABALd1Ig5KUIKpZCor5UjnwmgHj1R08J4qprqoV2rFlfvRUbclggZCWN9wS8nnFwDR8A1XLGtT9GQJ8vCr30SviXshQxmWvCIXvJrIA8UFEZAb2nsJVhcmy6EZAxjvPVrDf9N9FX1fLBkaI5VK1ZBMU5\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/facebook/signin",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"facebook",
+										"signin"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:17:54 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"invalid_jwt_token_exception\",\n    \"errorMessage\": \"The access token could not be decrypted\"\n}"
 						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
 		{
 			"name": "CommonController",
 			"item": [
-				{
-					"name": "Endpoint Me",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{URL_BASE}}/me",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"me"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get current weekNum",
 					"request": {
@@ -3649,6 +3988,431 @@
 							"body": "202248"
 						}
 					]
+				},
+				{
+					"name": "Endpoint Me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Candidate request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 18:06:17 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"grata.salve@gmail.com\",\n    \"role\": \"CANDIDATE\"\n}"
+						},
+						{
+							"name": "Candidate request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:20:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"grata.salve@gmail.com\",\n    \"role\": \"CANDIDATE\"\n}"
+						},
+						{
+							"name": "Interviewer request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:24:07 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 6,\n    \"email\": \"grata.salve@gmail.com\",\n    \"role\": \"INTERVIEWER\"\n}"
+						},
+						{
+							"name": "Coordinator request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:24:52 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 6,\n    \"email\": \"grata.salve@gmail.com\",\n    \"role\": \"COORDINATOR\"\n}"
+						},
+						{
+							"name": "Not authorized exception",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"me"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "107"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 05 Dec 2022 09:16:39 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errorCode\": \"not_authorized\",\n    \"errorMessage\": \"You are not authorized to use this functionality\"\n}"
+						}
+					]
 				}
 			]
 		}
@@ -3706,7 +4470,7 @@
 		},
 		{
 			"key": "BEARER_TOKEN",
-			"value": "",
+			"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ2bGFkLm9zaG92c2t5aUBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoi0JLQu9Cw0LQiLCJsYXN0X25hbWUiOiLQntGI0L7QstGB0YzQutC40LkiLCJhdXRob3JpdGllcyI6WyJST0xFX0lOVEVSVklFV0VSIl0sImlhdCI6MTY3MDI2MTMxMCwiZXhwIjoxNjcwMzQ3NzEwfQ.qBWwiLYmRHnVSOa_WKTM2lpyXbeW8oKAGi0kTj1DkX2QgZds7wQWm7OgTckLOHW7k3z2Spslqayxxzv4u9CQ7Q",
 			"type": "string"
 		}
 	]
