@@ -28,11 +28,9 @@ First Coordinator and other needed records in the database that will be initiali
 
 ## .properties files :twisted_rightwards_arrows:
 
-application.properties contains properties about database connection
+Application properties can be configured in .env file (default values for quick test are already set)
 
 application-test.properties contains properties about database connection for testing
-
-timezone.properties contains properties about current timezone system is working with.
 
 If necessary change the zone or other properties it must be written in this files
 
