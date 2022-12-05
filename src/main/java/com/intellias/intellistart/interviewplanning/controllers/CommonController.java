@@ -1,8 +1,12 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 
+import com.intellias.intellistart.interviewplanning.controllers.dto.UserDto;
+import com.intellias.intellistart.interviewplanning.models.User;
+import com.intellias.intellistart.interviewplanning.models.enums.Role;
 import com.intellias.intellistart.interviewplanning.models.security.FacebookUserDetails;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,12 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CommonController {
 
-
   private final WeekService weekService;
+  private final ModelMapper mapper;
 
   @Autowired
-  public CommonController(WeekService weekService) {
+  public CommonController(WeekService weekService, ModelMapper mapper) {
     this.weekService = weekService;
+    this.mapper = mapper;
   }
 
   /**
@@ -33,7 +38,11 @@ public class CommonController {
   @GetMapping("/me")
   public ResponseEntity<Object> getMe(Authentication authentication) {
     FacebookUserDetails facebookUserDetails = (FacebookUserDetails) authentication.getPrincipal();
-    return ResponseEntity.ok(facebookUserDetails.getUser());
+    User user = facebookUserDetails.getUser();
+    if (user.getRole() == Role.CANDIDATE) {
+      return ResponseEntity.ok(mapper.map(user, UserDto.class));
+    }
+    return ResponseEntity.ok(user);
   }
 
   /**
