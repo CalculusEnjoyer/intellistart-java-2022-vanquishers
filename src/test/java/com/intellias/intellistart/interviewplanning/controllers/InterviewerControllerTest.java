@@ -18,6 +18,8 @@ import com.intellias.intellistart.interviewplanning.models.security.FacebookUser
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
 import com.intellias.intellistart.interviewplanning.services.WeekService;
+import com.jayway.jsonpath.JsonPath;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,6 +47,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -58,6 +61,7 @@ class InterviewerControllerTest {
 
   @TestConfiguration
   static class ControllerTestConfiguration {
+
     @Bean
     @Primary
     public WeekService weekService() {
@@ -145,7 +149,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(1)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void addSlotTest_whenCorrectDataWithWeekNum() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -153,14 +157,16 @@ class InterviewerControllerTest {
         NEXT_WEEK_NUM, 5, "10:00", "15:30");
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
-    mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
+    MvcResult result = mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
             .content(slotDtoJsonStr)
             .characterEncoding("utf-8")
             .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.weekNum", equalTo(NEXT_WEEK_NUM)))
-        .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
+        .andReturn();
+    Long idFromResponse = retrieveIdFromMvcResult(result);
+
     int slotCountAfterAdd = interviewerService.getAllSlots().size();
     InterviewerSlot savedSlot = Collections.max(
         interviewerService.getSlotsForIdAndWeek(interviewerId, NEXT_WEEK_NUM),
@@ -170,24 +176,27 @@ class InterviewerControllerTest {
     assertThat(savedSlot.getDayOfWeek()).isEqualTo(5);
     assertThat(savedSlot.getFrom()).isEqualTo(LocalTime.of(10, 0));
     assertThat(savedSlot.getTo()).isEqualTo(LocalTime.of(15, 30));
+    assertThat(savedSlot.getId()).isEqualTo(idFromResponse);
   }
 
   @Test
   @Order(1)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void addSlotTest_whenCorrectDataWithoutWeekNum() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
     int slotCountBeforeAdd = interviewerService.getAllSlots().size();
 
-    mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
+    MvcResult result = mockMvc.perform(post(url, interviewerId).contentType(APPLICATION_JSON)
             .content("{\"dayOfWeek\": 1,\"timeFrom\": \"18:00\",\"timeTo\": \"20:00\"}")
             .characterEncoding("utf-8")
             .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.weekNum", equalTo(NEXT_WEEK_NUM)))
-        .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
+        .andReturn();
+    Long idFromResponse = retrieveIdFromMvcResult(result);
+
     int slotCountAfterAdd = interviewerService.getAllSlots().size();
     InterviewerSlot savedSlot = Collections.max(
         interviewerService.getSlotsForIdAndWeek(interviewerId, NEXT_WEEK_NUM),
@@ -197,11 +206,12 @@ class InterviewerControllerTest {
     assertThat(savedSlot.getDayOfWeek()).isEqualTo(1);
     assertThat(savedSlot.getFrom()).isEqualTo(LocalTime.of(18, 0));
     assertThat(savedSlot.getTo()).isEqualTo(LocalTime.of(20, 0));
+    assertThat(savedSlot.getId()).isEqualTo(idFromResponse);
   }
 
   @Test
   @Order(1)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void addSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -225,7 +235,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(1)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void addSlotTest_whenWeekNumIsPast() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -249,7 +259,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(1)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void addSlotTest_whenWeekNumIsCurrent() throws Exception {
     String url = "/interviewers/{interviewerId}/slots";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -273,7 +283,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(2)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void updateSlotTest_whenCorrectData() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -281,24 +291,27 @@ class InterviewerControllerTest {
     String slotDtoJsonStr = constructSlotDtoAsString(
         NEXT_WEEK_NUM, 3, "08:00", "17:30");
 
-    mockMvc.perform(post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
-            .content(slotDtoJsonStr)
-            .characterEncoding("utf-8")
-            .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
+    MvcResult result = mockMvc.perform(
+            post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
+                .content(slotDtoJsonStr)
+                .characterEncoding("utf-8")
+                .principal(getAuthForUser(DEFAULT_USER_INTERVIEWER)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.weekNum", equalTo(NEXT_WEEK_NUM)))
-        .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
+        .andReturn();
+    Long idFromResponse = retrieveIdFromMvcResult(result);
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
 
     assertThat(slot.getDayOfWeek()).isEqualTo(3);
     assertThat(slot.getFrom()).isEqualTo(LocalTime.of(8, 0));
     assertThat(slot.getTo()).isEqualTo(LocalTime.of(17, 30));
+    assertThat(slot.getId()).isEqualTo(idFromResponse);
   }
 
   @Test
   @Order(2)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void updateSlotTest_whenInvalidBoundaries() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -324,7 +337,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(2)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void updateSlotTest_whenInterviewerUpdatesCurrWeekSlot() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
     Long interviewerId = USERS.get(1).getId();
@@ -350,7 +363,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(2)
-  @WithMockUser(roles={"COORDINATOR"})
+  @WithMockUser(roles = {"COORDINATOR"})
   void updateSlotTest_whenCoordinatorUpdatesCurrWeekSlot() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/{slotId}";
     Long interviewerId = USERS.get(1).getId();
@@ -358,24 +371,27 @@ class InterviewerControllerTest {
     String slotDtoJsonStr = constructSlotDtoAsString(
         CURRENT_WEEK_NUM, 2, "11:00", "15:30");
 
-    mockMvc.perform(post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
-            .content(slotDtoJsonStr)
-            .characterEncoding("utf-8")
-            .principal(getAuthForUser(DEFAULT_USER_COORDINATOR)))
+    MvcResult result = mockMvc.perform(
+            post(url, interviewerId, slotId).contentType(APPLICATION_JSON)
+                .content(slotDtoJsonStr)
+                .characterEncoding("utf-8")
+                .principal(getAuthForUser(DEFAULT_USER_COORDINATOR)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.weekNum", equalTo(CURRENT_WEEK_NUM)))
-        .andExpect(jsonPath("$.interviewerId", equalTo(interviewerId.intValue())));
+        .andReturn();
+    Long idFromResponse = retrieveIdFromMvcResult(result);
     InterviewerSlot slot = interviewerService.getSlotById(slotId);
 
     assertThat(slot.getDayOfWeek()).isEqualTo(2);
     assertThat(slot.getFrom()).isEqualTo(LocalTime.of(11, 0));
     assertThat(slot.getTo()).isEqualTo(LocalTime.of(15, 30));
+    assertThat(slot.getId()).isEqualTo(idFromResponse);
   }
 
   @Test
   @Order(3)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void getCurrentWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/current-week";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -391,7 +407,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(4)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void getNextWeekSlotTest() throws Exception {
     String url = "/interviewers/{interviewerId}/slots/next-week";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -407,7 +423,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(5)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void setBookingLimitTest_whenCorrectBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -428,7 +444,7 @@ class InterviewerControllerTest {
 
   @Test
   @Order(5)
-  @WithMockUser(roles={"INTERVIEWER"})
+  @WithMockUser(roles = {"INTERVIEWER"})
   void setBookingLimitTest_whenInvalidBookingLimit() throws Exception {
     String url = "/interviewers/{interviewerId}/bookings/booking-limit";
     Long interviewerId = DEFAULT_USER_INTERVIEWER.getId();
@@ -459,5 +475,11 @@ class InterviewerControllerTest {
   private Authentication getAuthForUser(User user) {
     FacebookUserDetails FbUD = new FacebookUserDetails(user);
     return new UsernamePasswordAuthenticationToken(FbUD, null, FbUD.getAuthorities());
+  }
+
+  private Long retrieveIdFromMvcResult(MvcResult result) throws UnsupportedEncodingException {
+    String jsonResponse = result.getResponse().getContentAsString();
+    Integer idAsInt = JsonPath.parse(jsonResponse).read("$.id");
+    return idAsInt.longValue();
   }
 }
