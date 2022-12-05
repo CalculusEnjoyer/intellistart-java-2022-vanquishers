@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.services;
 
 import com.intellias.intellistart.interviewplanning.config.JwtConfig;
+import com.intellias.intellistart.interviewplanning.models.security.FacebookUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -33,33 +34,18 @@ public class JwtTokenProvider {
    *
    * @return token.
    */
-  public String generateToken(Authentication authentication) {
-    String info = authentication.getName();
-
+  public String generateToken(Authentication authentication, FacebookUser facebookUser) {
     long now = System.currentTimeMillis();
     return Jwts.builder()
-        .setSubject(parseEmail(info))
-        .claim("first_name", parseFirstName(info))
-        .claim("last_name", parseLastName(info))
+        .setSubject(facebookUser.getEmail())
+        .claim("first_name", facebookUser.getFirst_name())
+        .claim("last_name", facebookUser.getLast_name())
         .claim("authorities", authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
         .setIssuedAt(new Date(now))
         .setExpiration(new Date(now + jwtConfig.getExpiration() * 1000L))  // in milliseconds
         .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
         .compact();
-  }
-
-  private String parseEmail(String info) {
-    return info.substring(info.indexOf("email=") + 6, info.indexOf(".com") + 4);
-  }
-
-  private String parseFirstName(String info) {
-    int index = info.indexOf("first_name");
-    return info.substring(index + 11, info.indexOf(",", index));
-  }
-
-  private String parseLastName(String info) {
-    return info.substring(info.indexOf("last_name") + 10, info.length() - 1);
   }
 
   /**

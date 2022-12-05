@@ -39,7 +39,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
   }
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
+  public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
       @NonNull FilterChain chain) throws ServletException, IOException {
 
     // 1. get the authentication header.

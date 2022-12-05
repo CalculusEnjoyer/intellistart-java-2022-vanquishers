@@ -2,8 +2,9 @@ INSERT INTO users(id, email, role)
 VALUES (1, 'example1@gmail.com', 0),
        (2, 'example2@gmail.com', 1),
        (3, 'example3@gmail.com', 0),
-       (4, 'example4@gmail.com', 1);
-alter sequence users_id_seq restart with 5;
+       (4, 'example4@gmail.com', 1),
+       (5, 'coordinator1@gmail.com', 2);
+alter sequence users_id_seq restart with 6;
 
 INSERT INTO candidates(id, user_id)
 VALUES (1, 1),
