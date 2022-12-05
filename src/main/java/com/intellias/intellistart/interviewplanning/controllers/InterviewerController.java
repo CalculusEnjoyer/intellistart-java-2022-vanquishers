@@ -1,6 +1,7 @@
 package com.intellias.intellistart.interviewplanning.controllers;
 
 import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotDto;
+import com.intellias.intellistart.interviewplanning.controllers.dto.InterviewerSlotForm;
 import com.intellias.intellistart.interviewplanning.models.Interviewer;
 import com.intellias.intellistart.interviewplanning.models.InterviewerSlot;
 import com.intellias.intellistart.interviewplanning.models.User;
@@ -54,11 +55,11 @@ public class InterviewerController {
    * from request. Slot can be created only for next week (until Friday 00:00), or for weeks after
    * the next week.
    *
-   * @return added slot as DTO
+   * @return response with created slot as DTO with ID
    */
   @PostMapping("/{interviewerId}/slots")
   @RolesAllowed("ROLE_INTERVIEWER")
-  public ResponseEntity<InterviewerSlotDto> addSlot(
+  public ResponseEntity<InterviewerSlotForm> addSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId,
       Authentication authentication) {
@@ -74,7 +75,7 @@ public class InterviewerController {
     slot.setInterviewer(interviewerService.getInterviewerByUserId(authUserId));
 
     InterviewerSlot registeredSlot = interviewerService.registerSlot(slot);
-    return ResponseEntity.ok(mapper.map(registeredSlot, InterviewerSlotDto.class));
+    return ResponseEntity.ok(mapper.map(registeredSlot, InterviewerSlotForm.class));
   }
 
   /**
@@ -83,11 +84,11 @@ public class InterviewerController {
    * Interviewer (only their own slots for next week until Friday 00:00 of current week, or for
    * weeks after the next week, at any time).
    *
-   * @return response status
+   * @return response with updated slot as DTO with ID
    */
   @PostMapping("/{interviewerId}/slots/{slotId}")
   @RolesAllowed({"ROLE_INTERVIEWER", "ROLE_COORDINATOR"})
-  public ResponseEntity<InterviewerSlotDto> updateSlot(
+  public ResponseEntity<InterviewerSlotForm> updateSlot(
       @Valid @RequestBody InterviewerSlotDto slotDto,
       @PathVariable Long interviewerId, @PathVariable Long slotId,
       Authentication authentication) {
@@ -110,27 +111,27 @@ public class InterviewerController {
     mapper.map(slotDto, slot);
 
     InterviewerSlot updatedSlot = interviewerService.registerSlot(slot);
-    return ResponseEntity.ok(mapper.map(updatedSlot, InterviewerSlotDto.class));
+    return ResponseEntity.ok(mapper.map(updatedSlot, InterviewerSlotForm.class));
   }
 
   /**
    * Endpoint for getting current week Interviewer slots for Interviewer with userId provided in
    * {interviewerId} in the path.
    *
-   * @return response status
+   * @return response with list of interviewer's slots for current week
    */
   @GetMapping("/{interviewerId}/slots/current-week")
   @RolesAllowed("ROLE_INTERVIEWER")
-  public ResponseEntity<List<InterviewerSlotDto>> getCurrentWeekSlots(
+  public ResponseEntity<List<InterviewerSlotForm>> getCurrentWeekSlots(
       @PathVariable Long interviewerId,
       Authentication authentication) {
     Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
     interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
 
-    List<InterviewerSlotDto> currentWeekSlots = interviewerService
+    List<InterviewerSlotForm> currentWeekSlots = interviewerService
         .getSlotsForIdAndWeek(interviewerId, weekService.getCurrentWeekNum())
         .stream()
-        .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
+        .map(slot -> mapper.map(slot, InterviewerSlotForm.class))
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(currentWeekSlots);
@@ -140,20 +141,20 @@ public class InterviewerController {
    * Endpoint for getting next week Interviewer slots for Interviewer with userId provided in
    * {interviewerId} in the path.
    *
-   * @return response status
+   * @return response with list of interviewer's slots for next week
    */
   @GetMapping("/{interviewerId}/slots/next-week")
   @RolesAllowed("ROLE_INTERVIEWER")
-  public ResponseEntity<List<InterviewerSlotDto>> getNextWeekSlots(
+  public ResponseEntity<List<InterviewerSlotForm>> getNextWeekSlots(
       @PathVariable Long interviewerId,
       Authentication authentication) {
     Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
     interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
 
-    List<InterviewerSlotDto> nextWeekSlots = interviewerService
+    List<InterviewerSlotForm> nextWeekSlots = interviewerService
         .getSlotsForIdAndWeek(interviewerId, weekService.getNextWeekNum())
         .stream()
-        .map(slot -> mapper.map(slot, InterviewerSlotDto.class))
+        .map(slot -> mapper.map(slot, InterviewerSlotForm.class))
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(nextWeekSlots);
@@ -163,7 +164,7 @@ public class InterviewerController {
    * Endpoint for setting the maximum number of bookings for next week for the Interviewer with
    * userId provided in {interviewerId} in the path. .
    *
-   * @return response status
+   * @return response with the newly set booking limit
    */
   @PostMapping("/{interviewerId}/bookings/booking-limit")
   @RolesAllowed("ROLE_INTERVIEWER")
