@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: application
     ports:
-      - "8080:8080"
+      - ${APPLICATION_PORT}:${APPLICATION_PORT}
     depends_on:
       - db
     environment:
@@ -15,12 +15,13 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASS}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=${SPRING_JPA_HIBERNATE_DDL_AUTO}
       - CURRENT_TIMEZONE=${TIME_ZONE}
+      - SERVER_PORT=${APPLICATION_PORT}
 
   db:
     image: 'postgres:latest'
     container_name: db
     ports:
-      - "5432:5432"
+      - ${DB_PORT}:${DB_PORT}
     environment:
       - POSTGRES_DB=${POSTGRES_NAME}
       - POSTGRES_USER=${POSTGRES_USERNAME}
