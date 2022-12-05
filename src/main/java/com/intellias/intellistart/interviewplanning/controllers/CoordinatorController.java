@@ -179,6 +179,7 @@ public class CoordinatorController {
     List<InterviewerDto> interviewerDtos = interviewerService
         .getAllInterviewers()
         .stream()
+        .filter(i -> i.getUser().getRole() == Role.INTERVIEWER)
         .map(interviewer -> mapper.map(interviewer, InterviewerDto.class))
         .collect(Collectors.toList());
 
