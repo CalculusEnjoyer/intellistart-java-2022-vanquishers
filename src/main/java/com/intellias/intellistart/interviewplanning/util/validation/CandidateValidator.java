@@ -39,8 +39,9 @@ public class CandidateValidator {
     LocalDateTime fromTime = dto.getDateFrom();
     LocalDateTime toTime = dto.getDateTo();
 
-    boolean isFuture = fromTime.toLocalDate().isAfter(
-        LocalDate.now(weekService.getZoneId()));
+    boolean isFuture = fromTime.toLocalDate()
+        .isAfter(LocalDate.now(weekService.getZoneId()))
+        && toTime.isAfter(fromTime);
     boolean isValidBounds = UtilValidator.isValidTimeBoundaries(
         fromTime.toLocalTime(), toTime.toLocalTime());
     boolean isValid = isFuture && isValidBounds;
