@@ -52,13 +52,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										""
 									]
@@ -126,7 +126,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"interviewerId\": 1\n}"
+							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"id\": 6\n}"
 						},
 						{
 							"name": "Correct slot creation (no weekNum)",
@@ -143,13 +143,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										""
 									]
@@ -217,7 +217,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 1,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"interviewerId\": 1\n}"
+							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 1,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"id\": 6\n}"
 						},
 						{
 							"name": "Time overlapping exception",
@@ -234,13 +234,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										""
 									]
@@ -321,13 +321,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										""
 									]
@@ -408,13 +408,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										""
 									]
@@ -495,13 +495,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										""
 									]
@@ -584,13 +584,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/{{INTV_SLOT_ID}}",
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/{{INTV_SLOT_ID}}",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"interviewers",
-								"{{INTERVIEWER_ID}}",
+								"{{INTERVIEWER_USER_ID}}",
 								"slots",
 								"{{INTV_SLOT_ID}}"
 							]
@@ -612,15 +612,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/{{INTV_SLOT_ID}}",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
-										"5"
+										"{{INTV_SLOT_ID}}"
 									]
 								}
 							},
@@ -686,7 +686,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"interviewerId\": 1\n}"
+							"body": "{\n    \"weekNum\": 202249,\n    \"dayOfWeek\": 5,\n    \"timeFrom\": \"09:00\",\n    \"timeTo\": \"21:00\",\n    \"id\": 5\n}"
 						},
 						{
 							"name": "Time overlapping exception",
@@ -703,15 +703,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/{{INTV_SLOT_ID}}",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
-										"5"
+										"{{INTV_SLOT_ID}}"
 									]
 								}
 							},
@@ -790,15 +790,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/{{INTV_SLOT_ID}}",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
-										"5"
+										"{{INTV_SLOT_ID}}"
 									]
 								}
 							},
@@ -877,15 +877,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/{{INTV_SLOT_ID}}",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
-										"5"
+										"{{INTV_SLOT_ID}}"
 									]
 								}
 							},
@@ -964,15 +964,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/5",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/{{INTV_SLOT_ID}}",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
-										"5"
+										"{{INTV_SLOT_ID}}"
 									]
 								}
 							},
@@ -1051,15 +1051,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/slots/6",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/<NOT_EXISTING_SLOT_ID>",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
-										"6"
+										"<NOT_EXISTING_SLOT_ID>"
 									]
 								}
 							},
@@ -1318,7 +1318,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"bookingLimit\": 5\n}",
+							"raw": "{\n    \"bookingLimit\": -2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1326,13 +1326,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL_BASE}}/interviewers/1/bookings/booking-limit",
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/bookings/booking-limit",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"interviewers",
-								"1",
+								"{{INTERVIEWER_USER_ID}}",
 								"bookings",
 								"booking-limit"
 							]
@@ -1354,13 +1354,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/bookings/booking-limit",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/bookings/booking-limit",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"bookings",
 										"booking-limit"
 									]
@@ -1445,13 +1445,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/1/bookings/booking-limit",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/bookings/booking-limit",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"1",
+										"{{INTERVIEWER_USER_ID}}",
 										"bookings",
 										"booking-limit"
 									]
@@ -1525,13 +1525,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/current-week",
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/current-week",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"interviewers",
-								"{{INTERVIEWER_ID}}",
+								"{{INTERVIEWER_USER_ID}}",
 								"slots",
 								"current-week"
 							]
@@ -1544,13 +1544,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/current-week",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/current-week",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"{{INTERVIEWER_ID}}",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										"current-week"
 									]
@@ -1628,13 +1628,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/next-week",
+							"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/next-week",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"interviewers",
-								"{{INTERVIEWER_ID}}",
+								"{{INTERVIEWER_USER_ID}}",
 								"slots",
 								"next-week"
 							]
@@ -1647,13 +1647,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_ID}}/slots/next-week",
+									"raw": "{{URL_BASE}}/interviewers/{{INTERVIEWER_USER_ID}}/slots/next-week",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"interviewers",
-										"{{INTERVIEWER_ID}}",
+										"{{INTERVIEWER_USER_ID}}",
 										"slots",
 										"next-week"
 									]
@@ -3690,8 +3690,8 @@
 			"type": "string"
 		},
 		{
-			"key": "INTERVIEWER_ID",
-			"value": "3",
+			"key": "INTERVIEWER_USER_ID",
+			"value": "2",
 			"type": "string"
 		},
 		{
