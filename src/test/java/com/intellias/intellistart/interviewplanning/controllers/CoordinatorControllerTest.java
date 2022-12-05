@@ -2,12 +2,15 @@ package com.intellias.intellistart.interviewplanning.controllers;
 
 
 import static java.util.Calendar.YEAR;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,12 +29,14 @@ import com.intellias.intellistart.interviewplanning.services.BookingService;
 import com.intellias.intellistart.interviewplanning.services.CandidateService;
 import com.intellias.intellistart.interviewplanning.services.InterviewerService;
 import com.intellias.intellistart.interviewplanning.services.UserService;
+import com.intellias.intellistart.interviewplanning.services.WeekService;
 import com.intellias.intellistart.interviewplanning.util.exceptions.BookingNotFoundException;
 import com.intellias.intellistart.interviewplanning.util.exceptions.SameRoleChangeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,6 +89,9 @@ class CoordinatorControllerTest {
 
   @Autowired
   private BookingService bookingService;
+
+  @Autowired
+  private WeekService weekService;
 
   @Autowired
   private UserService userService;
@@ -354,36 +362,56 @@ class CoordinatorControllerTest {
             "This booking is out of slot boundaries.")));
   }
 
-  @SneakyThrows
+
   @Test
   @Order(13)
-  void getDashboardTest() {
-    InterviewerSlot interviewerSlot = new InterviewerSlot(203951, 6, LocalTime.of(9, 0),
-        LocalTime.of(21, 0)
-    );
-    interviewerSlot.setInterviewer(INTERVIEWERS.get(0));
+  void getDashboardTest() throws Exception {
+    int referentDayOfWeek = 2;
+    int referentWeekNum = weekService.getNextWeekNum();
+    LocalDateTime referentLDT = LocalDateTime.of(
+        weekService.getDateFromWeekAndDay(referentWeekNum, referentDayOfWeek),
+        LocalTime.of(0, 0));
 
     CandidateSlot candidateSlot = new CandidateSlot(
-        LocalDateTime.of(LocalDate.of(2039, Month.DECEMBER, 24), LocalTime.of(9, 30)),
-        LocalDateTime.of(LocalDate.of(2039, Month.DECEMBER, 24), LocalTime.of(21, 0))
-    );
+        referentLDT.plusHours(10), referentLDT.plusHours(18));
     candidateSlot.setCandidate(CANDIDATES.get(0));
-
-    interviewerService.registerSlot(interviewerSlot);
     candidateService.registerSlot(candidateSlot);
 
-    mockMvc.perform(
-            MockMvcRequestBuilders.get("/weeks/203951/dashboard")
-                .contentType(MediaType.APPLICATION_JSON))
+    InterviewerSlot interviewerSlot = new InterviewerSlot(referentWeekNum, referentDayOfWeek,
+        LocalTime.of(8, 0), LocalTime.of(15, 0));
+    interviewerSlot.setInterviewer(INTERVIEWERS.get(0));
+    interviewerService.registerSlot(interviewerSlot);
+
+    LocalDateTime bookingLDT = referentLDT.plusHours(11);
+    Booking booking = new Booking(bookingLDT, bookingLDT.plusMinutes(90),
+        "subject", "description", Status.NEW);
+    booking.setCandidateSlot(candidateSlot);
+    booking.setInterviewerSlot(interviewerSlot);
+    bookingService.registerBooking(booking);
+    int bookingId = booking.getId().intValue();
+
+    mockMvc.perform(get("/weeks/{weekId}/dashboard", referentWeekNum))
+        .andDo(print())
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[3].day", equalTo("2039-12-22")))
-        .andExpect(jsonPath("$[5].day", equalTo("2039-12-24")))
-        .andExpect(jsonPath("$[5].interviewerSlotFormsWithId.[0].interviewerSlotDto.timeFrom",
-            equalTo("09:00")))
-        .andExpect(jsonPath("$[5].interviewerSlotFormsWithId.[0].interviewerSlotDto.dayOfWeek",
-            equalTo(6)))
-        .andExpect(jsonPath("$[5].candidateSlotsFormsWithId.[0].candidateSlotDto.dateFrom",
-            equalTo("2039-12-24 09:30")));
+        .andExpect(jsonPath("$", hasSize(7)))
+        .andExpect(jsonPath("$[1].day",
+            equalTo(referentLDT.format(DateTimeFormatter.ISO_DATE))))
+        .andExpect(jsonPath("$[4].day",
+            equalTo(referentLDT.plusDays(3).format(DateTimeFormatter.ISO_DATE))))
+        .andExpect(jsonPath("$[1].interviewerSlotFormsWithId.[0].interviewerSlotDto.timeFrom",
+            equalTo(interviewerSlot.getFrom().format(DateTimeFormatter.ISO_TIME).substring(0, 5))))
+        .andExpect(jsonPath("$[1].interviewerSlotFormsWithId[0].interviewerSlotDto.interviewerId",
+            equalTo(INTERVIEWERS.get(0).getId().intValue())))
+        .andExpect(jsonPath("$[1].interviewerSlotFormsWithId[0].bookingsId",
+            contains(bookingId)))
+        .andExpect(jsonPath("$[1].candidateSlotsFormsWithId[0].candidateSlotDto.candidateId",
+            equalTo(CANDIDATES.get(0).getId().intValue())))
+        .andExpect(jsonPath("$[1].candidateSlotsFormsWithId[0].bookingsId",
+            contains(bookingId)))
+        .andExpect(jsonPath("$[1].bookings." + bookingId + ".interviewerSlotId",
+            equalTo(interviewerSlot.getId().intValue())))
+        .andExpect(jsonPath("$[1].bookings." + bookingId + ".candidateSlotId",
+            equalTo(candidateSlot.getId().intValue())));
   }
 }
 
