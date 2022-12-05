@@ -3,11 +3,10 @@ package com.intellias.intellistart.interviewplanning.config;
 
 import com.intellias.intellistart.interviewplanning.services.JwtTokenProvider;
 import com.intellias.intellistart.interviewplanning.services.UserService;
+import com.intellias.intellistart.interviewplanning.util.exceptions.CustomAccessDeniedHandler;
 import com.intellias.intellistart.interviewplanning.util.exceptions.JwtAuthenticationEntryPoint;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -19,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,6 +35,7 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
   private final JwtTokenProvider tokenProvider;
   private final UserService userService;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
   /**
    * SecurityCredentialsConfig class constructor.
@@ -44,12 +43,14 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   public SecurityCredentialsConfig(UserDetailsService userDetailsService, JwtConfig jwtConfig,
       JwtTokenProvider tokenProvider, UserService userService,
-      JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+      JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+      CustomAccessDeniedHandler customAccessDeniedHandler) {
     this.userDetailsService = userDetailsService;
     this.jwtConfig = jwtConfig;
     this.tokenProvider = tokenProvider;
     this.userService = userService;
     this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+    this.customAccessDeniedHandler = customAccessDeniedHandler;
   }
 
 
@@ -67,7 +68,9 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
             UsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers(HttpMethod.POST, "/facebook/signin").permitAll()
-        .anyRequest().authenticated();
+        .anyRequest().authenticated()
+        .and()
+        .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
   }
 
   @Override
