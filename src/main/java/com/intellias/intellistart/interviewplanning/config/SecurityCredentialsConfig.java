@@ -68,6 +68,8 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
             UsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
         .antMatchers(HttpMethod.POST, "/facebook/signin").permitAll()
+        .antMatchers("/weeks/current").permitAll()
+        .antMatchers("/weeks/next").permitAll()
         .anyRequest().authenticated()
         .and()
         .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
