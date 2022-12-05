@@ -40,6 +40,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -361,6 +362,7 @@ class CoordinatorControllerTest {
             "This booking is out of slot boundaries.")));
   }
 
+
   @Test
   @Order(13)
   void getDashboardTest() throws Exception {
@@ -394,6 +396,10 @@ class CoordinatorControllerTest {
         .andExpect(jsonPath("$", hasSize(7)))
         .andExpect(jsonPath("$[1].day",
             equalTo(referentLDT.format(DateTimeFormatter.ISO_DATE))))
+        .andExpect(jsonPath("$[4].day",
+            equalTo(referentLDT.plusDays(3).format(DateTimeFormatter.ISO_DATE))))
+        .andExpect(jsonPath("$[1].interviewerSlotFormsWithId.[0].interviewerSlotDto.timeFrom",
+            equalTo(interviewerSlot.getFrom().format(DateTimeFormatter.ISO_TIME).substring(0, 5))))
         .andExpect(jsonPath("$[1].interviewerSlotFormsWithId[0].interviewerSlotDto.interviewerId",
             equalTo(INTERVIEWERS.get(0).getId().intValue())))
         .andExpect(jsonPath("$[1].interviewerSlotFormsWithId[0].bookingsId",
