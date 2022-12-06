@@ -22,7 +22,7 @@ docker compose up
 
 Application will run on localhost:8080 by default.
 
-If it is needed, you can configure ports and other properties in docker-compose.yml.<br />
+If it is needed, you can configure ports and other properties in .env file (default values for quick testing have been already set).<br />
 <br />
 First Coordinator and other needed records in the database that will be initialized before the application starts can be configured in data.sql. 
 
