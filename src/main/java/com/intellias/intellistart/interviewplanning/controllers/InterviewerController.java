@@ -126,10 +126,11 @@ public class InterviewerController {
       @PathVariable Long interviewerId,
       Authentication authentication) {
     Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
+    Long authInterviewerId = interviewerService.getInterviewerByUserId(authUserId).getId();
     interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
 
     List<InterviewerSlotForm> currentWeekSlots = interviewerService
-        .getSlotsForIdAndWeek(interviewerId, weekService.getCurrentWeekNum())
+        .getSlotsForIdAndWeek(authInterviewerId, weekService.getCurrentWeekNum())
         .stream()
         .map(slot -> mapper.map(slot, InterviewerSlotForm.class))
         .collect(Collectors.toList());
@@ -149,10 +150,11 @@ public class InterviewerController {
       @PathVariable Long interviewerId,
       Authentication authentication) {
     Long authUserId = ((FacebookUserDetails) authentication.getPrincipal()).getUser().getId();
+    Long authInterviewerId = interviewerService.getInterviewerByUserId(authUserId).getId();
     interviewerValidator.validateUserIdMatch(authUserId, interviewerId);
 
     List<InterviewerSlotForm> nextWeekSlots = interviewerService
-        .getSlotsForIdAndWeek(interviewerId, weekService.getNextWeekNum())
+        .getSlotsForIdAndWeek(authInterviewerId, weekService.getNextWeekNum())
         .stream()
         .map(slot -> mapper.map(slot, InterviewerSlotForm.class))
         .collect(Collectors.toList());
