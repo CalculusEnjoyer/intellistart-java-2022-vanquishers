@@ -213,6 +213,9 @@ public class CoordinatorController {
   @PostMapping("/users/coordinators")
   public ResponseEntity<UserDto> grantCoordinatorRole(@RequestBody Map<String, String> email) {
     User userToGrand = userService.findUserByEmail(email.get("email"));
+    if (userToGrand.getRole() == Role.COORDINATOR) {
+      throw new SameRoleChangeException();
+    }
     userToGrand.setRole(Role.COORDINATOR);
     userService.registerUser(userToGrand);
     return ResponseEntity.ok().body(mapper.map(userToGrand, UserDto.class));
